@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A050E">
+<title>Кофейный Оракул — Гадание и Тайны Судьбы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===================== ТЕМА ===================== */
+:root{--violet:#12091A;--obsidian:#0A050E;--burgundy:#5A1430;--wine:#3a0d22;--gold:#D4AF37;--gold-2:#F3D98B;--gold-dim:rgba(212,175,55,.35);
+--text:#F4ECF7;--text-2:rgba(244,236,247,.74);--text-3:rgba(244,236,247,.5);--line:rgba(212,175,55,.22);--line-2:rgba(212,175,55,.45);
+--serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;--sans:Manrope,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+--tC:#a9b8c9;--tB:#6fd3a5;--tA:#c39bff;--tS:#f1c75b;--nav-h:74px;--top-h:62px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:#0A050E}html,body{min-height:100%}
+body{background:radial-gradient(ellipse at 50% -10%,#2b1242 0%,var(--violet) 48%,var(--obsidian) 100%) fixed;color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.5;overflow-x:hidden;min-height:100vh}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,select{font:inherit;color:inherit}
+::selection{background:rgba(212,175,55,.35)}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:rgba(212,175,55,.25);border-radius:8px}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#confetti{position:fixed;inset:0;width:100%;height:100%;z-index:300;pointer-events:none}
+#app{position:relative;z-index:1;max-width:1120px;margin:0 auto;min-height:100vh;padding:calc(var(--top-h) + 16px) 14px calc(var(--nav-h) + 30px)}
+.muted{color:var(--text-2)}.dim{color:var(--text-3)}.gold{color:var(--gold-2)}
+.serif{font-family:var(--serif)}
+
+/* ===================== ВЕРХНЯЯ ПАНЕЛЬ ===================== */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--top-h);background:linear-gradient(180deg,rgba(10,5,14,.94),rgba(18,9,26,.78));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1120px;margin:0 auto;height:100%;display:flex;align-items:center;gap:10px;padding:0 14px}
+.logo{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--gold);white-space:nowrap;display:flex;align-items:center;gap:8px;text-shadow:0 0 18px rgba(212,175,55,.4)}
+.logo .cup{font-size:24px;filter:drop-shadow(0 0 8px rgba(212,175,55,.5))}
+.wallet{display:flex;gap:6px;margin-left:auto;align-items:center}
+.pill{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-weight:800;font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.avatar{display:flex;align-items:center;gap:8px;padding:3px 10px 3px 3px;border-radius:999px;border:1px solid var(--line-2);background:linear-gradient(135deg,rgba(90,20,48,.6),rgba(30,12,40,.6))}
+.avatar .ava{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,#8a2a55,#3a0d22);font-size:17px;border:1px solid var(--gold)}
+.avatar .lv{font-size:11px;font-weight:800;color:var(--gold-2);line-height:1.1;text-align:left}
+.xpbar{width:58px;height:4px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:3px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,#b8862a,#f3d98b);width:0;transition:width .4s}
+@media(max-width:640px){.logo .txt{display:none}.pill{padding:4px 8px;font-size:12px}.avatar .lvtxt{display:none}.avatar{padding:3px}}
+@media(max-width:380px){.pill.raw-pill{display:none}}
+
+/* ===================== НИЖНЯЯ НАВИГАЦИЯ ===================== */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:60;height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:linear-gradient(0deg,rgba(10,5,14,.97),rgba(18,9,26,.85));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center}
+.nav-inner{display:flex;width:100%;max-width:640px;justify-content:space-around;align-items:center}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--text-3);padding:6px 4px;border-radius:14px;transition:.2s;min-width:60px;position:relative}
+.nav-btn .ic{font-size:22px;filter:grayscale(.7) brightness(.85);transition:.25s;line-height:1.2}
+.nav-btn.active{color:var(--gold-2)}.nav-btn.active .ic{filter:none;transform:translateY(-2px) scale(1.08)}
+.nav-btn.center .ic{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,#8f2a55,var(--burgundy) 60%,#2a0716);border:1.5px solid var(--gold);box-shadow:0 0 24px rgba(212,175,55,.4);margin-top:-30px;font-size:28px;filter:none;animation:pulseGlow 3s ease-in-out infinite}
+.nav-btn .dot{position:absolute;top:4px;right:12px;width:8px;height:8px;border-radius:50%;background:#ff5d8f;box-shadow:0 0 8px #ff5d8f;display:none}
+.nav-btn .dot.on{display:block}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 18px rgba(212,175,55,.3)}50%{box-shadow:0 0 34px rgba(212,175,55,.65)}}
+
+/* ===================== БАЗОВЫЕ КОМПОНЕНТЫ ===================== */
+.glass{background:linear-gradient(160deg,rgba(54,26,72,.55),rgba(20,10,30,.62));border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+.glow{border-color:var(--line-2);box-shadow:0 0 0 1px rgba(212,175,55,.08),0 0 30px rgba(212,175,55,.12),0 10px 40px rgba(0,0,0,.4)}
+.page-head{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;margin:6px 2px 18px}
+.section-title{font-family:var(--serif);font-size:36px;color:var(--gold-2);font-weight:700;line-height:1.05;text-shadow:0 0 24px rgba(212,175,55,.25)}
+.subtitle{color:var(--text-2);font-size:14px;margin-top:4px;max-width:560px}
+h2.h2{font-family:var(--serif);font-size:26px;color:var(--gold-2);font-weight:700;line-height:1.1;margin-bottom:6px}
+h3.h3{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1.15}
+.grid{display:grid;gap:14px}
+.g-auto{grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.g-items{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:12px;font-weight:700;font-size:14px;transition:transform .12s,background .2s,box-shadow .2s;border:1px solid var(--line);background:rgba(255,255,255,.05);white-space:nowrap;user-select:none}
+.btn:hover{background:rgba(255,255,255,.1)}
+.btn:active{transform:scale(.96)}
+.btn-gold{background:linear-gradient(135deg,#f6e0a0,#d4af37 45%,#9c7a1c);color:#1d0e12;border-color:#f3d98b;box-shadow:0 4px 18px rgba(212,175,55,.35)}
+.btn-gold:hover{background:linear-gradient(135deg,#fff0c0,#e2bd45 45%,#ad8822);box-shadow:0 6px 26px rgba(212,175,55,.5)}
+.btn-wine{background:linear-gradient(135deg,#8f2a55,#5a1430);border-color:rgba(212,175,55,.5)}
+.btn-wine:hover{background:linear-gradient(135deg,#a33463,#6c1a3b)}
+.btn[disabled],.btn.disabled{opacity:.42;pointer-events:none;filter:grayscale(.6)}
+.btn-sm{padding:6px 10px;font-size:12.5px;border-radius:10px}
+.btn-lg{padding:14px 24px;font-size:16px;border-radius:14px}
+.btn-block{width:100%}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-size:12.5px;font-weight:600}
+.tier{display:inline-block;font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:6px;letter-spacing:.4px;vertical-align:middle}
+.tier-C{color:var(--tC);background:rgba(169,184,201,.12);border:1px solid rgba(169,184,201,.35)}
+.tier-B{color:var(--tB);background:rgba(111,211,165,.1);border:1px solid rgba(111,211,165,.4)}
+.tier-A{color:var(--tA);background:rgba(195,155,255,.1);border:1px solid rgba(195,155,255,.45)}
+.tier-S{color:var(--tS);background:rgba(241,199,91,.12);border:1px solid rgba(241,199,91,.6);box-shadow:0 0 10px rgba(241,199,91,.25)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:16px 0;position:relative}
+.divider.star::after{content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);color:var(--gold);font-size:12px;padding:0 8px;text-shadow:0 0 8px rgba(212,175,55,.8)}
+.tabs{display:flex;gap:6px;padding:4px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--line);width:max-content;max-width:100%;overflow:auto}
+.tabs button{padding:8px 14px;border-radius:10px;font-weight:700;font-size:13px;color:var(--text-2);white-space:nowrap}
+.tabs button.on{background:linear-gradient(135deg,rgba(212,175,55,.25),rgba(143,42,85,.35));color:var(--gold-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+.empty{padding:28px;text-align:center;color:var(--text-2)}
+.empty .big{font-size:42px;display:block;margin-bottom:6px}
+
+/* Иконки предметов */
+.ii{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;font-size:24px;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.12),rgba(0,0,0,.2));border:1px solid var(--line);flex:none;position:relative}
+.ii.sm{width:30px;height:30px;font-size:16px;border-radius:9px}
+.ii.lg{width:74px;height:74px;font-size:40px;border-radius:18px}
+.ii.t-C{border-color:rgba(169,184,201,.4)}.ii.t-B{border-color:rgba(111,211,165,.5)}.ii.t-A{border-color:rgba(195,155,255,.6);box-shadow:0 0 14px rgba(195,155,255,.25)}.ii.t-S{border-color:rgba(241,199,91,.8);box-shadow:0 0 18px rgba(241,199,91,.4)}
+.bean{display:inline-block;width:.62em;height:.86em;border-radius:50%;transform:rotate(28deg);position:relative;background:radial-gradient(circle at 35% 30%,#a7704a,#5b3219 55%,#2c160a);box-shadow:inset -2px -2px 4px rgba(0,0,0,.4)}
+.bean::after{content:"";position:absolute;left:50%;top:10%;bottom:10%;width:2px;margin-left:-1px;border-radius:2px;background:rgba(20,8,2,.75);transform:skewY(10deg)}
+.bean.t-B{background:radial-gradient(circle at 35% 30%,#b98a52,#6d4320 55%,#2e1a08)}
+.bean.t-A{background:radial-gradient(circle at 35% 30%,#c9a0ff,#6b3fa8 55%,#2b1450);box-shadow:0 0 8px rgba(195,155,255,.6)}
+.bean.t-S{background:radial-gradient(circle at 35% 30%,#fff1b8,#d4af37 50%,#6d520f);box-shadow:0 0 12px rgba(241,199,91,.9)}
+.bean.raw{background:radial-gradient(circle at 35% 30%,#c9d18a,#7d8a3c 55%,#3a4318)}
+
+.item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12px 10px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:.2s;position:relative}
+.item.sel{border-color:var(--gold);background:linear-gradient(160deg,rgba(212,175,55,.16),rgba(143,42,85,.2));box-shadow:0 0 22px rgba(212,175,55,.25)}
+.item:hover{border-color:var(--line-2)}
+.item .nm{font-weight:700;font-size:13px;line-height:1.25}
+.item .ds{font-size:11.5px;color:var(--text-3);line-height:1.3}
+.item .cnt{position:absolute;top:8px;right:8px;font-size:11px;font-weight:800;color:var(--gold-2);background:rgba(0,0,0,.4);padding:1px 7px;border-radius:999px;border:1px solid var(--line)}
+.item.click{cursor:pointer}
+
+/* ===================== МОДАЛКИ / ТОСТЫ ===================== */
+.modal-wrap{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:rgba(5,2,8,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .25s}
+.modal-wrap.show{opacity:1}
+.modal{width:100%;max-width:520px;max-height:calc(100vh - 32px);overflow:auto;padding:22px;position:relative;transform:translateY(16px) scale(.97);transition:transform .3s cubic-bezier(.2,.9,.3,1.2);border-color:var(--line-2)}
+.modal-wrap.show .modal{transform:none}
+.modal.wide{max-width:760px}
+.modal-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--text-2);background:rgba(255,255,255,.06);z-index:2}
+.modal-x:hover{background:rgba(255,255,255,.12);color:#fff}
+#toasts{position:fixed;left:50%;top:calc(var(--top-h) + 10px);transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(92vw,420px)}
+.toast{padding:10px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(54,26,72,.95),rgba(30,12,40,.95));border:1px solid var(--line-2);box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:13.5px;font-weight:600;animation:toastIn .35s cubic-bezier(.2,.9,.3,1.3);transition:.35s;text-align:center}
+.toast.good{border-color:rgba(111,211,165,.6)}.toast.bad{border-color:rgba(255,93,143,.6)}.toast.gold{border-color:var(--gold);box-shadow:0 0 24px rgba(212,175,55,.4)}
+.toast.out{opacity:0;transform:translateY(-10px)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-14px) scale(.95)}}
+.float-num{position:absolute;font-weight:800;color:var(--gold-2);font-size:13px;pointer-events:none;animation:floatUp 1.4s ease-out forwards;text-shadow:0 0 8px rgba(212,175,55,.8);white-space:nowrap}
+@keyframes floatUp{from{opacity:0;transform:translateY(0)}20%{opacity:1}to{opacity:0;transform:translateY(-46px)}}
+.fade-in{animation:fadeIn .45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}}
+
+/* ===================== ПЛАНТАЦИИ ===================== */
+.stat-box{padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:260px}
+.stat-box .big{font-size:24px;font-weight:800;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.plant-card{overflow:hidden;display:flex;flex-direction:column}
+.plant-banner{height:118px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px 14px}
+.plant-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(255,255,255,.18),transparent 60%)}
+.plant-banner .hills{position:absolute;left:-10%;right:-10%;bottom:-30px;height:70px;border-radius:50% 50% 0 0;background:rgba(0,0,0,.35)}
+.plant-banner .hills.h2{bottom:-40px;left:20%;height:80px;background:rgba(0,0,0,.25)}
+.plant-banner .pic{position:absolute;right:16px;top:12px;font-size:48px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+.plant-banner .bushes{position:absolute;left:14px;bottom:8px;display:flex;gap:6px;z-index:1}
+.bush{font-size:22px;animation:sway 3s ease-in-out infinite;transform-origin:bottom center;display:inline-block}
+.bush:nth-child(2){animation-delay:.4s}.bush:nth-child(3){animation-delay:.8s}.bush:nth-child(4){animation-delay:1.2s}.bush:nth-child(5){animation-delay:1.6s}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.plant-banner .tag{position:absolute;top:10px;left:12px;z-index:1}
+.plant-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.plant-stats{display:flex;gap:8px;flex-wrap:wrap}
+.upg{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:rgba(0,0,0,.2);border:1px solid rgba(212,175,55,.12)}
+.upg .ui{font-size:20px;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:rgba(255,255,255,.05)}
+.upg .ut{flex:1;min-width:0}.upg .ut b{font-size:13.5px}.upg .ut div{font-size:11.5px;color:var(--text-3)}
+.lvl-dots{font-size:11px;color:var(--gold-2);font-weight:800}
+.plant-card.locked .plant-banner{filter:grayscale(.75) brightness(.6)}
+.lock-box{padding:12px;border-radius:14px;border:1px dashed var(--line-2);text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+
+/* ===================== КЕЙСЫ ===================== */
+.case-card{padding:20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;position:relative;overflow:hidden}
+.case-card::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent,var(--cc,rgba(212,175,55,.18)),transparent 30%);animation:spin 9s linear infinite;opacity:.7}
+.case-card>*{position:relative}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orb{width:128px;height:128px;border-radius:50%;display:grid;place-items:center;font-size:62px;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.35),var(--oc,#5a1430) 45%,#12091a 100%);border:2px solid var(--gold);box-shadow:0 0 40px var(--og,rgba(212,175,55,.4)),inset 0 -10px 30px rgba(0,0,0,.5);animation:bob 4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.orb.shake{animation:shake .12s linear infinite}
+@keyframes shake{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-4px,2px) rotate(-4deg)}50%{transform:translate(3px,-3px) rotate(3deg)}75%{transform:translate(-2px,-2px) rotate(-2deg)}100%{transform:translate(0,0) rotate(0)}}
+.orb.big{width:170px;height:170px;font-size:84px}
+.case-open{display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0;text-align:center;min-height:300px;justify-content:center}
+.burst{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#fff 0%,rgba(243,217,139,.9) 30%,transparent 70%);animation:burst .9s ease-out forwards;pointer-events:none}
+@keyframes burst{to{width:900px;height:900px;opacity:0}}
+.loot-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.loot{width:132px;padding:14px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;background:rgba(0,0,0,.3);border:1px solid var(--line);animation:lootIn .6s cubic-bezier(.2,.9,.3,1.4) both}
+.loot.t-B{border-color:rgba(111,211,165,.6)}.loot.t-A{border-color:rgba(195,155,255,.7);box-shadow:0 0 24px rgba(195,155,255,.35)}.loot.t-S{border-color:var(--tS);box-shadow:0 0 34px rgba(241,199,91,.55);background:linear-gradient(160deg,rgba(241,199,91,.18),rgba(0,0,0,.3))}
+.loot .nm{font-size:12.5px;font-weight:700;line-height:1.25}
+@keyframes lootIn{from{opacity:0;transform:rotateY(90deg) scale(.6)}}
+.odds-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(212,175,55,.08);font-size:13px}
+.odds-row .pc{margin-left:auto;font-weight:800;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.tier-bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:8px 0 14px}
+.tier-bar i{display:block;height:100%}
+
+/* ===================== РИТУАЛ ===================== */
+.steps{display:flex;gap:6px;align-items:center;justify-content:center;margin:2px 0 18px;flex-wrap:wrap}
+.stp{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--text-3)}
+.stp .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);font-size:12px}
+.stp.on{color:var(--gold-2)}.stp.on .n{background:linear-gradient(135deg,#f3d98b,#b8862a);color:#1d0e12;border-color:var(--gold);box-shadow:0 0 14px rgba(212,175,55,.5)}
+.stp.done .n{background:rgba(212,175,55,.2);color:var(--gold-2)}
+.stp-line{width:22px;height:1px;background:var(--line-2)}
+@media(max-width:560px){.stp .l{display:none}}
+.ritual-hero{text-align:center;padding:26px 18px;position:relative;overflow:hidden}
+.ritual-panel{padding:18px}
+.luck-meter{height:10px;border-radius:10px;background:rgba(255,255,255,.08);overflow:hidden;margin:6px 0}
+.luck-meter i{display:block;height:100%;background:linear-gradient(90deg,#5a1430,#d4af37,#fff0c0);transition:width .5s}
+.brew-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.brew-wrap{grid-template-columns:1fr}}
+.stir-box,.heat-box{padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+#stirCanvas{width:100%;max-width:300px;aspect-ratio:1;touch-action:none;cursor:grab;border-radius:50%}
+.prog{width:100%;max-width:300px;height:8px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b8862a,#f3d98b)}
+.heat-box.locked{opacity:.45;pointer-events:none;filter:grayscale(.5)}
+.cezve-area{display:flex;gap:16px;align-items:flex-end;justify-content:center;position:relative}
+.cezve{width:200px;height:220px}
+.gauge{width:22px;height:200px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid var(--line);position:relative;overflow:hidden}
+.gauge .zone{position:absolute;left:0;right:0;bottom:72%;height:16%;background:rgba(212,175,55,.35);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+.gauge .fill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(0deg,#5a1430,#e2763a,#f3d98b)}
+.flame{transform-origin:center bottom;animation:flick .25s ease-in-out infinite alternate;opacity:.35;transition:opacity .3s}
+.heating .flame{opacity:1}
+@keyframes flick{from{transform:scaleY(.9) scaleX(1.05)}to{transform:scaleY(1.12) scaleX(.95)}}
+.steam{position:absolute;left:50%;top:-10px;width:120px;height:110px;transform:translateX(-50%);pointer-events:none}
+.steam span{position:absolute;bottom:0;width:14px;height:60px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,240,220,.55),transparent 70%);filter:blur(5px);animation:steam 3s ease-in infinite;opacity:0}
+.steam span:nth-child(1){left:20%}.steam span:nth-child(2){left:45%;animation-delay:1s}.steam span:nth-child(3){left:70%;animation-delay:2s}
+@keyframes steam{0%{transform:translateY(0) scaleX(1);opacity:0}25%{opacity:var(--so,.7)}100%{transform:translateY(-90px) scaleX(2.4) rotate(12deg);opacity:0}}
+.hold-btn{touch-action:none;user-select:none;-webkit-user-select:none}
+.flip-stage{height:300px;position:relative;display:grid;place-items:center;perspective:800px}
+.saucer{position:absolute;bottom:40px;width:260px;height:46px;border-radius:50%;background:radial-gradient(ellipse at 50% 35%,#f5ecdf,#cdb89c 60%,#8a7458);box-shadow:0 14px 30px rgba(0,0,0,.6),inset 0 -4px 8px rgba(0,0,0,.25);border:2px solid var(--gold)}
+.flip-cup{position:absolute;bottom:72px;width:160px;height:150px;transition:transform 1.3s cubic-bezier(.6,-0.2,.3,1.3)}
+.flip-cup.flipped{transform:translateY(20px) rotate(180deg)}
+.drip-count{font-family:var(--serif);font-size:44px;color:var(--gold-2);text-shadow:0 0 20px rgba(212,175,55,.6)}
+
+/* ===================== ГАДАНИЕ ===================== */
+.reading-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+@media(max-width:820px){.reading-layout{grid-template-columns:1fr}}
+.cup-wrap{padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+#groundsCanvas{width:100%;max-width:540px;aspect-ratio:1;cursor:crosshair;touch-action:manipulation;border-radius:50%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.6))}
+.reading-side{padding:18px;display:flex;flex-direction:column;gap:12px}
+.found-list{display:flex;flex-direction:column;gap:8px}
+.found{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px dashed rgba(212,175,55,.25);background:rgba(0,0,0,.2);font-size:13px}
+.found.ok{border-style:solid;border-color:var(--line-2);background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(143,42,85,.15));animation:fadeIn .4s}
+.found .si{font-size:22px;width:36px;text-align:center}
+.fortune-head{padding:22px;text-align:center;position:relative;overflow:hidden}
+.fortune-head .ttl{font-family:var(--serif);font-size:34px;color:var(--gold-2);font-weight:700;line-height:1.1}
+.fortune-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:760px){.fortune-grid{grid-template-columns:1fr}}
+.fcard{padding:18px 18px 20px;position:relative;cursor:pointer;min-height:150px}
+.fcard h4{font-family:var(--serif);font-size:23px;color:var(--gold-2);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.fcard p{font-size:14.5px;line-height:1.65;color:var(--text);white-space:pre-line}
+.fcard.typing p::after{content:"▍";color:var(--gold);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.fcard.f-love{background:linear-gradient(160deg,rgba(120,24,60,.5),rgba(20,10,30,.62))}
+.fcard.f-wealth{background:linear-gradient(160deg,rgba(110,84,20,.42),rgba(20,10,30,.62))}
+.fcard.f-secrets{background:linear-gradient(160deg,rgba(60,30,120,.5),rgba(20,10,30,.62))}
+.fcard.f-advice{background:linear-gradient(160deg,rgba(30,80,90,.42),rgba(20,10,30,.62))}
+.vn-oracle{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:8px}
+.oracle-ava{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:radial-gradient(circle at 30% 30%,#7a3fb0,#2b1450);border:1.5px solid var(--gold);box-shadow:0 0 18px rgba(195,155,255,.5)}
+.reward-box{padding:16px;margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+.stars5{color:var(--gold);letter-spacing:2px;font-size:18px}
+.hist-item{display:flex;gap:12px;align-items:center;padding:14px;cursor:pointer;transition:.2s}
+.hist-item:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.hist-ic{font-size:22px;display:flex;gap:2px;flex-wrap:wrap;width:74px;justify-content:center}
+.atlas{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.atlas .sym{padding:12px 6px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.2);text-align:center;font-size:12px}
+.atlas .sym .e{font-size:30px;display:block}
+.atlas .sym.lock{opacity:.4;filter:grayscale(1)}
+
+/* ===================== ПРОФИЛЬ / ОНБОРДИНГ ===================== */
+.zodiac{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.zodiac button{padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.zodiac button .zi{font-size:22px;color:var(--gold-2)}
+.zodiac button.on{border-color:var(--gold);background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(143,42,85,.25));box-shadow:0 0 16px rgba(212,175,55,.3)}
+.field{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line-2);background:rgba(0,0,0,.3);outline:none;font-size:15px}
+.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+.daily-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0}
+.dday{padding:10px 2px;border-radius:12px;border:1px solid var(--line);text-align:center;font-size:10.5px;background:rgba(0,0,0,.2)}
+.dday .e{font-size:20px;display:block;margin:2px 0}
+.dday.past{opacity:.45}.dday.now{border-color:var(--gold);background:linear-gradient(160deg,rgba(212,175,55,.25),rgba(143,42,85,.3));box-shadow:0 0 18px rgba(212,175,55,.4);transform:scale(1.06)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat-grid div{padding:10px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid rgba(212,175,55,.12);font-size:12px;color:var(--text-2)}
+.stat-grid b{display:block;font-size:18px;color:var(--gold-2)}
+.switch{width:46px;height:26px;border-radius:26px;background:rgba(255,255,255,.12);position:relative;transition:.2s;border:1px solid var(--line)}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on{background:linear-gradient(135deg,#d4af37,#9c7a1c)}.switch.on::after{left:22px}
+.share-preview{width:100%;max-height:62vh;object-fit:contain;border-radius:14px;border:1px solid var(--line-2);background:#000}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<header class="topbar"><div class="topbar-inner">
+  <div class="logo"><span class="cup">☕</span><span class="txt">Кофейный Оракул</span></div>
+  <div class="wallet">
+    <div class="pill" title="Золотые монеты">🪙 <span id="hud-coins">0</span></div>
+    <div class="pill" title="Астральные кристаллы">💎 <span id="hud-crystals">0</span></div>
+    <div class="pill raw-pill" title="Сырые зёрна"><span class="bean raw"></span> <span class="hud-raw">0</span></div>
+  </div>
+  <button class="avatar" data-act="profile" title="Профиль">
+    <span class="ava" id="hud-ava">🔮</span>
+    <span class="lv"><span class="lvtxt">Уровень </span><span id="hud-lvl">1</span><div class="xpbar"><i id="hud-xp"></i></div></span>
+  </button>
+</div></header>
+<main id="app"><div id="view"></div></main>
+<nav class="bottomnav"><div class="nav-inner">
+  <button class="nav-btn" data-tab="plant"><span class="ic">🌱</span>Плантации</button>
+  <button class="nav-btn" data-tab="cases"><span class="ic">🎁</span>Кейсы</button>
+  <button class="nav-btn center" data-tab="ritual"><span class="ic">☕</span>Ритуал</button>
+  <button class="nav-btn" data-tab="grimoire"><span class="ic">📜</span>Гримуар</button>
+  <button class="nav-btn" data-tab="shop"><span class="ic">🛍️</span>Лавка<i class="dot" id="shop-dot"></i></button>
+</div></nav>
+<div id="modals"></div>
+<div id="toasts"></div>
+<canvas id="confetti"></canvas>
+<script>
+'use strict';
+/* =====================================================================
+   CORE — утилиты, данные игры, хранилище (localStorage), звук, эффекты
+   ===================================================================== */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmt(n){n=Math.floor(n||0);const a=Math.abs(n);if(a<100000)return n.toLocaleString('ru-RU');
+  for(const[v,s]of[[1e12,'T'],[1e9,'B'],[1e6,'M'],[1e3,'K']])if(a>=v)return (n/v).toFixed(a/v<100?1:0).replace('.',',')+s;return String(n);}
+const fmt1=n=>n<10?n.toFixed(1).replace('.',','):fmt(n);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const R={
+  pick:(arr,r=Math.random)=>arr[Math.floor(r()*arr.length)],
+  int:(a,b,r=Math.random)=>a+Math.floor(r()*(b-a+1)),
+  weighted(list,r=Math.random){const tot=list.reduce((s,x)=>s+x.w,0);let v=r()*tot;for(const x of list){v-=x.w;if(v<=0)return x;}return list[list.length-1];}
+};
+const todayStr=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dayDiff=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5);
+function plural(n,f){n=Math.abs(Math.floor(n))%100;const n1=n%10;if(n>10&&n<20)return f[2];if(n1>1&&n1<5)return f[1];if(n1===1)return f[0];return f[2];}
+function fmtDur(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60),d=Math.floor(h/24);if(d>0)return d+' д '+(h%24)+' ч';if(h>0)return h+' ч '+(m%60)+' мин';return Math.max(1,m)+' мин';}
+function fmtDate(ts){return new Date(ts).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})+', '+new Date(ts).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});}
+
+/* ============================ ДАННЫЕ ============================ */
+const TIERS={C:{name:'Обычное',col:'#a9b8c9'},B:{name:'Редкое',col:'#6fd3a5'},A:{name:'Эпическое',col:'#c39bff'},S:{name:'Легендарное',col:'#f1c75b'}};
+const TIER_ORDER={C:0,B:1,A:2,S:3};
+
+const BEANS={
+  arabica:{name:'Арабика Иргачеффе',tier:'C',luck:5,desc:'Цветочные ноты эфиопских холмов.'},
+  robusta:{name:'Робуста Сумрака',tier:'C',luck:4,desc:'Крепкое зерно для честных ответов.'},
+  supremo:{name:'Колумбия Супремо',tier:'B',luck:12,desc:'Карамель и туман Анд — ясное видение.'},
+  moka:{name:'Мокко Бархатной Ночи',tier:'B',luck:14,desc:'Шоколадная тьма, любимая гадалками Йемена.'},
+  bluemount:{name:'Ямайка Блю Маунтин',tier:'A',luck:22,desc:'Редчайшее зерно Синих гор. Раскрывает скрытое.'},
+  kopi:{name:'Копи Лювак Тайн',tier:'A',luck:25,desc:'Зерно, прошедшее путь сквозь ночь джунглей.'},
+  astral:{name:'Астральное Зерно Оракула',tier:'S',luck:38,desc:'Светится во тьме. Видит на месяцы вперёд.'},
+  aphro:{name:'Зерно Афродиты',tier:'S',luck:42,desc:'Благословлено богиней любви. Сердечные тайны как на ладони.'}
+};
+const CUPS={
+  clay:{name:'Глиняная чашка Странницы',tier:'C',luck:0,icon:'☕',desc:'Простая, тёплая, честная.'},
+  porcelain:{name:'Фарфор с золотой каймой',tier:'B',luck:5,icon:'🍵',desc:'Гуща ложится тоньше и чище.'},
+  moon:{name:'Серебряная чаша Луны',tier:'A',luck:10,icon:'🌙',desc:'Усиливает интуицию в ночные часы.'},
+  ceremonial:{name:'Церемониальная чаша Исиды',tier:'A',luck:14,icon:'🏺',desc:'Древняя чаша жриц Нила.'},
+  aphroditeCup:{name:'Хрустальный кубок Афродиты',tier:'S',luck:20,icon:'🥂',desc:'Каждый знак в нём сияет страстью.'}
+};
+const SPICES={
+  cinnamon:{name:'Корица',tier:'C',icon:'🍂',focus:'wealth',luck:3,desc:'Притягивает деньги и успех.'},
+  cardamom:{name:'Кардамон',tier:'C',icon:'🌿',focus:'secrets',luck:3,desc:'Обнажает тайны и интриги.'},
+  rose:{name:'Лепестки Роз',tier:'B',icon:'🌹',focus:'love',luck:5,desc:'Усилитель романтических предсказаний.'},
+  star:{name:'Звёздный Бадьян',tier:'B',icon:'✴️',focus:'advice',luck:5,desc:'Делает советы кофе точнее.'},
+  gold:{name:'Золотые Хлопья',tier:'A',icon:'✨',focus:'all',luck:10,desc:'+10 к удаче во всех сферах.'}
+};
+const CHARMS={
+  mult2:{name:'Амулет Фортуны ×2',tier:'A',icon:'🧿',mult:2,desc:'Удваивает награды за гадание.'},
+  mult3:{name:'Слеза Феникса ×3',tier:'S',icon:'🔥',mult:3,desc:'Утраивает награды за гадание.'}
+};
+const ITEM_GROUPS={bean:{bag:'beans',db:BEANS},cup:{bag:'cups',db:CUPS},spice:{bag:'spices',db:SPICES},charm:{bag:'charms',db:CHARMS}};
+function itemDef(t,id){return ITEM_GROUPS[t]&&ITEM_GROUPS[t].db[id];}
+function itemIcon(t,id,size=''){
+  if(t==='coins')return `<span class="ii ${size} t-C">🪙</span>`;
+  if(t==='crystals')return `<span class="ii ${size} t-A">💎</span>`;
+  const d=itemDef(t,id);if(!d)return '';
+  const inner=t==='bean'?`<span class="bean t-${d.tier}"></span>`:d.icon;
+  return `<span class="ii ${size} t-${d.tier}">${inner}</span>`;
+}
+const tierBadge=t=>`<span class="tier tier-${t}">${t}</span>`;
+
+const PLANTS={
+  eth:{name:'Эфиопия Иргачеффе',sub:'Колыбель кофе, где пастух Калди нашёл волшебные ягоды.',base:1,price:{coins:0},up:40,bean:'arabica',roast:60,icon:'⛰️',bush:'🌿',grad:'linear-gradient(135deg,#4a6b2a,#1f3214 60%,#12091a)'},
+  col:{name:'Колумбия Супремо',sub:'Склоны Анд в утреннем тумане и песнях сборщиц.',base:5,price:{coins:600},up:320,bean:'supremo',roast:240,icon:'🌄',bush:'🌱',grad:'linear-gradient(135deg,#a4572a,#4b2414 60%,#12091a)'},
+  jam:{name:'Ямайка Блю Маунтин',sub:'Синие горы, окутанные легендами и морским бризом.',base:22,price:{coins:6000},up:2800,bean:'bluemount',roast:900,icon:'🏝️',bush:'🌴',grad:'linear-gradient(135deg,#2a6a9a,#173556 60%,#12091a)'},
+  astral:{name:'Астральный Сад Оракула',sub:'Сад меж звёзд, где зёрна светятся во тьме.',base:90,price:{crystals:80},minLevel:6,up:15000,bean:'astral',roast:3200,icon:'🌌',bush:'💫',grad:'linear-gradient(135deg,#6b2ca8,#2b1450 60%,#0a050e)'}
+};
+const UPG={
+  irr:{name:'Полив',icon:'💧',k:1,g:1.55,max:30,desc:'+35% к урожаю за уровень'},
+  fert:{name:'Магические Удобрения',icon:'🧪',k:2.6,g:1.72,max:20,desc:'×1,3 к урожаю за уровень'},
+  bar:{name:'Мистические Бариста',icon:'🧙‍♀️',k:5,g:2.1,max:10,desc:'+25% урожая и +2 ч офлайн-сбора'}
+};
+const RAW_PRICE=0.5;
+
+const CASES={
+  isis:{name:'Ларчик Исиды',desc:'Шкатулка египетской богини: простые дары и редкие сюрпризы.',price:{coins:300},icon:'⚱️',oc:'#7a4a1e',og:'rgba(212,175,55,.45)',cc:'rgba(212,175,55,.18)',
+    loot:[{t:'bean',id:'arabica',q:2,w:20},{t:'bean',id:'robusta',q:2,w:17},{t:'spice',id:'cinnamon',q:2,w:12},{t:'spice',id:'cardamom',q:2,w:10},{t:'coins',q:450,w:8,tier:'C'},
+      {t:'bean',id:'supremo',q:1,w:11},{t:'bean',id:'moka',q:1,w:8},{t:'spice',id:'rose',q:1,w:7},{t:'cup',id:'porcelain',q:1,w:3},{t:'crystals',q:5,w:2,tier:'B'},
+      {t:'bean',id:'bluemount',q:1,w:1.5},{t:'charm',id:'mult2',q:1,w:1.2},{t:'bean',id:'astral',q:1,w:.3}]},
+  tarot:{name:'Шёпот Таро',desc:'Колода, что знает ответы. Эпические зёрна и чаши.',price:{crystals:15},icon:'🃏',oc:'#3b1d78',og:'rgba(195,155,255,.5)',cc:'rgba(195,155,255,.2)',
+    loot:[{t:'bean',id:'supremo',q:2,w:16},{t:'bean',id:'moka',q:2,w:14},{t:'spice',id:'rose',q:2,w:12},{t:'spice',id:'star',q:2,w:10},{t:'bean',id:'bluemount',q:1,w:11},
+      {t:'bean',id:'kopi',q:1,w:8},{t:'spice',id:'gold',q:1,w:7},{t:'coins',q:1500,w:6,tier:'B'},{t:'cup',id:'moon',q:1,w:5},{t:'charm',id:'mult2',q:1,w:6},
+      {t:'cup',id:'ceremonial',q:1,w:2.5},{t:'charm',id:'mult3',q:1,w:1.5},{t:'bean',id:'astral',q:1,w:2},{t:'bean',id:'aphro',q:1,w:1}]},
+  aphro:{name:'Эликсир Афродиты',desc:'Флакон богини любви. Легендарные дары для избранных.',price:{crystals:45},icon:'🧪',oc:'#8f2a55',og:'rgba(255,120,170,.5)',cc:'rgba(255,120,170,.2)',
+    loot:[{t:'bean',id:'bluemount',q:2,w:16},{t:'bean',id:'kopi',q:2,w:14},{t:'spice',id:'rose',q:4,w:12},{t:'spice',id:'gold',q:2,w:11},{t:'charm',id:'mult2',q:2,w:10},
+      {t:'bean',id:'astral',q:1,w:10},{t:'bean',id:'aphro',q:1,w:8},{t:'cup',id:'ceremonial',q:1,w:6},{t:'charm',id:'mult3',q:1,w:6},{t:'cup',id:'aphroditeCup',q:1,w:4},{t:'crystals',q:50,w:3,tier:'S'}]}
+};
+const SHOP=[
+  {t:'bean',id:'arabica',price:{coins:45}},{t:'bean',id:'robusta',price:{coins:40}},{t:'bean',id:'supremo',price:{coins:180}},
+  {t:'spice',id:'cinnamon',price:{coins:70}},{t:'spice',id:'cardamom',price:{coins:90}},{t:'spice',id:'rose',price:{coins:140}},{t:'spice',id:'star',price:{coins:160}},{t:'spice',id:'gold',price:{crystals:6}},
+  {t:'cup',id:'porcelain',price:{coins:900}},{t:'cup',id:'moon',price:{crystals:30}},{t:'cup',id:'ceremonial',price:{crystals:70}},
+  {t:'charm',id:'mult2',price:{crystals:18}}
+];
+
+const SYMBOLS={
+  heart:{name:'Сердце',gen:'Сердца',icon:'❤️',meaning:'любовь и новые чувства'},
+  key:{name:'Ключ',gen:'Ключа',icon:'🗝️',meaning:'разгадка и новые двери'},
+  ring:{name:'Кольцо',gen:'Кольца',icon:'💍',meaning:'союз и обещание'},
+  crown:{name:'Корона',gen:'Короны',icon:'👑',meaning:'успех и признание'},
+  snake:{name:'Змея',gen:'Змеи',icon:'🐍',meaning:'искушение и мудрость'},
+  tower:{name:'Башня',gen:'Башни',icon:'🏰',meaning:'амбиции и внезапные перемены'},
+  bird:{name:'Птица',gen:'Птицы',icon:'🕊️',meaning:'вести, дорога и свобода'},
+  crescent:{name:'Полумесяц',gen:'Полумесяца',icon:'🌙',meaning:'интуиция и тайна'},
+  wolf:{name:'Волк',gen:'Волка',icon:'🐺',meaning:'верность, защита и страсть'}
+};
+const SPICE_BIAS={rose:['heart','ring','bird'],cinnamon:['crown','key','tower'],cardamom:['snake','wolf','crescent'],star:['bird','crescent','key'],gold:['crown','ring','heart']};
+const ZODIAC=[
+  {id:'aries',name:'Овен',i:'♈',el:'fire'},{id:'taurus',name:'Телец',i:'♉',el:'earth'},{id:'gemini',name:'Близнецы',i:'♊',el:'air'},{id:'cancer',name:'Рак',i:'♋',el:'water'},
+  {id:'leo',name:'Лев',i:'♌',el:'fire'},{id:'virgo',name:'Дева',i:'♍',el:'earth'},{id:'libra',name:'Весы',i:'♎',el:'air'},{id:'scorpio',name:'Скорпион',i:'♏',el:'water'},
+  {id:'sagittarius',name:'Стрелец',i:'♐',el:'fire'},{id:'capricorn',name:'Козерог',i:'♑',el:'earth'},{id:'aquarius',name:'Водолей',i:'♒',el:'air'},{id:'pisces',name:'Рыбы',i:'♓',el:'water'}
+];
+const DAILY=[
+  {coins:100,label:'100 🪙',e:'🪙'},
+  {coins:150,crystals:2,label:'150 🪙 + 2 💎',e:'💎'},
+  {coins:200,items:[['spice','rose',1]],label:'200 🪙 + 🌹',e:'🌹'},
+  {coins:250,crystals:4,label:'250 🪙 + 4 💎',e:'💎'},
+  {coins:300,items:[['bean','supremo',2]],label:'300 🪙 + 2 зерна B',e:'☕'},
+  {coins:400,crystals:6,items:[['spice','gold',1]],label:'6 💎 + ✨',e:'✨'},
+  {coins:600,crystals:12,items:[['bean','bluemount',1],['charm','mult2',1]],label:'12 💎 + зерно A + 🧿',e:'👑'}
+];
+
+/* ============================ СОСТОЯНИЕ ============================ */
+const SAVE_KEY='coffeeOracle.save.v1';
+function newState(){return{v:1,created:Date.now(),onboarded:false,name:'',zodiac:'',
+  coins:300,crystals:20,raw:0,level:1,xp:0,streak:0,lastDaily:null,lastTick:Date.now(),
+  plants:{eth:{owned:true,irr:0,fert:0,bar:0},col:{owned:false,irr:0,fert:0,bar:0},jam:{owned:false,irr:0,fert:0,bar:0},astral:{owned:false,irr:0,fert:0,bar:0}},
+  inv:{beans:{arabica:3,robusta:0,supremo:1,moka:0,bluemount:0,kopi:0,astral:0,aphro:0},cups:{clay:1,porcelain:0,moon:0,ceremonial:0,aphroditeCup:0},
+       spices:{cinnamon:1,cardamom:0,rose:1,star:0,gold:0},charms:{mult2:0,mult3:0}},
+  history:[],stats:{readings:0,cases:0,rawTotal:0,coinsEarned:0,symbols:{},bestLuck:0},settings:{sound:true}};}
+function deepMerge(base,src){for(const k in src){const v=src[k];if(v&&typeof v==='object'&&!Array.isArray(v)&&base[k]&&typeof base[k]==='object'&&!Array.isArray(base[k]))deepMerge(base[k],v);else base[k]=v;}return base;}
+function loadState(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return newState();return deepMerge(newState(),JSON.parse(raw));}catch(e){console.warn('save broken',e);return newState();}}
+let S=loadState();
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){console.warn(e);}}
+
+const canPay=p=>(p.coins||0)<=S.coins&&(p.crystals||0)<=S.crystals;
+function pay(p){if(!canPay(p))return false;S.coins-=p.coins||0;S.crystals-=p.crystals||0;return true;}
+function priceHTML(p,mul=1){const a=[];if(p.coins)a.push(fmt(p.coins*mul)+' 🪙');if(p.crystals)a.push(fmt(p.crystals*mul)+' 💎');return a.join(' + ')||'Бесплатно';}
+function addItem(t,id,q=1){if(t==='coins'){S.coins+=q;S.stats.coinsEarned+=q;return;}if(t==='crystals'){S.crystals+=q;return;}const g=ITEM_GROUPS[t];if(!g)return;S.inv[g.bag][id]=(S.inv[g.bag][id]||0)+q;}
+function hasItem(t,id){return (S.inv[ITEM_GROUPS[t].bag][id]||0)>0;}
+function takeItem(t,id,q=1){const b=S.inv[ITEM_GROUPS[t].bag];if((b[id]||0)<q)return false;b[id]-=q;return true;}
+const xpNeed=l=>Math.round(100*Math.pow(l,1.45));
+function addXP(n){S.xp+=Math.round(n);while(S.xp>=xpNeed(S.level)){S.xp-=xpNeed(S.level);S.level++;const c=100*S.level;S.coins+=c;S.crystals+=5;
+  setTimeout(()=>{toast(`✨ Новый уровень ${S.level}! +${fmt(c)} 🪙 и +5 💎`,'gold');SFX.magic();Confetti.burst(90);},300);}}
+
+/* ============================ ЗВУК ============================ */
+const SFX={ctx:null,
+  ensure(){if(!this.ctx){const A=window.AudioContext||window.webkitAudioContext;if(A)try{this.ctx=new A();}catch(e){}}if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();return this.ctx;},
+  tone(f,d=.15,type='sine',v=.08,delay=0){if(!S.settings.sound)return;const c=this.ensure();if(!c)return;const t=c.currentTime+delay;const o=c.createOscillator(),g=c.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.03);},
+  noise(d=.4,v=.05,f=1200){if(!S.settings.sound)return;const c=this.ensure();if(!c)return;const len=Math.floor(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),ch=b.getChannelData(0);
+    for(let i=0;i<len;i++)ch[i]=(Math.random()*2-1)*(1-i/len);const s=c.createBufferSource();s.buffer=b;const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;const g=c.createGain();g.gain.value=v;s.connect(fl);fl.connect(g);g.connect(c.destination);s.start();},
+  click(){this.tone(720,.06,'triangle',.035);},
+  coin(){this.tone(988,.08,'square',.025);this.tone(1319,.14,'square',.025,.06);},
+  chime(){[523,659,784,1047].forEach((f,i)=>this.tone(f,.6,'sine',.06,i*.09));},
+  magic(){[392,494,587,740,880,1175].forEach((f,i)=>this.tone(f,.7,'triangle',.04,i*.07));},
+  find(){this.tone(880,.25,'sine',.06);this.tone(1320,.4,'sine',.05,.08);},
+  error(){this.tone(180,.22,'sawtooth',.03);},
+  whoosh(){this.noise(.5,.08,900);},
+  bubble(){this.tone(300+Math.random()*300,.05,'sine',.03);}
+};
+
+/* ============================ UI-ХЕЛПЕРЫ ============================ */
+function toast(msg,kind=''){const el=document.createElement('div');el.className='toast '+kind;el.innerHTML=msg;$('#toasts').appendChild(el);
+  setTimeout(()=>el.classList.add('out'),2800);setTimeout(()=>el.remove(),3200);}
+const Modal={
+  open(html,o={}){const w=document.createElement('div');w.className='modal-wrap';
+    w.innerHTML=`<div class="modal glass ${o.cls||''}">${o.noClose?'':'<button class="modal-x" data-act="closeModal" aria-label="Закрыть">✕</button>'}<div class="modal-body">${html}</div></div>`;
+    $('#modals').appendChild(w);requestAnimationFrame(()=>w.classList.add('show'));
+    if(!o.noClose)w.addEventListener('pointerdown',e=>{if(e.target===w)Modal.close(w);});w._onClose=o.onClose;return w;},
+  close(w){w=w||$$('.modal-wrap').pop();if(!w||w._closing)return;w._closing=true;w.classList.remove('show');setTimeout(()=>w.remove(),260);if(w._onClose)w._onClose();},
+  closeAll(){$$('.modal-wrap').forEach(w=>this.close(w));}
+};
+function floatNum(parent,text,x,y){if(!parent)return;const el=document.createElement('div');el.className='float-num';el.textContent=text;el.style.left=x+'px';el.style.top=y+'px';parent.appendChild(el);setTimeout(()=>el.remove(),1500);}
+
+/* ============================ КОНФЕТТИ ============================ */
+const Confetti={parts:[],running:false,
+  burst(n=120,colors=['#D4AF37','#F3D98B','#ff7fb0','#c39bff','#ffffff','#8f2a55']){const c=$('#confetti'),dpr=Math.min(2,window.devicePixelRatio||1);
+    c.width=innerWidth*dpr;c.height=innerHeight*dpr;const W=innerWidth,H=innerHeight;
+    for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=4+Math.random()*11;this.parts.push({x:W/2,y:H*.42,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-6,s:4+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.35,c:colors[i%colors.length],life:110+Math.random()*70,star:Math.random()<.3});}
+    if(!this.running){this.running=true;requestAnimationFrame(()=>this.step(dpr));}},
+  step(dpr){const c=$('#confetti'),x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,c.width,c.height);
+    this.parts=this.parts.filter(p=>p.life>0);
+    for(const p of this.parts){p.life--;p.vy+=.28;p.vx*=.985;p.vy*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.globalAlpha=Math.min(1,p.life/40);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;
+      if(p.star){x.font=(p.s*2.4)+'px serif';x.fillText('✦',-p.s,p.s);}else x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();}
+    if(this.parts.length)requestAnimationFrame(()=>this.step(dpr));else{this.running=false;x.clearRect(0,0,c.width,c.height);}}
+};
+
+/* ============================ ЗВЁЗДНОЕ НЕБО ============================ */
+const Stars={init(){const c=$('#stars'),x=c.getContext('2d');let W,H,st=[],shoot=null;const dpr=Math.min(2,window.devicePixelRatio||1);
+  const resize=()=>{W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    st=Array.from({length:Math.round(W*H/5500)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,p:Math.random()*6.28,s:.5+Math.random()*1.5,g:Math.random()<.15}));};
+  resize();addEventListener('resize',resize);
+  const motes=Array.from({length:18},()=>({x:Math.random(),y:Math.random(),v:.00004+Math.random()*.00008,r:20+Math.random()*60}));
+  const loop=t=>{x.clearRect(0,0,W,H);
+    for(const m of motes){m.y-=m.v*16;if(m.y<-.1)m.y=1.1;const g=x.createRadialGradient(m.x*W,m.y*H,0,m.x*W,m.y*H,m.r);g.addColorStop(0,'rgba(143,42,85,.07)');g.addColorStop(1,'rgba(143,42,85,0)');x.fillStyle=g;x.fillRect(m.x*W-m.r,m.y*H-m.r,m.r*2,m.r*2);}
+    for(const s of st){const a=.35+.65*Math.abs(Math.sin(t/1000*s.s+s.p));x.globalAlpha=a;x.fillStyle=s.g?'#F3D98B':'#fff';x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();}
+    x.globalAlpha=1;
+    if(!shoot&&Math.random()<.003)shoot={x:Math.random()*W*.8,y:Math.random()*H*.4,l:0};
+    if(shoot){shoot.l+=1;const px=shoot.x+shoot.l*9,py=shoot.y+shoot.l*4;const g=x.createLinearGradient(px,py,px-90,py-40);g.addColorStop(0,'rgba(243,217,139,.9)');g.addColorStop(1,'rgba(243,217,139,0)');
+      x.strokeStyle=g;x.lineWidth=1.6;x.beginPath();x.moveTo(px,py);x.lineTo(px-90,py-40);x.stroke();if(shoot.l>60)shoot=null;}
+    requestAnimationFrame(loop);};
+  requestAnimationFrame(loop);}};
+/* =====================================================================
+   FORTUNE — генератор предсказаний из 4 частей
+   ===================================================================== */
+const SECTIONS=[
+  {id:'love',title:'Любовь и Страсть',icon:'💖'},
+  {id:'wealth',title:'Судьба и Богатство',icon:'💰'},
+  {id:'secrets',title:'Тайные Знаки',icon:'🔮'},
+  {id:'advice',title:'Шёпот Кофе',icon:'✨'}
+];
+const HEROES=['незнакомец с серыми глазами','тот, кто пишет вам по ночам','мужчина с тихим голосом и тёплыми руками','давний друг, в чьих глазах вы видите больше, чем дружбу',
+  'загадочный попутчик в чёрном пальто','человек, чьё имя начинается на «{L}»','тот, кто пахнет дождём и кедром','музыкант с усталой улыбкой','мужчина, которого вы встретите у воды','ваш тайный собеседник из прошлого'];
+const LETTERS='АВГДЕКЛМНРСТЯ';
+const OPEN={
+  love:['{name}, гуща раскрывает тайны вашего сердца.','Аромат кофе ещё витает в воздухе, а судьба уже пишет для вас новую главу, {name}.','На дне чашки проступают узоры страсти — смотрите внимательно, {name}.','Сердечные нити, {name}, сплетаются в густой узор.'],
+  wealth:['Золотые разводы у края чашки говорят о деньгах и пути.','Гуща легла плотным кольцом — это знак судьбы и достатка.','Тропинки кофейных зёрен ведут к вашему будущему успеху.','Там, где гуща темнее, прячется ваша удача.'],
+  secrets:['Тёмные завитки у ручки хранят то, о чём молчат вокруг.','Есть знаки, которые видит лишь Оракул.','Тени на фарфоре шепчут о скрытом.','Под тонким слоем гущи прячется тайна.'],
+  advice:['Кофе советует вам сегодня:','Последний глоток мудрости от духов кофейни:','Совет, который гуща оставила только для вас:','Прислушайтесь к шёпоту остывающей чашки:']
+};
+const FORT={
+  love:{
+    heart:['Сердце в гуще бьётся отчётливо: {hero} уже думает о вас чаще, чем готов признаться. Случайное прикосновение рук в ближайшие дни скажет больше любых слов.','Ваше сердце готово открыться вновь. Вечером, когда зажгутся фонари, заметьте того, кто задержит на вас взгляд на секунду дольше обычного.'],
+    key:['Ключ означает, что дверь к чужому сердцу не заперта — {hero} лишь ждёт, когда вы сделаете первый шаг. Одно смелое сообщение изменит всё.','Вы храните ключ от тайны, которую {hero} давно хочет разгадать. Позвольте подойти ближе — но не отдавайте ключ сразу.'],
+    ring:['Кольцо — знак союза. Отношения, что сейчас кажутся хрупкими, обретут форму обещания. Прозвучат слова, которых вы давно ждали.','Круг замкнулся: человек из прошлого вернётся, но уже другим — зрелым и решительным. Принять ли его, решать только вам.'],
+    crown:['Корона говорит: в любви вы — королева, и {hero} это чувствует. Не опускайте планку — тот, кто вам нужен, дотянется.','Восхищение окружает вас, словно мантия. На ближайшей встрече вы окажетесь в центре внимания, и одно сердце будет покорено бесповоротно.'],
+    snake:['Змея в сердечных делах — знак искушения. {hero} притягателен, но за бархатным голосом скрывается игра. Наслаждайтесь, но не теряйте голову.','Чужая ревность пытается проскользнуть между вами и любимым человеком. Доверяйте поступкам, а не шёпоту за спиной.'],
+    tower:['Башня — неприступность. Вы выстроили стены вокруг сердца, но кто-то уже нашёл в них потайную дверь. Не спешите её замуровывать.','Внезапный поворот: то, что казалось незыблемым, пошатнётся — и освободит место для настоящего чувства.'],
+    bird:['Птица несёт весточку: скоро придёт сообщение, от которого щёки вспыхнут румянцем. Ответьте не сразу — пусть подождёт.','Роман может начаться в дороге — в поезде, кафе аэропорта или на незнакомой улице. Будьте открыты случайностям.'],
+    crescent:['Полумесяц шепчет о тайной влюблённости. Ваша интуиция уже знает имя — прислушайтесь к снам этой недели.','Чувство растёт, как луна: сегодня — лишь тонкий серп, но к полнолунию оно засияет в полную силу.'],
+    wolf:['Волк — преданный защитник. Рядом есть человек, готовый идти за вами сквозь любую бурю. Он молчалив, но его поступки громче слов.','В вас пробуждается дикая страсть. {hero} почувствует эту силу и не сможет отвести глаз — но приручить вас будет непросто.']
+  },
+  wealth:{
+    heart:['Дело, в которое вы вложите душу, принесёт не только радость, но и ощутимый доход. Любимое увлечение может стать источником денег.','Щедрость вернётся сторицей: помощь, оказанная сегодня, обернётся неожиданной прибылью.'],
+    key:['Ключ открывает двери: ждите предложения о работе или проекте, от которого не стоит отказываться.','Решение давней финансовой задачи ближе, чем кажется — ответ спрятан в старых бумагах или забытом разговоре.'],
+    ring:['Деловой союз будет удачным: партнёрство или совместный проект принесут стабильность.','Круговорот денег замыкается в вашу пользу — долги вернутся, а потраченное восполнится.'],
+    crown:['Корона — знак признания. Ваши заслуги заметят: повышение, премия или громкая похвала уже в пути.','Время заявить о себе. Вы достойны большего — смело просите о том, чего заслуживаете.'],
+    snake:['Осторожнее с соблазнительными предложениями: лёгкие деньги могут обернуться потерями. Проверяйте каждую подпись.','Змея — символ мудрости. Хитрый, но честный манёвр поможет обойти соперников.'],
+    tower:['Вы строите нечто великое. Каждый кирпичик — шаг к вершине, но не забывайте о прочной опоре.','Неожиданные перемены на работе пошатнут привычный уклад, но откроют путь к более высокой позиции.'],
+    bird:['Хорошие новости о деньгах прилетят издалека — из другого города или от давнего знакомого.','Поездка или переезд принесут удачу в делах. Не бойтесь менять обстановку.'],
+    crescent:['Финансовая луна растёт: вложения, сделанные сейчас, будут крепнуть с каждой неделей.','Доверьтесь интуиции в денежных вопросах — первое впечатление окажется верным.'],
+    wolf:['Ваша хватка и упорство приведут к добыче: проект, за который вы боретесь, станет вашим.','Держитесь своей стаи — друзья и коллеги помогут достичь цели, в одиночку будет труднее.']
+  },
+  secrets:{
+    heart:['У вас есть тайный поклонник — он ближе, чем кажется, и уже не раз пытался заговорить с вами.','Чьё-то сердце хранит о вас тёплую тайну. Скоро она выйдет наружу — будьте готовы.'],
+    key:['Вам откроется чужой секрет. Распорядитесь им мудро — это знание станет вашим козырем.','Обратите внимание на запертые двери и забытые шкатулки — в них кроется подсказка судьбы.'],
+    ring:['Чьё-то обещание может быть нарушено. Не держитесь за слова — смотрите на дела.','Кто-то из вашего круга носит маску. Кольцо предупреждает: не все союзы искренни.'],
+    crown:['Кто-то завидует вашему сиянию. Не раскрывайте планы раньше времени.','Влиятельный человек тайно наблюдает за вами и готов поддержать в нужный момент.'],
+    snake:['Змея предупреждает о сплетнице в окружении. Одна неосторожная фраза — и слухи поползут.','Под маской дружелюбия прячется соперница. Будьте ласковы, но держите дистанцию.'],
+    tower:['Ваша загадочность порождает догадки: о вас говорят и строят теории. Пусть гадают.','Старая тайна рухнет, как башня от удара молнии. Правда освободит вас.'],
+    bird:['Анонимное послание или странное совпадение будет не случайным — ищите в нём смысл.','Кто-то хочет передать вам важную весть, но не решается. Дайте ему шанс.'],
+    crescent:['Сны этих ночей будут вещими. Запишите их утром — ответ прячется между строк.','Ночь хранит секрет: то, что начнётся при свете луны, останется между вами двумя.'],
+    wolf:['Одинокий волк кружит рядом — человек с непростым прошлым ищет вашего внимания.','Вы почувствуете чей-то взгляд. Это не угроза, а защита — у вас есть невидимый хранитель.']
+  },
+  advice:{
+    heart:['Сделайте сегодня что-то только для себя: ароматная ванна, любимая музыка — и мир ответит теплом.','Скажите «спасибо» тому, кого цените. Сегодня это слово обладает магической силой.'],
+    key:['Не откладывайте разговор, который давно назрел. Сегодня — идеальный день для первого шага.','Разберите один ящик или папку. Освободив место, вы впустите новое.'],
+    ring:['Наденьте любимое украшение — оно станет вашим талисманом на весь день.','Позвоните тому, с кем давно не говорили. Круг общения сегодня принесёт удачу.'],
+    crown:['Держите спину прямо и улыбайтесь — сегодня уверенность притягивает удачу.','Выберите одну цель и посвятите ей час без отвлечений. Королевы не разбрасываются силами.'],
+    snake:['Промолчите там, где хочется спорить. Мудрость сегодня — ваше главное оружие.','Сбросьте старую кожу: откажитесь от одной вредной привычки хотя бы на день.'],
+    tower:['Поднимитесь повыше — на крышу, холм или верхний этаж. Новый угол зрения подарит идею.','Позвольте одному плану рухнуть, чтобы построить лучший.'],
+    bird:['Пройдитесь новым маршрутом — по дороге вас ждёт приятный знак.','Напишите первой. Лёгкость — ваш союзник сегодня.'],
+    crescent:['Перед сном загадайте желание, глядя на луну или пламя свечи. Оно будет услышано.','Доверьтесь первому порыву — сегодня интуиция мудрее логики.'],
+    wolf:['Берегите свои границы: вежливое «нет» сегодня сохранит вашу энергию.','Проведите вечер со своей «стаей» — близкие люди зарядят вас силой.']
+  }
+};
+const SPICE_LINES={
+  rose:{sec:'love',t:'Лепестки роз усилили голос сердца: ближайшие семь дней особенно благоприятны для признаний.'},
+  cinnamon:{sec:'wealth',t:'Корица притянула денежную удачу — следите за неожиданными поступлениями.'},
+  cardamom:{sec:'secrets',t:'Кардамон обострил ваше чутьё: вы распознаете ложь с первого слова.'},
+  star:{sec:'advice',t:'Звёздный бадьян подсказывает: доверьтесь знакам, которые повторятся трижды.'},
+  gold:{sec:'wealth',t:'Золотые хлопья озарили чашку — удача коснётся каждой сферы вашей жизни.'}
+};
+const ORACLE_LINES=['Голос Оракула звучит из глубины: в ближайшую луну вам откроется истина, которую давно скрывали.','Редкое зерно усилило видение: судьба готовит вам встречу, после которой ничего не будет прежним.','Оракул видит над вами звезду удачи — она ярче всего в час рассвета.'];
+const ELEMENT_LINES={fire:'Огонь вашего знака ({z}) зовёт к смелым поступкам — действуйте до заката.',earth:'Земля вашего знака ({z}) просит терпения: посаженное сегодня взойдёт щедро.',
+  air:'Воздух вашего знака ({z}) несёт идеи — записывайте всё, что придёт в голову.',water:'Вода вашего знака ({z}) усиливает чувства — доверьтесь своим эмоциям.'};
+const LUCK_LINES=[[85,'Звёзды благоволят вам — удача сегодня особенно сильна.'],[65,'Звёзды на вашей стороне: смелые шаги будут вознаграждены.'],[40,'Удача переменчива — выбирайте путь сердцем.'],[0,'Сегодня лучше наблюдать, чем действовать: ваш час ещё впереди.']];
+const LUCKY_COLORS=['винный','золотой','лавандовый','полночно-синий','изумрудный','жемчужный','пурпурный','медовый','серебристый','розовый кварц'];
+
+const Fortune={
+  generate(r){
+    const rng=mulberry32((r.seed^0x9e3779b9)>>>0);const name=S.name||'Странница';const z=ZODIAC.find(x=>x.id===S.zodiac);
+    const hero=R.pick(HEROES,rng).replace('{L}',R.pick(LETTERS.split(''),rng));
+    const fill=s=>s.replace(/\{name\}/g,name).replace(/\{hero\}/g,hero).replace(/^(\{hero\}|[a-zа-яё])/,m=>m);
+    const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+    const syms=r.symbols,n=syms.length,bean=BEANS[r.bean],per=bean&&bean.tier==='S'&&n>=4?3:Math.min(2,n);
+    const out={};
+    SECTIONS.forEach((sec,i)=>{
+      let use=[];for(let k=0;k<per;k++){const id=syms[(i+k)%n];if(!use.includes(id))use.push(id);}
+      if(r.spice&&SPICES[r.spice]&&SPICES[r.spice].focus===sec.id){const b=SPICE_BIAS[r.spice].find(id=>syms.includes(id));if(b&&!use.includes(b))use.unshift(b);use=use.slice(0,per);}
+      const parts=[fill(R.pick(OPEN[sec.id],rng))];
+      use.forEach(id=>parts.push(cap(fill(R.pick(FORT[sec.id][id],rng)))));
+      const sl=r.spice&&SPICE_LINES[r.spice];if(sl&&sl.sec===sec.id)parts.push(sl.t);
+      if(sec.id==='wealth')parts.push(LUCK_LINES.find(l=>r.luck>=l[0])[1]);
+      if(sec.id==='secrets'&&bean&&bean.tier==='S')parts.push(R.pick(ORACLE_LINES,rng));
+      if(sec.id==='advice'){if(z)parts.push(ELEMENT_LINES[z.el].replace('{z}',z.name));
+        parts.push(`Счастливое число — ${R.int(1,33,rng)}, цвет дня — ${R.pick(LUCKY_COLORS,rng)}, час силы — ${String(R.int(6,23,rng)).padStart(2,'0')}:00.`);}
+      out[sec.id]=parts.join(' ');
+    });
+    out.title='Расклад '+syms.map(id=>SYMBOLS[id].gen).slice(0,3).join(', ').replace(/, ([^,]*)$/,' и $1');
+    return out;
+  }
+};
+/* =====================================================================
+   GROUNDS — процедурный генератор кофейной гущи на HTML5 Canvas
+   (детерминированный: по seed можно восстановить любой узор)
+   ===================================================================== */
+const SHAPES={
+  heart(c){c.beginPath();c.moveTo(0,.85);c.bezierCurveTo(-.15,.7,-1,.2,-.95,-.3);c.bezierCurveTo(-.9,-.85,-.25,-.95,0,-.45);c.bezierCurveTo(.25,-.95,.9,-.85,.95,-.3);c.bezierCurveTo(1,.2,.15,.7,0,.85);c.fill();},
+  key(c){c.lineWidth=.17;c.beginPath();c.arc(-.55,0,.3,0,7);c.stroke();c.beginPath();c.moveTo(-.25,0);c.lineTo(.92,0);c.moveTo(.6,0);c.lineTo(.6,.34);c.moveTo(.86,0);c.lineTo(.86,.26);c.stroke();},
+  ring(c){c.lineWidth=.2;c.beginPath();c.ellipse(0,.18,.6,.56,0,0,7);c.stroke();c.beginPath();c.moveTo(0,-.95);c.lineTo(.28,-.62);c.lineTo(0,-.36);c.lineTo(-.28,-.62);c.closePath();c.fill();},
+  crown(c){c.beginPath();c.moveTo(-.9,.5);c.lineTo(-.95,-.45);c.lineTo(-.48,.02);c.lineTo(0,-.72);c.lineTo(.48,.02);c.lineTo(.95,-.45);c.lineTo(.9,.5);c.closePath();c.fill();c.fillRect(-.92,.6,1.84,.22);
+    [[-.95,-.58],[0,-.86],[.95,-.58]].forEach(([x,y])=>{c.beginPath();c.arc(x,y,.13,0,7);c.fill();});},
+  snake(c){c.lineWidth=.2;c.beginPath();c.moveTo(-.88,.72);c.bezierCurveTo(-.2,1,-.05,.25,-.3,0);c.bezierCurveTo(-.58,-.3,-.3,-.78,.15,-.55);c.bezierCurveTo(.5,-.38,.45,.05,.72,-.06);c.stroke();
+    c.beginPath();c.ellipse(.8,-.1,.22,.14,-.4,0,7);c.fill();c.lineWidth=.05;c.beginPath();c.moveTo(.98,-.2);c.lineTo(1.12,-.3);c.moveTo(.98,-.2);c.lineTo(1.12,-.12);c.stroke();},
+  tower(c){c.beginPath();c.moveTo(-.42,.95);c.lineTo(-.3,-.42);c.lineTo(.3,-.42);c.lineTo(.42,.95);c.closePath();c.fill();c.fillRect(-.5,-.64,1,.26);for(let i=0;i<3;i++)c.fillRect(-.5+i*.4,-.88,.2,.26);
+    c.globalCompositeOperation='destination-out';c.fillRect(-.08,-.2,.16,.26);c.beginPath();c.arc(0,.95,.16,Math.PI,0);c.fill();c.globalCompositeOperation='source-over';},
+  bird(c){c.beginPath();c.moveTo(-.95,-.35);c.quadraticCurveTo(-.5,-.68,-.05,.1);c.quadraticCurveTo(.4,-.72,.95,-.45);c.quadraticCurveTo(.4,-.32,.05,.35);c.quadraticCurveTo(-.35,-.12,-.95,-.35);c.fill();
+    c.beginPath();c.ellipse(0,.28,.14,.3,0,0,7);c.fill();c.beginPath();c.moveTo(-.14,.48);c.lineTo(0,.88);c.lineTo(.14,.48);c.fill();},
+  crescent(c){c.beginPath();c.arc(0,0,.85,0,7);c.fill();c.globalCompositeOperation='destination-out';c.beginPath();c.arc(.36,-.16,.7,0,7);c.fill();c.globalCompositeOperation='source-over';},
+  wolf(c){const p=[[-.82,-.45],[-.45,-.62],[-.38,-.97],[-.22,-.68],[-.08,-.94],[.02,-.6],[.2,-.3],[.5,.1],[.62,.55],[.95,.58],[.9,.8],[.55,.9],[-.05,.92],[-.05,.7],[-.15,.38],[-.25,.92],[-.42,.92],[-.38,.1],[-.5,-.2],[-.84,-.3]];
+    c.beginPath();p.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();}
+};
+const Grounds={
+  W:600,
+  makeNoise(rng){const N=64,g=new Float32Array(N*N);for(let i=0;i<g.length;i++)g[i]=rng();const sm=t=>t*t*(3-2*t);
+    return(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,X0=xi&63,X1=(xi+1)&63,Y0=(yi&63)*N,Y1=((yi+1)&63)*N;
+      const a=g[Y0+X0],b=g[Y0+X1],c=g[Y1+X0],d=g[Y1+X1],u=sm(xf),v=sm(yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;};},
+  render(canvas,seed,symIds){
+    const W=this.W,cx=W/2,cy=W/2,x=canvas.getContext('2d');const rng=mulberry32(seed>>>0);const nz=this.makeNoise(rng);
+    const fbm=(a,b)=>nz(a,b)*.55+nz(a*2.1+5,b*2.1+9)*.3+nz(a*4.3+11,b*4.3+3)*.15;
+    x.clearRect(0,0,W,W);
+    // блюдце / фарфор
+    let g=x.createRadialGradient(cx-40,cy-50,20,cx,cy,298);g.addColorStop(0,'#fbf4ea');g.addColorStop(.7,'#e8dac6');g.addColorStop(1,'#bba184');
+    x.fillStyle=g;x.beginPath();x.arc(cx,cy,296,0,7);x.fill();
+    x.strokeStyle='#D4AF37';x.lineWidth=7;x.beginPath();x.arc(cx,cy,291,0,7);x.stroke();
+    x.strokeStyle='rgba(156,122,28,.6)';x.lineWidth=1.5;x.beginPath();x.arc(cx,cy,280,0,7);x.stroke();
+    x.save();x.beginPath();x.arc(cx,cy,276,0,7);x.clip();
+    // размытые пятна
+    for(let i=0;i<80;i++){const a=rng()*6.283,d=Math.sqrt(rng())*250,px=cx+Math.cos(a)*d,py=cy+Math.sin(a)*d,r=25+rng()*85;
+      g=x.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,`rgba(${100+rng()*40|0},${58+rng()*20|0},${30+rng()*10|0},${.08+rng()*.16})`);g.addColorStop(1,'rgba(110,64,34,0)');
+      x.fillStyle=g;x.fillRect(px-r,py-r,r*2,r*2);}
+    // подтёки от центра к краю (чашку перевернули)
+    x.lineCap='round';
+    for(let i=0;i<34;i++){const a=rng()*6.283,r0=20+rng()*70,r1=150+rng()*125;x.strokeStyle=`rgba(70,40,20,${.05+rng()*.12})`;x.lineWidth=2+rng()*9;x.beginPath();
+      for(let t=0;t<=1.0001;t+=.1){const rr=r0+(r1-r0)*t,aa=a+Math.sin(t*5+i)*.08;const px=cx+Math.cos(aa)*rr,py=cy+Math.sin(aa)*rr;t?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}
+    // крупинки по шумовому полю
+    for(let i=0;i<16000;i++){const a=rng()*6.283,d=Math.sqrt(rng())*274,px=cx+Math.cos(a)*d,py=cy+Math.sin(a)*d;const f=fbm(px/62,py/62);
+      if(f<.5+rng()*.22)continue;const sz=.6+rng()*2.1;x.fillStyle=`rgba(${30+rng()*40|0},${16+rng()*22|0},${6+rng()*12|0},${.3+rng()*.6})`;x.fillRect(px,py,sz,sz);}
+    // знаки
+    const placed=[];
+    for(const id of symIds){let tries=0,px,py;do{const a=rng()*6.283,d=40+rng()*170;px=cx+Math.cos(a)*d;py=cy+Math.sin(a)*d;tries++;}
+      while(tries<120&&placed.some(p=>Math.hypot(p.x-px,p.y-py)<145));
+      const s=80+rng()*22,rot=(rng()-.5)*.7;placed.push({id,x:px,y:py,s,rot});this.drawSymbol(x,id,px,py,s,rot,rng);}
+    // виньетка
+    g=x.createRadialGradient(cx,cy,180,cx,cy,280);g.addColorStop(0,'rgba(60,30,15,0)');g.addColorStop(1,'rgba(60,30,15,.28)');x.fillStyle=g;x.fillRect(0,0,W,W);
+    x.restore();
+    // блик
+    g=x.createLinearGradient(cx-260,cy-260,cx,cy);g.addColorStop(0,'rgba(255,255,255,.22)');g.addColorStop(1,'rgba(255,255,255,0)');
+    x.fillStyle=g;x.beginPath();x.ellipse(cx-120,cy-150,120,50,-.7,0,7);x.fill();
+    return placed;
+  },
+  drawSymbol(ctx,id,px,py,s,rot,rng){
+    const M=Math.ceil(s*1.35),m=document.createElement('canvas');m.width=m.height=M;const mc=m.getContext('2d');
+    mc.translate(M/2,M/2);mc.rotate(rot);mc.scale(s/2,s/2);mc.fillStyle='#000';mc.strokeStyle='#000';mc.lineCap='round';mc.lineJoin='round';SHAPES[id](mc);
+    const t=document.createElement('canvas');t.width=t.height=M;const tc=t.getContext('2d');tc.drawImage(m,0,0);tc.globalCompositeOperation='source-in';tc.fillStyle='rgb(62,34,16)';tc.fillRect(0,0,M,M);
+    const ox=px-M/2,oy=py-M/2;
+    ctx.save();ctx.globalAlpha=.5;ctx.filter='blur(3px)';ctx.drawImage(t,ox,oy);ctx.filter='none';ctx.globalAlpha=.32;ctx.drawImage(t,ox,oy);ctx.restore();
+    const data=mc.getImageData(0,0,M,M).data,N=Math.floor(M*M*.3);
+    for(let i=0;i<N;i++){const qx=rng()*M|0,qy=rng()*M|0;if(data[(qy*M+qx)*4+3]<120)continue;const sz=.8+rng()*2.3;
+      ctx.fillStyle=`rgba(${28+rng()*30|0},${14+rng()*16|0},${6+rng()*8|0},${.45+rng()*.55})`;ctx.fillRect(ox+qx+(rng()-.5)*3,oy+qy+(rng()-.5)*3,sz,sz);}
+  },
+  chooseSymbols(rng,n,spice){const pool=Object.keys(SYMBOLS).map(id=>({id,w:spice&&SPICE_BIAS[spice]&&SPICE_BIAS[spice].includes(id)?3.2:1}));const out=[];
+    while(out.length<n&&pool.length){const p=R.weighted(pool,rng);out.push(p.id);pool.splice(pool.indexOf(p),1);}return out;}
+};
+/* =====================================================================
+   PLANTATIONS — идл-плантации, офлайн-доход, улучшения
+   ===================================================================== */
+const Views={},Actions={};
+const Plant={
+  rate(id){const p=S.plants[id],d=PLANTS[id];if(!p||!p.owned)return 0;return d.base*(1+.35*p.irr)*Math.pow(1.3,p.fert)*(1+.25*p.bar)*(1+.03*(S.level-1));},
+  total(){return Object.keys(PLANTS).reduce((s,id)=>s+this.rate(id),0);},
+  capH(id){return 4+2*S.plants[id].bar;},
+  upCost(id,u){return Math.ceil(PLANTS[id].up*UPG[u].k*Math.pow(UPG[u].g,S.plants[id][u]));},
+  tick(dt){const r=this.total()*dt;S.raw+=r;S.stats.rawTotal+=r;},
+  offline(){const now=Date.now(),dt=now-(S.lastTick||now);S.lastTick=now;if(dt<60000)return null;let gain=0;
+    for(const id in PLANTS)gain+=this.rate(id)*Math.min(dt/1000,this.capH(id)*3600);S.raw+=gain;S.stats.rawTotal+=gain;return gain>0?{dt,gain}:null;}
+};
+function showOffline(o){if(!o)return;Modal.open(`<div style="text-align:center">
+  <div style="font-size:54px">🌙</div><h2 class="h2">Пока вас не было</h2>
+  <p class="muted">Прошло ${fmtDur(o.dt)}. Мистические бариста трудились на плантациях и собрали:</p>
+  <div style="font-size:30px;font-weight:800;color:var(--gold-2);margin:14px 0"><span class="bean raw"></span> ${fmt(o.gain)} сырых зёрен</div>
+  <p class="dim" style="font-size:12px">Офлайн-сбор ограничен 4 ч (+2 ч за каждого бариста).</p>
+  <button class="btn btn-gold btn-block" data-act="closeModal" style="margin-top:14px">Чудесно!</button></div>`);SFX.chime();}
+
+Views.plant=()=>{const rate=Plant.total();
+  let h=`<div class="page-head fade-in"><div><h1 class="section-title">Плантации</h1><p class="subtitle">Ваши земли растят зёрна даже когда вы спите. Продавайте урожай в Лавке или обжаривайте его для ритуалов.</p></div>
+  <div class="glass stat-box glow"><div class="row"><div><div class="dim" style="font-size:12px">Урожай в секунду</div><div class="big" id="pl-rate">${fmt1(rate)}</div></div><div class="sp"></div>
+  <div style="text-align:right"><div class="dim" style="font-size:12px">На складе</div><div class="big"><span class="bean raw"></span> <span class="hud-raw">${fmt(S.raw)}</span></div></div></div>
+  <div class="row"><button class="btn btn-gold btn-sm sp" data-act="sellRaw" data-f="1">Продать всё · <span id="sell-val">${fmt(S.raw*RAW_PRICE)}</span> 🪙</button><button class="btn btn-wine btn-sm" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button></div></div></div>
+  <div class="grid g-auto">`;
+  for(const id in PLANTS){const d=PLANTS[id],p=S.plants[id],bean=BEANS[d.bean];
+    h+=`<div class="glass plant-card fade-in ${p.owned?'':'locked'}" data-plant="${id}">
+      <div class="plant-banner" style="background:${d.grad}"><div class="hills"></div><div class="hills h2"></div><span class="pic">${d.icon}</span>
+        <span class="tag">${tierBadge(bean.tier)} <span class="chip" style="font-size:11px;padding:1px 8px">${esc(bean.name)}</span></span>
+        <div class="bushes">${(d.bush+' ').repeat(p.owned?Math.min(5,1+Math.floor((p.irr+p.fert+p.bar)/4)):1).trim().split(' ').map(b=>`<span class="bush">${b}</span>`).join('')}</div></div>
+      <div class="plant-body"><div><h3 class="h3">${esc(d.name)}</h3><p class="dim" style="font-size:12.5px">${esc(d.sub)}</p></div>`;
+    if(p.owned){h+=`<div class="plant-stats"><span class="chip">⚡ <b data-rate="${id}">${fmt1(Plant.rate(id))}</b>/сек</span><span class="chip">🌙 офлайн до ${Plant.capH(id)} ч</span></div>`;
+      for(const u in UPG){const U=UPG[u],lv=p[u],max=lv>=U.max,cost=Plant.upCost(id,u);
+        h+=`<div class="upg"><span class="ui">${U.icon}</span><div class="ut"><b>${U.name}</b> <span class="lvl-dots">ур. ${lv}/${U.max}</span><div>${U.desc}</div></div>
+          <button class="btn btn-sm ${max?'':'btn-gold'}" data-act="upgrade" data-id="${id}" data-u="${u}" ${max||S.coins<cost?'disabled':''} data-cost="${cost}">${max?'Макс.':fmt(cost)+' 🪙'}</button></div>`;}
+    }else{const lvlOk=!d.minLevel||S.level>=d.minLevel;
+      h+=`<div class="lock-box"><div style="font-size:13px">Базовый урожай: <b>${d.base}</b> зёрен/сек</div>${d.minLevel?`<div class="dim" style="font-size:12px">Требуется уровень ${d.minLevel}</div>`:''}
+        <button class="btn btn-gold" data-act="buyPlant" data-id="${id}" ${lvlOk&&canPay(d.price)?'':'disabled'}>Купить земли · ${priceHTML(d.price)}</button></div>`;}
+    h+=`</div></div>`;}
+  return h+'</div>';
+};
+Actions.buyPlant=el=>{const id=el.dataset.id,d=PLANTS[id];if(d.minLevel&&S.level<d.minLevel)return;if(!pay(d.price)){SFX.error();return toast('Недостаточно средств','bad');}
+  S.plants[id].owned=true;addXP(40);SFX.magic();Confetti.burst(80);toast(`🌱 Вы приобрели земли «${d.name}»!`,'gold');App.render();};
+Actions.upgrade=el=>{const {id,u}=el.dataset,p=S.plants[id];if(p[u]>=UPG[u].max)return;const c=Plant.upCost(id,u);if(!pay({coins:c})){SFX.error();return;}
+  p[u]++;addXP(3+p[u]);SFX.coin();toast(`${UPG[u].icon} ${UPG[u].name}: уровень ${p[u]}`,'good');App.render();};
+Actions.sellRaw=el=>{const f=+el.dataset.f||1,q=Math.floor(S.raw*f),c=Math.floor(q*RAW_PRICE);if(c<1){SFX.error();return toast('На складе пока пусто','bad');}
+  S.raw-=q;addItem('coins',0,c);SFX.coin();toast(`Продано ${fmt(q)} зёрен за ${fmt(c)} 🪙`,'good');App.render();};
+// Живое обновление цифр на вкладке плантаций
+Plant.liveUpdate=(fl)=>{const r=$('#pl-rate');if(r)r.textContent=fmt1(Plant.total());const sv=$('#sell-val');if(sv)sv.textContent=fmt(S.raw*RAW_PRICE);
+  $$('[data-act=upgrade]').forEach(b=>{if(b.textContent!=='Макс.')b.disabled=S.coins<+b.dataset.cost;});
+  if(fl)$$('.plant-card[data-plant]').forEach(c=>{const id=c.dataset.plant,rt=Plant.rate(id);if(rt>0){const bn=c.querySelector('.plant-banner');floatNum(bn,'+'+fmt1(rt),30+Math.random()*120,50);}});};
+/* =====================================================================
+   GACHA — кейсы, шансы выпадения, анимация открытия
+   ===================================================================== */
+const Gacha={
+  tierOf(e){return e.tier||(itemDef(e.t,e.id)||{}).tier||'C';},
+  nameOf(e){if(e.t==='coins')return fmt(e.q)+' монет';if(e.t==='crystals')return e.q+' кристаллов';const d=itemDef(e.t,e.id);return d.name+(e.q>1?' ×'+e.q:'');},
+  roll(cid){return R.weighted(CASES[cid].loot);},
+  grant(e){if(e.t==='cup'&&hasItem('cup',e.id)){const cr={C:2,B:5,A:12,S:30}[this.tierOf(e)];S.crystals+=cr;return `Дубликат → +${cr} 💎`;}
+    addItem(e.t,e.id,e.q);return '';}
+};
+Views.cases=()=>{let h=`<div class="page-head fade-in"><div><h1 class="section-title">Кейсы Судьбы</h1><p class="subtitle">Сокровищницы древних богинь. Внутри — редкие зёрна, чаши, пряности и амулеты. Открыто кейсов: <b class="gold">${S.stats.cases}</b>.</p></div></div><div class="grid g-auto">`;
+  for(const cid in CASES){const c=CASES[cid],p5={};for(const k in c.price)p5[k]=Math.ceil(c.price[k]*5*.9);
+    h+=`<div class="glass case-card glow fade-in" style="--cc:${c.cc}"><div class="orb" style="--oc:${c.oc};--og:${c.og}">${c.icon}</div>
+      <h3 class="h3 gold" style="font-size:26px">«${esc(c.name)}»</h3><p class="muted" style="font-size:13px;max-width:280px">${esc(c.desc)}</p>
+      <div class="row" style="justify-content:center"><button class="btn btn-gold" data-act="openCase" data-id="${cid}" data-n="1" ${canPay(c.price)?'':'disabled'}>Открыть · ${priceHTML(c.price)}</button>
+      <button class="btn btn-wine" data-act="openCase" data-id="${cid}" data-n="5" ${canPay(p5)?'':'disabled'}>×5 · ${priceHTML(p5)}</button></div>
+      <button class="btn btn-sm" data-act="odds" data-id="${cid}">📊 Шансы выпадения</button></div>`;}
+  return h+`</div><p class="dim" style="text-align:center;font-size:12px;margin-top:16px">Повторная чаша превращается в кристаллы. Открытие ×5 — скидка 10%.</p>`;};
+Actions.odds=el=>{const c=CASES[el.dataset.id],tot=c.loot.reduce((s,x)=>s+x.w,0),byT={C:0,B:0,A:0,S:0};c.loot.forEach(e=>byT[Gacha.tierOf(e)]+=e.w);
+  const rows=[...c.loot].sort((a,b)=>TIER_ORDER[Gacha.tierOf(b)]-TIER_ORDER[Gacha.tierOf(a)]||a.w-b.w).map(e=>`<div class="odds-row">${itemIcon(e.t,e.id,'sm')}${tierBadge(Gacha.tierOf(e))}<span>${esc(Gacha.nameOf(e))}</span><span class="pc">${(e.w/tot*100).toFixed(e.w/tot<.01?2:1).replace('.',',')}%</span></div>`).join('');
+  Modal.open(`<h2 class="h2">Шансы: «${esc(c.name)}»</h2><div class="tier-bar">${['S','A','B','C'].map(t=>`<i style="width:${byT[t]/tot*100}%;background:${TIERS[t].col}"></i>`).join('')}</div>
+    <div class="row" style="gap:8px;margin-bottom:10px">${['S','A','B','C'].map(t=>`<span class="chip">${tierBadge(t)} ${TIERS[t].name}: ${(byT[t]/tot*100).toFixed(1).replace('.',',')}%</span>`).join('')}</div>${rows}`);};
+Actions.openCase=el=>{const cid=el.dataset.id,n=+el.dataset.n||1,c=CASES[cid],price={};for(const k in c.price)price[k]=n>1?Math.ceil(c.price[k]*n*.9):c.price[k];
+  if(!pay(price)){SFX.error();return toast('Недостаточно средств','bad');}
+  if(el.dataset.again)Modal.close(el.closest('.modal-wrap'));
+  const res=[];for(let i=0;i<n;i++){const e=Gacha.roll(cid);res.push({e,note:Gacha.grant(e)});}S.stats.cases+=n;addXP(5*n);save();App.updateHUD();
+  const w=Modal.open(`<div class="case-open"><div class="orb big shake" style="--oc:${c.oc};--og:${c.og}">${c.icon}</div><p class="serif gold" style="font-size:22px">Печати «${esc(c.name)}» снимаются…</p></div>`,{noClose:true,cls:'wide'});
+  SFX.whoosh();let k=0;const bub=setInterval(()=>{SFX.bubble();if(++k>8)clearInterval(bub);},140);
+  setTimeout(()=>{const best=res.reduce((m,r)=>Math.max(m,TIER_ORDER[Gacha.tierOf(r.e)]),0),bt=['C','B','A','S'][best];
+    const body=w.querySelector('.modal-body');body.style.position='relative';
+    body.innerHTML=`<div class="burst"></div><div class="case-open" style="min-height:0"><h2 class="h2">${bt==='S'?'✨ Легендарная удача! ✨':bt==='A'?'Эпическая находка!':'Дары богини'}</h2>
+      <div class="loot-grid">${res.map((r,i)=>{const t=Gacha.tierOf(r.e);return `<div class="loot t-${t}" style="animation-delay:${i*.12}s">${itemIcon(r.e.t,r.e.id,'lg')}${tierBadge(t)}<div class="nm">${esc(Gacha.nameOf(r.e))}</div>${r.note?`<div class="dim" style="font-size:11px">${r.note}</div>`:''}</div>`;}).join('')}</div>
+      <div class="row" style="justify-content:center;margin-top:8px"><button class="btn btn-gold" data-act="closeModal">Забрать</button>
+      <button class="btn btn-wine" data-act="openCase" data-id="${cid}" data-n="${n}" data-again="1">Ещё раз</button></div></div>`;
+    if(best>=2){Confetti.burst(best===3?200:110);SFX.magic();}else SFX.chime();App.render();},1500);};
+/* =====================================================================
+   SHOP — обжарка, рынок, лавка товаров, сундук (инвентарь)
+   ===================================================================== */
+const Shop={sub:'shop'};
+Views.shop=()=>{const sub=Shop.sub;
+  let h=`<div class="page-head fade-in"><div><h1 class="section-title">Лавка Алхимика</h1><p class="subtitle">Обжаривайте урожай, торгуйте на рынке и пополняйте запасы для ритуалов.</p></div>
+  <div class="tabs">${[['shop','🛍️ Товары'],['roast','🔥 Обжарка'],['market','⚖️ Рынок'],['inv','🎒 Сундук']].map(([k,l])=>`<button class="${sub===k?'on':''}" data-act="shopSub" data-sub="${k}">${l}</button>`).join('')}</div></div>`;
+  if(sub==='shop'){h+=`<div class="grid g-items fade-in">`+SHOP.map((it,i)=>{const d=itemDef(it.t,it.id),own=S.inv[ITEM_GROUPS[it.t].bag][it.id]||0,perm=it.t==='cup'&&own>0;
+      return `<div class="item">${own&&!perm?`<span class="cnt">×${own}</span>`:''}${itemIcon(it.t,it.id,'lg')}${tierBadge(d.tier)}<div class="nm">${esc(d.name)}</div><div class="ds">${esc(d.desc)}${d.luck?` <b class="gold">+${d.luck} удачи</b>`:''}</div>
+        <button class="btn btn-sm ${perm?'':'btn-gold'} btn-block" data-act="buy" data-i="${i}" ${perm||!canPay(it.price)?'disabled':''}>${perm?'✓ В коллекции':priceHTML(it.price)}</button></div>`;}).join('')+'</div>';}
+  if(sub==='roast'){h+=`<div class="glass ritual-panel fade-in" style="margin-bottom:14px"><div class="row"><div><b>Сырые зёрна на складе:</b> <span class="bean raw"></span> <span class="hud-raw gold">${fmt(S.raw)}</span></div></div>
+     <p class="dim" style="font-size:12.5px;margin-top:4px">Каждая ваша плантация позволяет обжаривать свой сорт. Обжаренные зёрна используются в Ритуале Варки.</p></div><div class="grid g-auto">`;
+    for(const id in PLANTS){const d=PLANTS[id],b=BEANS[d.bean],own=S.plants[id].owned;
+      h+=`<div class="glass ritual-panel fade-in ${own?'':'locked'}" style="${own?'':'opacity:.5'}"><div class="row">${itemIcon('bean',d.bean,'lg')}<div class="sp"><div>${tierBadge(b.tier)} <b>${esc(b.name)}</b></div>
+        <div class="dim" style="font-size:12px">${own?`${fmt(d.roast)} сырых → 1 зерно · удача +${b.luck}`:'Купите плантацию «'+esc(d.name)+'»'}</div><div class="dim" style="font-size:12px">В сундуке: ${S.inv.beans[d.bean]||0}</div></div></div>
+        ${own?`<div class="row" style="margin-top:10px"><button class="btn btn-gold btn-sm sp" data-act="roast" data-id="${id}" data-n="1" ${S.raw>=d.roast?'':'disabled'}>Обжарить ×1</button><button class="btn btn-wine btn-sm sp" data-act="roast" data-id="${id}" data-n="5" ${S.raw>=d.roast*5?'':'disabled'}>×5</button><button class="btn btn-sm sp" data-act="roast" data-id="${id}" data-n="max" ${S.raw>=d.roast?'':'disabled'}>Всё</button></div>`:''}</div>`;}
+    h+='</div>';}
+  if(sub==='market'){h+=`<div class="grid g-auto fade-in"><div class="glass ritual-panel"><h3 class="h3 gold">⚖️ Продажа урожая</h3><p class="muted" style="font-size:13px;margin:6px 0 12px">Купцы платят ${String(RAW_PRICE).replace('.',',')} 🪙 за каждое сырое зерно.</p>
+      <div style="font-size:22px;font-weight:800;margin-bottom:10px"><span class="bean raw"></span> <span class="hud-raw">${fmt(S.raw)}</span></div>
+      <div class="row"><button class="btn btn-gold sp" data-act="sellRaw" data-f="1">Продать всё</button><button class="btn sp" data-act="sellRaw" data-f="0.5">Половину</button></div></div>
+      <div class="glass ritual-panel"><h3 class="h3 gold">💎 Обмен у звездочёта</h3><p class="muted" style="font-size:13px;margin:6px 0 12px">Превратите золото в астральные кристаллы.</p>
+      <div class="row"><button class="btn btn-gold sp" data-act="exchange" data-n="1" ${S.coins>=1500?'':'disabled'}>1 500 🪙 → 5 💎</button><button class="btn btn-wine sp" data-act="exchange" data-n="5" ${S.coins>=7000?'':'disabled'}>7 000 🪙 → 25 💎</button></div></div></div>`;}
+  if(sub==='inv'){const groups=[['bean','Зёрна'],['cup','Чаши'],['spice','Пряности'],['charm','Амулеты']];
+    for(const[t,l]of groups){const bag=S.inv[ITEM_GROUPS[t].bag],ids=Object.keys(ITEM_GROUPS[t].db).filter(id=>bag[id]>0);
+      h+=`<h3 class="h3 gold fade-in" style="margin:14px 2px 10px">${l}</h3>`;
+      h+=ids.length?`<div class="grid g-items fade-in">${ids.map(id=>{const d=itemDef(t,id);return `<div class="item">${t!=='cup'?`<span class="cnt">×${bag[id]}</span>`:''}${itemIcon(t,id,'lg')}${tierBadge(d.tier)}<div class="nm">${esc(d.name)}</div><div class="ds">${esc(d.desc)}</div></div>`;}).join('')}</div>`
+        :`<div class="glass empty">Пусто. Загляните в кейсы или лавку.</div>`;}}
+  return h;};
+Actions.shopSub=el=>{Shop.sub=el.dataset.sub;SFX.click();App.render();};
+Actions.buy=el=>{const it=SHOP[+el.dataset.i],d=itemDef(it.t,it.id);if(it.t==='cup'&&hasItem('cup',it.id))return;if(!pay(it.price)){SFX.error();return toast('Недостаточно средств','bad');}
+  addItem(it.t,it.id,1);addXP(2);SFX.coin();toast(`Куплено: ${d.name}`,'good');App.render();};
+Actions.roast=el=>{const id=el.dataset.id,d=PLANTS[id];let n=el.dataset.n==='max'?Math.floor(S.raw/d.roast):+el.dataset.n;n=Math.min(n,Math.floor(S.raw/d.roast));if(n<1)return;
+  S.raw-=n*d.roast;addItem('bean',d.bean,n);addXP(2*n);SFX.chime();toast(`🔥 Обжарено: ${BEANS[d.bean].name} ×${n}`,'gold');App.render();};
+Actions.exchange=el=>{const n=+el.dataset.n,c=n===5?7000:1500,g=n===5?25:5;if(!pay({coins:c})){SFX.error();return;}S.crystals+=g;SFX.magic();toast(`+${g} 💎 астральных кристаллов`,'gold');App.render();};
+/* =====================================================================
+   RITUAL — ритуал варки (4 шага), чтение гущи, предсказание
+   ===================================================================== */
+const CEZVE_SVG=`<svg class="cezve" viewBox="0 0 220 240" aria-hidden="true">
+ <defs><linearGradient id="czg" x1="0" x2="1"><stop offset="0" stop-color="#6b3d14"/><stop offset=".45" stop-color="#f0c56a"/><stop offset="1" stop-color="#5e3410"/></linearGradient>
+ <radialGradient id="flg" cx=".5" cy=".8" r=".7"><stop offset="0" stop-color="#fff3b0"/><stop offset=".45" stop-color="#ff9a3c"/><stop offset="1" stop-color="#c2185b" stop-opacity="0"/></radialGradient>
+ <clipPath id="czc"><path d="M55 60 L165 60 L152 196 Q110 210 68 196 Z"/></clipPath></defs>
+ <rect x="160" y="70" width="64" height="12" rx="6" fill="#3b1d10" stroke="#D4AF37" stroke-width="1" transform="rotate(-16 160 76)"/>
+ <g clip-path="url(#czc)"><rect x="40" y="40" width="140" height="180" fill="#1a0c05"/><rect id="coffeeRect" x="40" y="164" width="140" height="80" fill="#3b1e0c"/><rect id="foamRect" x="40" y="150" width="140" height="16" fill="#c8945c"/></g>
+ <path d="M55 60 L165 60 L152 196 Q110 210 68 196 Z" fill="none" stroke="url(#czg)" stroke-width="8" stroke-linejoin="round"/>
+ <ellipse cx="110" cy="60" rx="56" ry="7" fill="none" stroke="#F3D98B" stroke-width="3"/>
+ <path id="drips" d="M62 60 q-4 14 -2 28 M158 60 q4 12 2 24" stroke="#c8945c" stroke-width="5" stroke-linecap="round" fill="none" opacity="0"/>
+ <g class="flame" style="transform-box:fill-box"><ellipse cx="85" cy="222" rx="14" ry="20" fill="url(#flg)"/><ellipse cx="110" cy="220" rx="17" ry="24" fill="url(#flg)"/><ellipse cx="135" cy="222" rx="14" ry="20" fill="url(#flg)"/></g>
+ <rect x="50" y="234" width="120" height="5" rx="2.5" fill="#2b1b2f" stroke="#D4AF37" stroke-width=".8"/></svg>`;
+const CUP_SVG=`<svg class="flip-cup" id="flipCup" viewBox="0 0 170 150" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" x2="1"><stop offset="0" stop-color="#cdb89c"/><stop offset=".4" stop-color="#fbf4ea"/><stop offset="1" stop-color="#b9a283"/></linearGradient></defs>
+ <path d="M138 45 q34 4 26 34 q-6 22 -34 22" fill="none" stroke="#e8dac6" stroke-width="10" stroke-linecap="round"/>
+ <path d="M18 20 L142 20 Q138 118 80 132 Q22 118 18 20 Z" fill="url(#cpg)" stroke="#D4AF37" stroke-width="3"/>
+ <ellipse cx="80" cy="20" rx="62" ry="10" fill="#3b1e0c" stroke="#D4AF37" stroke-width="3"/>
+ <path d="M40 60 q40 14 80 0" stroke="#D4AF37" stroke-width="2" fill="none" opacity=".7"/><text x="80" y="95" text-anchor="middle" font-size="20" fill="#9c7a1c">✦ ☾ ✦</text></svg>`;
+
+const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,cur:null,raf:0,typeTok:0,hint:null,
+  stepsHTML(){const names=['Зерно','Чаша','Варка','Переворот','Гадание'],idx={1:0,2:1,3:2,4:3,reading:4,fortune:4}[this.step];
+    return `<div class="steps">${names.map((n,i)=>`${i?'<span class="stp-line"></span>':''}<div class="stp ${i===idx?'on':i<idx?'done':''}"><span class="n">${i<idx?'✓':i+1}</span><span class="l">${n}</span></div>`).join('')}</div>`;},
+  luckBase(){const b=BEANS[this.sel.bean],c=CUPS[this.sel.cup],sp=SPICES[this.sel.spice];return 10+(b?b.luck:0)+(c?c.luck:0)+(sp?sp.luck:0)+Math.min(S.streak,7);},
+  greet(){const h=new Date().getHours(),n=esc(S.name||'Странница');return (h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер')+', '+n+'.';},
+  view(){cancelAnimationFrame(this.raf);const f={1:'v1',2:'v2',3:'v3',4:'v4',reading:'vReading',fortune:'vFortune'}[this.step];return this.stepsHTML()+this[f]();},
+  mount(){if(this.step===3)this.mountBrew();if(this.step==='reading')this.mountReading();if(this.step==='fortune')this.mountFortune();},
+  footer(back,next,nextLabel,enabled,extra=''){const est=clamp(this.luckBase(),1,99);
+    return `<div class="glass ritual-panel" style="margin-top:14px"><div class="row"><div class="sp" style="min-width:200px"><div class="dim" style="font-size:12px">Сила будущего видения ≈ ${est}%</div><div class="luck-meter"><i style="width:${est}%"></i></div></div>
+      ${back?`<button class="btn" data-act="rStep" data-s="${back}">‹ Назад</button>`:''}${extra}<button class="btn btn-gold" data-act="rStep" data-s="${next}" ${enabled?'':'disabled'}>${nextLabel} ›</button></div></div>`;},
+  v1(){const ids=Object.keys(BEANS).filter(id=>S.inv.beans[id]>0);if(this.sel.bean&&!ids.includes(this.sel.bean))this.sel.bean=null;
+    let h=`<div class="glass ritual-hero glow fade-in"><div style="font-size:46px">☕</div><h1 class="section-title">Ритуал Варки</h1><p class="subtitle" style="margin:8px auto 0">${this.greet()} Выберите зерно для гадания — чем оно реже, тем глубже видение и больше знаков проступит на дне чашки.</p></div>`;
+    if(!ids.length)return h+`<div class="glass empty" style="margin-top:14px"><span class="big">🫙</span>Зёрна закончились. Обжарьте урожай плантаций или откройте кейс.<div class="row" style="justify-content:center;margin-top:12px"><button class="btn btn-gold" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button><button class="btn btn-wine" data-act="tab" data-tab="cases">🎁 Кейсы</button></div></div>`;
+    h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Ваши зёрна</h3><div class="grid g-items">`+ids.map(id=>{const b=BEANS[id];
+      return `<div class="item click ${this.sel.bean===id?'sel':''}" data-act="rSel" data-k="bean" data-id="${id}"><span class="cnt">×${S.inv.beans[id]}</span>${itemIcon('bean',id,'lg')}${tierBadge(b.tier)}<div class="nm">${esc(b.name)}</div><div class="ds">${esc(b.desc)}</div><div class="gold" style="font-size:12px;font-weight:700">+${b.luck} удачи · ${b.tier==='S'?5:b.tier==='A'?4:3} знака</div></div>`;}).join('')+'</div>';
+    return h+this.footer(0,2,'Далее',!!this.sel.bean);},
+  v2(){if(!this.sel.bean){this.step=1;return this.v1();}if(!hasItem('cup',this.sel.cup))this.sel.cup='clay';if(this.sel.spice&&!hasItem('spice',this.sel.spice))this.sel.spice=null;if(this.sel.charm&&!hasItem('charm',this.sel.charm))this.sel.charm=null;
+    const cups=Object.keys(CUPS).filter(id=>S.inv.cups[id]>0),sp=Object.keys(SPICES).filter(id=>S.inv.spices[id]>0),ch=Object.keys(CHARMS).filter(id=>S.inv.charms[id]>0);
+    const none=(k,l,e)=>`<div class="item click ${!this.sel[k]?'sel':''}" data-act="rSel" data-k="${k}" data-id=""><span class="ii lg">${e}</span><div class="nm">${l}</div></div>`;
+    let h=`<div class="glass ritual-hero fade-in" style="padding:18px"><h2 class="h2">Чаша и Пряность</h2><p class="muted" style="font-size:14px">Чаша остаётся с вами навсегда. Пряности и амулеты расходуются в ритуале и направляют предсказание.</p></div>`;
+    h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Чаша</h3><div class="grid g-items">`+cups.map(id=>{const c=CUPS[id];return `<div class="item click ${this.sel.cup===id?'sel':''}" data-act="rSel" data-k="cup" data-id="${id}">${itemIcon('cup',id,'lg')}${tierBadge(c.tier)}<div class="nm">${esc(c.name)}</div><div class="ds">${esc(c.desc)}</div><div class="gold" style="font-size:12px;font-weight:700">+${c.luck} удачи</div></div>`;}).join('')+'</div>';
+    h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Пряность</h3><div class="grid g-items">${none('spice','Без пряности','🚫')}`+sp.map(id=>{const s=SPICES[id];return `<div class="item click ${this.sel.spice===id?'sel':''}" data-act="rSel" data-k="spice" data-id="${id}"><span class="cnt">×${S.inv.spices[id]}</span>${itemIcon('spice',id,'lg')}${tierBadge(s.tier)}<div class="nm">${esc(s.name)}</div><div class="ds">${esc(s.desc)}</div></div>`;}).join('')+'</div>';
+    h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Амулет</h3><div class="grid g-items">${none('charm','Без амулета','🚫')}`+ch.map(id=>{const s=CHARMS[id];return `<div class="item click ${this.sel.charm===id?'sel':''}" data-act="rSel" data-k="charm" data-id="${id}"><span class="cnt">×${S.inv.charms[id]}</span>${itemIcon('charm',id,'lg')}${tierBadge(s.tier)}<div class="nm">${esc(s.name)}</div><div class="ds">${esc(s.desc)}</div></div>`;}).join('')+'</div>';
+    return h+this.footer(1,3,'Начать варку',true);},
+  v3(){return `<div class="brew-wrap fade-in"><div class="glass stir-box glow"><h2 class="h2">1. Размешайте</h2><p class="muted" style="font-size:13px">Ведите пальцем или мышью по кругу внутри чашки — три полных оборота, загадывая желание.</p>
+      <canvas id="stirCanvas" width="300" height="300"></canvas><div class="prog"><i id="stirProg"></i></div></div>
+    <div class="glass heat-box locked" id="heatBox"><h2 class="h2">2. Нагрейте</h2><p class="muted" style="font-size:13px">Удерживайте кнопку. Отпустите, когда пенка поднимется к золотой черте — но не дайте кофе убежать!</p>
+      <div class="cezve-area" id="cezveArea"><div class="steam" id="steam"><span></span><span></span><span></span></div>${CEZVE_SVG}<div class="gauge"><div class="zone"></div><div class="fill" id="gaugeFill"></div></div></div>
+      <button class="btn btn-wine btn-lg hold-btn" id="heatBtn" style="min-width:250px">🔥 Удерживать огонь</button><div id="heatRes" class="gold serif" style="font-size:19px;min-height:26px"></div></div></div>
+    <div class="glass ritual-panel" style="margin-top:14px"><div class="row"><div class="sp muted" style="font-size:13px">Варка кофе по-турецки — первая часть таинства.</div><button class="btn btn-gold" id="brewNext" data-act="rStep" data-s="4" disabled>К перевороту ›</button></div></div>`;},
+  mountBrew(){const b=this.brew={stir:0,heat:0,heating:false,heatDone:false,bonus:0,msg:''};const c=$('#stirCanvas');if(!c)return;const x=c.getContext('2d'),C=150;
+    let ang=0,acc=0,last=0,down=false,drift=0,spoonA=-.8,lt=performance.now(),spark=[];
+    const pos=e=>{const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*300/r.width,y:(e.clientY-r.top)*300/r.height};};
+    c.addEventListener('pointerdown',e=>{down=true;try{c.setPointerCapture(e.pointerId);}catch(_){}const p=pos(e);last=Math.atan2(p.y-C,p.x-C);SFX.ensure();});
+    c.addEventListener('pointermove',e=>{if(!down||b.stir>=1)return;const p=pos(e);if(Math.hypot(p.x-C,p.y-C)<16)return;const a=Math.atan2(p.y-C,p.x-C);let d=a-last;
+      if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;last=a;spoonA=a;acc+=Math.abs(d);ang+=d;b.stir=Math.min(1,acc/(Math.PI*6));$('#stirProg').style.width=b.stir*100+'%';
+      if(Math.random()<.1){SFX.bubble();spark.push({x:p.x,y:p.y,l:30});}if(b.stir>=1){$('#heatBox').classList.remove('locked');SFX.chime();toast('☕ Кофе размешан. Теперь — огонь.','gold');}});
+    const up=()=>{down=false;};c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);
+    const hb=$('#heatBtn'),area=$('#cezveArea');
+    const startH=e=>{e.preventDefault();if(b.heatDone||b.stir<1)return;try{hb.setPointerCapture(e.pointerId);}catch(_){}b.heating=true;area.classList.add('heating');hb.textContent='🔥 Греем…';};
+    const stopH=()=>{if(!b.heating)return;b.heating=false;area.classList.remove('heating');if(b.heat<8){hb.textContent='🔥 Удерживать огонь';return;}this.evalHeat(false);};
+    hb.addEventListener('pointerdown',startH);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>hb.addEventListener(ev,stopH));
+    hb.addEventListener('contextmenu',e=>e.preventDefault());
+    const loop=t=>{if(!c.isConnected)return;const dt=Math.min(.05,(t-lt)/1000);lt=t;drift+=dt*.35;
+      if(b.heating){b.heat+=dt*(26+b.heat*.32);if(Math.random()<.15)SFX.bubble();if(b.heat>=100){b.heat=100;b.heating=false;area.classList.remove('heating');this.evalHeat(true);}}
+      const fy=150-b.heat*.92;const fr=$('#foamRect'),cr=$('#coffeeRect');if(fr){fr.setAttribute('y',fy);cr.setAttribute('y',fy+14);}
+      $('#gaugeFill').style.height=b.heat+'%';$('#steam').style.setProperty('--so',(.15+b.heat/120).toFixed(2));
+      x.clearRect(0,0,300,300);let g=x.createRadialGradient(C,C,100,C,C,148);g.addColorStop(0,'#e8dac6');g.addColorStop(1,'#a88c6c');x.fillStyle=g;x.beginPath();x.arc(C,C,146,0,7);x.fill();
+      x.strokeStyle='#D4AF37';x.lineWidth=4;x.beginPath();x.arc(C,C,143,0,7);x.stroke();
+      g=x.createRadialGradient(C-10,C-15,10,C,C,125);g.addColorStop(0,'#7a4a26');g.addColorStop(.6,'#4a2812');g.addColorStop(1,'#2a1408');x.fillStyle=g;x.beginPath();x.arc(C,C,124,0,7);x.fill();
+      x.save();x.translate(C,C);x.rotate(ang+drift);for(let k=0;k<3;k++){x.rotate(2.094);x.strokeStyle=`rgba(214,170,120,${.22+b.stir*.4})`;x.lineWidth=3;x.beginPath();
+        for(let q=0;q<1;q+=.02){const r=8+q*110,a=q*5.2;q?x.lineTo(Math.cos(a)*r,Math.sin(a)*r):x.moveTo(Math.cos(a)*r,Math.sin(a)*r);}x.stroke();}x.restore();
+      x.strokeStyle='rgba(200,150,95,.45)';x.lineWidth=6;x.beginPath();x.arc(C,C,119,0,7);x.stroke();
+      x.save();x.translate(C,C);x.rotate(spoonA);x.strokeStyle='#d8d8e2';x.lineWidth=7;x.lineCap='round';x.beginPath();x.moveTo(60,0);x.lineTo(175,0);x.stroke();x.fillStyle='#c9c9d4';x.beginPath();x.ellipse(52,0,16,10,0,0,7);x.fill();x.restore();
+      spark=spark.filter(s=>s.l-->0);for(const s of spark){x.fillStyle=`rgba(243,217,139,${s.l/30})`;x.font='14px serif';x.fillText('✦',s.x,s.y-(30-s.l));}
+      if(b.stir>=1){x.fillStyle='rgba(243,217,139,.9)';x.font='600 22px "Cormorant Garamond",Georgia,serif';x.textAlign='center';x.fillText('✓ Готово',C,C+6);x.textAlign='left';}
+      this.raf=requestAnimationFrame(loop);};
+    this.raf=requestAnimationFrame(loop);},
+  evalHeat(over){const b=this.brew,h=b.heat;b.heatDone=true;
+    if(over){b.bonus=-5;b.msg='Кофе убежал! Но и в этом есть знак…';const d=$('#drips');if(d)d.setAttribute('opacity','1');SFX.error();}
+    else if(h>=72&&h<=88){b.bonus=15;b.msg='Идеальная пенка! Духи кофе довольны (+15 к удаче).';SFX.magic();Confetti.burst(50);}
+    else if((h>=62&&h<72)||h>88){b.bonus=7;b.msg='Хорошая пенка — видение будет ясным (+7).';SFX.chime();}
+    else if(h>=40){b.bonus=2;b.msg='Пенка едва поднялась… (+2)';SFX.click();}
+    else{b.bonus=0;b.msg='Кофе почти не нагрелся — видение будет туманным.';SFX.click();}
+    $('#heatRes').textContent=b.msg;$('#heatBtn').disabled=true;$('#heatBtn').textContent='Огонь погашен';$('#brewNext').disabled=false;},
+  v4(){return `<div class="glass ritual-panel glow fade-in" style="text-align:center"><h2 class="h2">Переворот чашки</h2><p class="muted" style="font-size:14px;max-width:460px;margin:0 auto">Сделайте последний глоток, оставив немного гущи. Задайте мысленно вопрос, накройте чашку блюдцем и переверните её от себя.</p>
+     <div class="flip-stage"><div class="saucer"></div>${CUP_SVG}</div><div id="flipMsg" style="min-height:64px"></div>
+     <button class="btn btn-gold btn-lg" data-act="rFlip" id="flipBtn">🔄 Перевернуть чашку</button></div>`;},
+  startReading(){const sel=this.sel,bean=BEANS[sel.bean];if(!bean||!takeItem('bean',sel.bean)){toast('Зерно не найдено в сундуке','bad');this.step=1;return App.render();}
+    if(sel.spice&&!takeItem('spice',sel.spice))sel.spice=null;if(sel.charm&&!takeItem('charm',sel.charm))sel.charm=null;
+    const seed=(Math.random()*4294967296)>>>0,n=bean.tier==='S'?5:bean.tier==='A'?4:3,rng=mulberry32((seed^0xA5A5A5)>>>0);
+    const symbols=Grounds.chooseSymbols(rng,n,sel.spice),luck=clamp(Math.round(this.luckBase()+(this.brew?this.brew.bonus:0)+R.int(0,15)),1,99);
+    this.cur={id:Date.now().toString(36),seed,ts:Date.now(),bean:sel.bean,cup:sel.cup,spice:sel.spice,charm:sel.charm,luck,symbols,found:[],hints:0,brewMsg:this.brew?this.brew.msg:''};
+    S.pending=this.cur;this.step='reading';this.hint=null;save();App.render();App.updateHUD();},
+  foundHTML(){const r=this.cur;return r.symbols.map((_,i)=>{const id=r.found[i];if(!id)return `<div class="found"><span class="si">❔</span><div><b>Скрытый знак</b><div class="dim" style="font-size:12px">Ищите очертания в гуще</div></div></div>`;
+      const s=SYMBOLS[id];return `<div class="found ok"><span class="si">${s.icon}</span><div><b class="gold">${s.name}</b><div class="dim" style="font-size:12px">${s.meaning}</div></div></div>`;}).join('');},
+  vReading(){const r=this.cur;return `<div class="reading-layout fade-in"><div class="glass cup-wrap glow"><canvas id="groundsCanvas" width="600" height="600"></canvas><div class="dim" style="font-size:12.5px">Коснитесь очертаний в гуще, чтобы раскрыть знак</div></div>
+    <div class="glass reading-side"><div><h2 class="h2">Чтение гущи</h2><p class="muted" style="font-size:13px">${esc(r.brewMsg||'')} Сила видения: <b class="gold">${r.luck}%</b></p></div>
+    <div>Найдено знаков: <b class="gold" id="foundCount">${r.found.length}</b> из ${r.symbols.length}</div><div class="found-list" id="foundList">${this.foundHTML()}</div>
+    <button class="btn btn-block" data-act="rHint">💫 Подсказка Оракула · ${r.hints?'2 💎':'бесплатно'}</button>
+    <button class="btn btn-gold btn-lg btn-block" data-act="rInterpret" id="interpretBtn" ${r.found.length?'':'disabled'}>📜 Истолковать знаки</button>
+    <p class="dim" style="font-size:11.5px;text-align:center">Найдите все знаки сами — получите бонус зоркости +30% к наградам.</p></div></div>`;},
+  mountReading(){const r=this.cur,c=$('#groundsCanvas');if(!c)return;const base=document.createElement('canvas');base.width=base.height=600;const placed=Grounds.render(base,r.seed,r.symbols);
+    const x=c.getContext('2d');let ripple=null;const glow={};r.found.forEach(id=>glow[id]=0);this._placed=placed;
+    c.addEventListener('click',e=>{const rc=c.getBoundingClientRect(),px=(e.clientX-rc.left)*600/rc.width,py=(e.clientY-rc.top)*600/rc.height;
+      const hit=placed.find(p=>!r.found.includes(p.id)&&Math.hypot(p.x-px,p.y-py)<p.s*.62);
+      if(hit){r.found.push(hit.id);glow[hit.id]=performance.now();this.hint=null;SFX.find();const s=SYMBOLS[hit.id];toast(`${s.icon} Знак <b>${s.name}</b> — ${s.meaning}`,'gold');this.updateFound();save();
+        if(r.found.length===r.symbols.length){Confetti.burst(80);toast('👁️ Все знаки раскрыты! Бонус зоркости +30%','gold');}}
+      else{ripple={x:px,y:py,t:performance.now()};SFX.click();}});
+    const loop=t=>{if(!c.isConnected)return;x.clearRect(0,0,600,600);x.drawImage(base,0,0);
+      if(this.hint){const k=(t-this.hint.t)/3500;if(k>1)this.hint=null;else{const a=Math.sin(k*Math.PI)*(.55+.25*Math.sin(t/150));const g=x.createRadialGradient(this.hint.x,this.hint.y,0,this.hint.x,this.hint.y,95);
+        g.addColorStop(0,`rgba(243,217,139,${a*.55})`);g.addColorStop(1,'rgba(243,217,139,0)');x.fillStyle=g;x.beginPath();x.arc(this.hint.x,this.hint.y,95,0,7);x.fill();}}
+      for(const p of placed){if(!r.found.includes(p.id))continue;const k=Math.min(1,(t-(glow[p.id]||0))/500),rr=p.s*.62*(.6+.4*k);
+        x.save();x.globalAlpha=k;x.shadowColor='#D4AF37';x.shadowBlur=18;x.strokeStyle='rgba(243,217,139,.95)';x.lineWidth=3;x.setLineDash([9,6]);x.lineDashOffset=-t/40;
+        x.beginPath();x.arc(p.x,p.y,rr,0,7);x.stroke();x.setLineDash([]);x.shadowBlur=0;const s=SYMBOLS[p.id],lbl=s.icon+' '+s.name;x.font='700 22px "Cormorant Garamond",Georgia,serif';
+        const w=x.measureText(lbl).width+20,ly=Math.min(575,p.y+rr+20);x.fillStyle='rgba(18,9,26,.82)';x.beginPath();x.roundRect?x.roundRect(p.x-w/2,ly-17,w,30,15):x.rect(p.x-w/2,ly-17,w,30);x.fill();
+        x.strokeStyle='rgba(212,175,55,.7)';x.lineWidth=1;x.stroke();x.fillStyle='#F3D98B';x.textAlign='center';x.fillText(lbl,p.x,ly+5);x.restore();}
+      if(ripple){const k=(t-ripple.t)/600;if(k>1)ripple=null;else{x.strokeStyle=`rgba(255,255,255,${.6*(1-k)})`;x.lineWidth=2;x.beginPath();x.arc(ripple.x,ripple.y,10+k*30,0,7);x.stroke();}}
+      this.raf=requestAnimationFrame(loop);};
+    this.raf=requestAnimationFrame(loop);},
+  updateFound(){const r=this.cur;$('#foundList').innerHTML=this.foundHTML();$('#foundCount').textContent=r.found.length;$('#interpretBtn').disabled=!r.found.length;},
+  vFortune(){const r=this.cur,t=r.texts,st=Math.round(r.luck/20),rw=r.rewards||{};
+    return `<div class="glass fortune-head glow fade-in"><div class="dim" style="font-size:12.5px">${fmtDate(r.ts)}</div><div class="ttl">${esc(t.title)}</div>
+      <div class="row" style="justify-content:center;margin:12px 0">${r.symbols.map(id=>`<span class="chip">${SYMBOLS[id].icon} ${SYMBOLS[id].name}</span>`).join('')}</div>
+      <div>Индекс удачи: <b class="gold">${r.luck}%</b> <span class="stars5">${'★'.repeat(st)}${'☆'.repeat(5-st)}</span></div><div class="luck-meter" style="max-width:320px;margin:6px auto"><i style="width:${r.luck}%"></i></div>
+      <div class="vn-oracle"><div class="oracle-ava">🔮</div><div class="serif" style="font-style:italic;font-size:19px;color:var(--text-2)">«Слушай же, ${esc(S.name||'Странница')}, что поведала гуща…»</div></div></div>
+    <div class="fortune-grid">${SECTIONS.map(s=>`<div class="glass fcard f-${s.id}" data-sec="${s.id}" data-act="skipType"><h4>${s.icon} ${s.title}</h4><p></p></div>`).join('')}</div>
+    <div class="glass reward-box"><b class="serif gold" style="font-size:20px">Дары Оракула:</b><span class="chip">🪙 +${fmt(rw.coins||0)}</span><span class="chip">⭐ +${rw.xp||0} опыта</span>${rw.crystals?`<span class="chip">💎 +${rw.crystals}</span>`:''}${rw.sharp?'<span class="chip">👁️ Зоркость +30%</span>':''}${rw.mult>1?`<span class="chip">${CHARMS[r.charm].icon} ×${rw.mult}</span>`:''}</div>
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-gold btn-lg" data-act="share" data-id="${r.id}">🖼️ Карта для сторис</button><button class="btn btn-wine btn-lg" data-act="rNew">☕ Новое гадание</button><button class="btn btn-lg" data-act="tab" data-tab="grimoire">📜 Гримуар</button></div>`;},
+  mountFortune(){const r=this.cur,tok=++this.typeTok;const cards=$$('.fcard');
+    if(r._typed){cards.forEach(c=>c.querySelector('p').textContent=r.texts[c.dataset.sec]);return;}
+    let i=0;const next=()=>{if(tok!==this.typeTok||i>=cards.length){r._typed=true;return;}const c=cards[i],txt=r.texts[c.dataset.sec],p=c.querySelector('p');c.classList.add('typing');let k=0;
+      const step=()=>{if(tok!==this.typeTok){return;}if(c._skip){k=txt.length;}k=Math.min(txt.length,k+2);p.textContent=txt.slice(0,k);if(k<txt.length)setTimeout(step,16);else{c.classList.remove('typing');i++;setTimeout(next,250);}};step();};
+    next();}
+};
+Views.ritual=()=>Ritual.view();
+Actions.rSel=el=>{const k=el.dataset.k;Ritual.sel[k]=el.dataset.id||null;SFX.click();App.render(true);};
+Actions.rStep=el=>{const s=+el.dataset.s;if(s===2&&!Ritual.sel.bean)return;if(s===4&&!(Ritual.brew&&Ritual.brew.heatDone))return;Ritual.step=s;SFX.click();App.render();scrollTo({top:0,behavior:'smooth'});};
+Actions.rFlip=el=>{el.disabled=true;$('#flipCup').classList.add('flipped');SFX.whoosh();let n=3;const m=$('#flipMsg');
+  setTimeout(()=>{const tick=()=>{if(!m.isConnected)return;if(n===0){Ritual.startReading();return;}m.innerHTML=`<div class="drip-count">${n}</div><div class="dim">Гуща стекает по стенкам…</div>`;SFX.bubble();n--;setTimeout(tick,900);};tick();},1300);};
+Actions.rHint=()=>{const r=Ritual.cur,left=(Ritual._placed||[]).filter(p=>!r.found.includes(p.id));if(!left.length)return;if(r.hints>0){if(!pay({crystals:2})){SFX.error();return toast('Нужно 2 💎','bad');}}
+  r.hints++;const p=left[Math.floor(Math.random()*left.length)];Ritual.hint={x:p.x+(Math.random()-.5)*50,y:p.y+(Math.random()-.5)*50,t:performance.now()};SFX.magic();
+  const b=$('[data-act=rHint]');if(b)b.innerHTML='💫 Подсказка Оракула · 2 💎';App.updateHUD();};
+Actions.rInterpret=()=>{const r=Ritual.cur;if(!r||!r.found.length)return;const sharp=r.found.length===r.symbols.length;
+  r.texts=Fortune.generate(r);const mult=r.charm&&CHARMS[r.charm]?CHARMS[r.charm].mult:1;
+  const coins=Math.round((40+r.luck*3)*mult*(sharp?1.3:1)),xp=Math.round((25+r.luck*.6)*mult),crystals=(r.luck>=75?R.int(2,4):(Math.random()<.35?1:0))*mult;
+  r.rewards={coins,xp,crystals,mult,sharp};addItem('coins',0,coins);S.crystals+=crystals;addXP(xp);
+  S.stats.readings++;S.stats.bestLuck=Math.max(S.stats.bestLuck,r.luck);r.symbols.forEach(id=>S.stats.symbols[id]=(S.stats.symbols[id]||0)+1);
+  const entry={id:r.id,ts:r.ts,seed:r.seed,bean:r.bean,cup:r.cup,spice:r.spice,charm:r.charm,luck:r.luck,symbols:r.symbols,texts:r.texts,rewards:r.rewards};
+  S.history.unshift(entry);if(S.history.length>60)S.history.length=60;delete S.pending;Ritual.cur=Object.assign({},entry);Ritual.step='fortune';
+  save();SFX.magic();Confetti.burst(r.luck>=75?160:70);App.render();scrollTo({top:0,behavior:'smooth'});};
+Actions.skipType=el=>{el._skip=true;};
+Actions.rNew=()=>{Ritual.step=1;Ritual.cur=null;Ritual.brew=null;Ritual.typeTok++;SFX.click();App.render();scrollTo({top:0});};
+/* =====================================================================
+   SHARE — карта-предсказание в стиле Таро (PNG 1080×1920 для сторис)
+   ===================================================================== */
+const Share={
+  wrap(x,text,maxW,maxLines){const words=text.split(/\s+/),lines=[];let cur='';
+    for(const w of words){const t=cur?cur+' '+w:w;if(x.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;if(lines.length===maxLines)break;}else cur=t;}
+    if(lines.length<maxLines&&cur)lines.push(cur);
+    if(lines.length===maxLines&&lines.join(' ').length<text.length-1){let l=lines[maxLines-1];while(x.measureText(l+'…').width>maxW&&l.length)l=l.slice(0,-1);lines[maxLines-1]=l.replace(/[\s,.;:—-]+$/,'')+'…';}
+    return lines;},
+  async make(e){try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(_){}
+    const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),rng=mulberry32(e.seed);
+    let g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2b1242');g.addColorStop(.45,'#12091A');g.addColorStop(1,'#0A050E');x.fillStyle=g;x.fillRect(0,0,W,H);
+    g=x.createRadialGradient(W/2,560,50,W/2,560,700);g.addColorStop(0,'rgba(143,42,85,.45)');g.addColorStop(1,'rgba(143,42,85,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
+    for(let i=0;i<320;i++){x.globalAlpha=.2+rng()*.8;x.fillStyle=rng()<.2?'#F3D98B':'#fff';x.beginPath();x.arc(rng()*W,rng()*H,rng()*2.2,0,7);x.fill();}x.globalAlpha=1;
+    const gold=x.createLinearGradient(0,0,W,H);gold.addColorStop(0,'#f6e0a0');gold.addColorStop(.5,'#D4AF37');gold.addColorStop(1,'#9c7a1c');
+    x.strokeStyle=gold;x.lineWidth=5;x.strokeRect(40,40,W-80,H-80);x.lineWidth=1.6;x.strokeRect(60,60,W-120,H-120);
+    for(const[cx,cy]of[[60,60],[W-60,60],[60,H-60],[W-60,H-60]]){x.fillStyle='#12091A';x.beginPath();x.arc(cx,cy,22,0,7);x.fill();x.stroke();x.fillStyle=gold;x.font='30px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('✦',cx,cy+1);}
+    x.textBaseline='alphabetic';x.textAlign='center';
+    x.fillStyle=gold;x.font='700 84px "Cormorant Garamond",Georgia,serif';x.fillText('Кофейный Оракул',W/2,170);
+    x.fillStyle='rgba(244,236,247,.75)';x.font='500 30px Manrope,"Segoe UI",Arial,sans-serif';x.fillText(`${S.name||'Странница'} · ${new Date(e.ts).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}`,W/2,222);
+    x.strokeStyle='rgba(212,175,55,.6)';x.lineWidth=1.5;x.beginPath();x.moveTo(180,258);x.lineTo(500,258);x.moveTo(580,258);x.lineTo(900,258);x.stroke();x.fillStyle=gold;x.font='26px serif';x.fillText('✦ ✦ ✦',W/2,268);
+    const gc=document.createElement('canvas');gc.width=gc.height=600;const placed=Grounds.render(gc,e.seed,e.symbols);
+    const R0=255,CX=W/2,CY=545;x.save();x.shadowColor='rgba(212,175,55,.6)';x.shadowBlur=50;x.fillStyle='#000';x.beginPath();x.arc(CX,CY,R0,0,7);x.fill();x.restore();
+    x.save();x.beginPath();x.arc(CX,CY,R0,0,7);x.clip();x.drawImage(gc,CX-R0*1.035,CY-R0*1.035,R0*2.07,R0*2.07);
+    const sc=R0*2.07/600;for(const p of placed){x.strokeStyle='rgba(243,217,139,.9)';x.lineWidth=3;x.setLineDash([10,7]);x.beginPath();x.arc(CX-R0*1.035+p.x*sc,CY-R0*1.035+p.y*sc,p.s*.6*sc,0,7);x.stroke();}x.setLineDash([]);x.restore();
+    x.strokeStyle=gold;x.lineWidth=6;x.beginPath();x.arc(CX,CY,R0+4,0,7);x.stroke();x.lineWidth=1.5;x.beginPath();x.arc(CX,CY,R0+20,0,7);x.stroke();
+    x.fillStyle='#F3D98B';x.font='600 36px "Cormorant Garamond",Georgia,serif';x.fillText(e.symbols.map(id=>SYMBOLS[id].icon+' '+SYMBOLS[id].name).join('   '),W/2,875);
+    x.fillStyle='#fff';x.font='italic 600 44px "Cormorant Garamond",Georgia,serif';x.fillText(this.wrap(x,e.texts.title,900,1)[0],W/2,935);
+    let y=1005;
+    for(const s of SECTIONS){x.textAlign='left';x.fillStyle='#F3D98B';x.font='700 38px "Cormorant Garamond",Georgia,serif';x.fillText(s.icon+' '+s.title,110,y);y+=44;
+      x.fillStyle='rgba(244,236,247,.9)';x.font='500 27px Manrope,"Segoe UI",Arial,sans-serif';const body=e.texts[s.id].split('. ').slice(1).join('. ')||e.texts[s.id];
+      for(const l of this.wrap(x,body,860,3)){x.fillText(l,110,y);y+=37;}y+=26;}
+    x.textAlign='center';const st=Math.round(e.luck/20);x.fillStyle=gold;x.font='700 40px "Cormorant Garamond",Georgia,serif';x.fillText(`Индекс удачи: ${e.luck}%   ${'★'.repeat(st)}${'☆'.repeat(5-st)}`,W/2,H-170);
+    x.fillStyle='rgba(244,236,247,.55)';x.font='500 26px Manrope,"Segoe UI",Arial,sans-serif';x.fillText('☕ Кофейный Оракул · CofeeGushya',W/2,H-110);
+    return c;},
+  async open(e){const w=Modal.open(`<h2 class="h2">Карта предсказания</h2><p class="muted" style="font-size:13px;margin-bottom:10px">Готово для Telegram и Instagram Stories (1080×1920).</p><div class="empty" id="sharePrev">✨ Оракул рисует карту…</div>`,{cls:'wide'});
+    const c=await this.make(e),url=c.toDataURL('image/png'),name=`kofeyny-orakul-${todayStr(new Date(e.ts))}.png`;const box=w.querySelector('#sharePrev');if(!box)return;
+    box.outerHTML=`<img class="share-preview" src="${url}" alt="Карта предсказания"><div class="row" style="justify-content:center;margin-top:12px"><a class="btn btn-gold" href="${url}" download="${name}">⬇️ Скачать PNG</a><button class="btn btn-wine" id="nativeShare">📤 Поделиться</button></div>`;
+    w.querySelector('#nativeShare').onclick=()=>{c.toBlob(async b=>{const f=new File([b],name,{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'Кофейный Оракул',text:e.texts.title});}catch(_){} }
+      else{toast('Ваш браузер не поддерживает «Поделиться» — скачайте PNG','bad');}},'image/png');};SFX.chime();}
+};
+Actions.share=el=>{const id=el.dataset.id,e=S.history.find(h=>h.id===id)||Ritual.cur;if(e&&e.texts)Share.open(e);};
+
+/* =====================================================================
+   GRIMOIRE — история гаданий и атлас знаков
+   ===================================================================== */
+Views.grimoire=()=>{let h=`<div class="page-head fade-in"><div><h1 class="section-title">Гримуар</h1><p class="subtitle">Книга ваших предсказаний. Каждый узор гущи сохранён — его можно открыть снова и поделиться.</p></div></div>`;
+  h+=`<div class="glass ritual-panel fade-in" style="margin-bottom:14px"><h3 class="h3 gold" style="margin-bottom:10px">Атлас знаков</h3><div class="atlas">${Object.keys(SYMBOLS).map(id=>{const n=S.stats.symbols[id]||0,s=SYMBOLS[id];
+    return `<div class="sym ${n?'':'lock'}"><span class="e">${n?s.icon:'❔'}</span><b>${n?s.name:'???'}</b><div class="dim">${n?'встречен ×'+n:'не встречен'}</div></div>`;}).join('')}</div></div>`;
+  if(!S.history.length)return h+`<div class="glass empty"><span class="big">📜</span>Страницы пока пусты. Проведите первый ритуал, и гуща оставит здесь свой след.<div style="margin-top:12px"><button class="btn btn-gold" data-act="tab" data-tab="ritual">☕ К ритуалу</button></div></div>`;
+  return h+`<div class="grid g-auto">${S.history.map(e=>`<div class="glass hist-item fade-in" data-act="gOpen" data-id="${e.id}"><div class="hist-ic">${e.symbols.map(id=>SYMBOLS[id].icon).join('')}</div>
+    <div class="sp" style="min-width:0"><b class="serif gold" style="font-size:19px;line-height:1.15;display:block">${esc(e.texts.title)}</b><div class="dim" style="font-size:12px">${fmtDate(e.ts)}</div>
+    <div style="font-size:12px;margin-top:4px">${tierBadge(BEANS[e.bean].tier)} ${esc(BEANS[e.bean].name)} · удача <b class="gold">${e.luck}%</b></div></div></div>`).join('')}</div>`;};
+Actions.gOpen=el=>{const e=S.history.find(h=>h.id===el.dataset.id);if(!e)return;
+  const w=Modal.open(`<div style="text-align:center"><div class="dim" style="font-size:12px">${fmtDate(e.ts)}</div><h2 class="h2" style="font-size:30px">${esc(e.texts.title)}</h2>
+    <canvas width="600" height="600" style="width:min(100%,300px);aspect-ratio:1;margin:8px auto;display:block" id="histCv"></canvas><div class="row" style="justify-content:center">${e.symbols.map(id=>`<span class="chip">${SYMBOLS[id].icon} ${SYMBOLS[id].name}</span>`).join('')}</div>
+    <div style="margin-top:8px">Индекс удачи: <b class="gold">${e.luck}%</b></div></div>
+    ${SECTIONS.map(s=>`<div class="glass fcard f-${s.id}" style="margin-top:12px;min-height:0;cursor:default"><h4>${s.icon} ${s.title}</h4><p>${esc(e.texts[s.id])}</p></div>`).join('')}
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-gold" data-act="share" data-id="${e.id}">🖼️ Карта для сторис</button><button class="btn" data-act="gDel" data-id="${e.id}">🗑️ Удалить</button></div>`,{cls:'wide'});
+  Grounds.render(w.querySelector('#histCv'),e.seed,e.symbols);};
+Actions.gDel=el=>{if(!confirm('Удалить это предсказание из Гримуара?'))return;S.history=S.history.filter(h=>h.id!==el.dataset.id);save();Modal.close(el.closest('.modal-wrap'));App.render();};
+
+/* =====================================================================
+   PROFILE / ONBOARDING / DAILY
+   ===================================================================== */
+const zodiacGrid=sel=>`<div class="zodiac">${ZODIAC.map(z=>`<button class="${sel===z.id?'on':''}" data-act="pickZodiac" data-id="${z.id}"><span class="zi">${z.i}</span>${z.name}</button>`).join('')}</div>`;
+Actions.pickZodiac=el=>{$$('.zodiac button',el.closest('.modal')).forEach(b=>b.classList.toggle('on',b===el));el.closest('.modal')._z=el.dataset.id;SFX.click();};
+const Onboard={show(){const w=Modal.open(`<div style="text-align:center"><div style="font-size:56px;filter:drop-shadow(0 0 20px rgba(212,175,55,.6))">☕</div><h2 class="h2" style="font-size:32px">Кофейный Оракул</h2>
+  <p class="muted" style="font-size:14px">Добро пожаловать в тайную кофейню, где судьбу читают по гуще. Выращивайте зёрна, открывайте сокровища богинь и узнайте, что звёзды приготовили для вашего сердца.</p></div>
+  <div class="divider star"></div><label class="dim" style="font-size:12px">Как вас называть?</label><input class="field" id="obName" maxlength="24" placeholder="Например, Алиса" style="margin:6px 0 14px">
+  <label class="dim" style="font-size:12px">Ваш знак зодиака</label><div style="margin:6px 0 16px">${zodiacGrid('')}</div>
+  <button class="btn btn-gold btn-lg btn-block" data-act="obDone">✨ Войти в кофейню</button>`,{noClose:true});setTimeout(()=>{const i=w.querySelector('#obName');if(i)i.focus();},300);}};
+Actions.obDone=el=>{const m=el.closest('.modal'),name=m.querySelector('#obName').value.trim();if(!name){m.querySelector('#obName').focus();SFX.error();return toast('Назовите своё имя Оракулу','bad');}
+  if(!m._z){SFX.error();return toast('Выберите знак зодиака','bad');}S.name=name;S.zodiac=m._z;S.onboarded=true;save();Modal.close(el.closest('.modal-wrap'));SFX.magic();Confetti.burst(100);App.updateHUD();App.render();setTimeout(()=>Daily.check(),500);};
+const Daily={
+  status(){const t=todayStr();if(S.lastDaily===t)return{claimed:true,day:S.streak};const cont=S.lastDaily&&dayDiff(S.lastDaily,t)===1;return{claimed:false,day:cont?S.streak+1:1};},
+  check(){const st=this.status();if(!st.claimed)this.show();},
+  show(){const st=this.status(),cur=((st.day-1)%7);
+    Modal.open(`<div style="text-align:center"><div style="font-size:48px">🎁</div><h2 class="h2">Дары нового дня</h2><p class="muted" style="font-size:13.5px">Серия посещений: <b class="gold">${st.day} ${plural(st.day,['день','дня','дней'])}</b>. Не пропускайте дни — награды растут, а удача в гаданиях повышается.</p></div>
+      <div class="daily-grid">${DAILY.map((d,i)=>`<div class="dday ${i<cur||(st.claimed&&i===cur)?'past':i===cur?'now':''}"><b>День ${i+1}</b><span class="e">${d.e}</span>${d.label}</div>`).join('')}</div>
+      <button class="btn btn-gold btn-lg btn-block" data-act="dailyClaim" ${st.claimed?'disabled':''}>${st.claimed?'Уже получено сегодня':'Получить дары'}</button>`);},
+  claim(){const st=this.status();if(st.claimed)return;const d=DAILY[(st.day-1)%7];S.streak=st.day;S.lastDaily=todayStr();if(d.coins)addItem('coins',0,d.coins);if(d.crystals)S.crystals+=d.crystals;(d.items||[]).forEach(([t,id,q])=>addItem(t,id,q));
+    addXP(15);save();SFX.magic();Confetti.burst(120);toast(`🎁 Получено: ${d.label}`,'gold');App.updateHUD();App.render();}
+};
+Actions.dailyClaim=el=>{Daily.claim();Modal.close(el.closest('.modal-wrap'));};
+Actions.daily=()=>Daily.show();
+Actions.profile=()=>{const z=ZODIAC.find(q=>q.id===S.zodiac);const w=Modal.open(`<div class="row"><span class="ii lg" style="border-radius:50%">${z?z.i:'🔮'}</span><div><h2 class="h2" style="margin:0">${esc(S.name||'Странница')}</h2><div class="dim" style="font-size:13px">${z?z.name:'Знак не выбран'} · уровень ${S.level}</div></div></div>
+  <div class="luck-meter" style="margin:12px 0 4px"><i style="width:${S.xp/xpNeed(S.level)*100}%"></i></div><div class="dim" style="font-size:12px">Опыт: ${fmt(S.xp)} / ${fmt(xpNeed(S.level))}</div>
+  <div class="stat-grid" style="margin:14px 0"><div><b>${S.stats.readings}</b>гаданий</div><div><b>${S.stats.cases}</b>кейсов открыто</div><div><b>${fmt(S.stats.rawTotal)}</b>зёрен собрано</div><div><b>${S.streak} 🔥</b>серия дней</div><div><b>${S.stats.bestLuck}%</b>лучшая удача</div><div><b>${Object.keys(S.stats.symbols).length}/9</b>знаков в атласе</div></div>
+  <div class="divider"></div><label class="dim" style="font-size:12px">Имя</label><input class="field" id="pfName" maxlength="24" value="${esc(S.name)}" style="margin:6px 0 12px">
+  <label class="dim" style="font-size:12px">Знак зодиака</label><div style="margin:6px 0 14px">${zodiacGrid(S.zodiac)}</div>
+  <div class="row" style="margin-bottom:14px"><span class="sp">🔊 Звуки</span><button class="switch ${S.settings.sound?'on':''}" data-act="toggleSound" aria-label="Звук"></button></div>
+  <div class="row"><button class="btn btn-gold sp" data-act="pfSave">Сохранить</button><button class="btn" data-act="daily">🎁 Ежедневные дары</button></div>
+  <div class="row" style="margin-top:10px"><button class="btn btn-sm sp" data-act="exportSave">⬇️ Экспорт сохранения</button><button class="btn btn-sm sp" data-act="importSave">⬆️ Импорт</button><button class="btn btn-sm sp" data-act="resetSave" style="color:#ff8fb0">Сбросить прогресс</button></div>`);
+  w.querySelector('.modal')._z=S.zodiac;};
+Actions.toggleSound=el=>{S.settings.sound=!S.settings.sound;el.classList.toggle('on',S.settings.sound);save();SFX.click();};
+Actions.pfSave=el=>{const m=el.closest('.modal'),n=m.querySelector('#pfName').value.trim();if(n)S.name=n;if(m._z)S.zodiac=m._z;save();Modal.close(el.closest('.modal-wrap'));toast('Профиль сохранён','good');App.updateHUD();App.render();};
+Actions.exportSave=()=>{const b=new Blob([JSON.stringify(S)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kofeyny-orakul-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);};
+Actions.importSave=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=()=>{const f=i.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d||typeof d!=='object'||!d.plants)throw 0;
+  S=deepMerge(newState(),d);S.lastTick=Date.now();save();location.reload();}catch(_){toast('Файл сохранения повреждён','bad');}});};i.click();};
+Actions.resetSave=()=>{if(!confirm('Сбросить весь прогресс? Это действие необратимо.'))return;localStorage.removeItem(SAVE_KEY);S=newState();save();location.reload();};
+/* =====================================================================
+   APP — навигация, HUD, игровой цикл, запуск
+   ===================================================================== */
+const App={tab:'ritual',
+  render(){const v=$('#view');v.innerHTML=Views[this.tab]();$$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===this.tab));if(this.tab==='ritual')Ritual.mount();this.updateHUD();},
+  go(tab){if(!Views[tab])return;if(this.tab==='ritual'&&tab!=='ritual')cancelAnimationFrame(Ritual.raf);this.tab=tab;SFX.click();this.render();scrollTo({top:0});},
+  updateHUD(){$('#hud-coins').textContent=fmt(S.coins);$('#hud-crystals').textContent=fmt(S.crystals);$$('.hud-raw').forEach(e=>e.textContent=fmt(S.raw));
+    $('#hud-lvl').textContent=S.level;$('#hud-xp').style.width=Math.min(100,S.xp/xpNeed(S.level)*100)+'%';const z=ZODIAC.find(q=>q.id===S.zodiac);$('#hud-ava').textContent=z?z.i:'🔮';
+    const can=Object.keys(PLANTS).some(id=>S.plants[id].owned&&S.raw>=PLANTS[id].roast);$('#shop-dot').classList.toggle('on',can);}
+};
+Actions.tab=el=>{if(el.dataset.sub)Shop.sub=el.dataset.sub;Modal.closeAll();App.go(el.dataset.tab);};
+Actions.closeModal=el=>Modal.close(el.closest('.modal-wrap'));
+document.addEventListener('click',e=>{const n=e.target.closest('[data-tab]:not([data-act])');if(n&&n.classList.contains('nav-btn')){App.go(n.dataset.tab);return;}
+  const a=e.target.closest('[data-act]');if(!a||a.disabled)return;const f=Actions[a.dataset.act];if(f){e.preventDefault();f(a,e);}});
+let lastFloat=0;
+function gameLoop(){const now=Date.now(),dt=(now-S.lastTick)/1000;if(dt>60){showOffline(Plant.offline());App.updateHUD();return;}
+  if(dt<=0)return;S.lastTick=now;Plant.tick(dt);App.updateHUD();
+  if(App.tab==='plant'){const fl=now-lastFloat>1000;if(fl)lastFloat=now;Plant.liveUpdate(fl);}}
+function boot(){Stars.init();
+  if(S.pending&&S.pending.symbols){Ritual.cur=S.pending;Ritual.step='reading';Ritual.sel.bean=S.pending.bean;}
+  const off=Plant.offline();App.render();
+  if(!S.onboarded)Onboard.show();else{if(off)showOffline(off);setTimeout(()=>Daily.check(),off?400:200);}
+  setInterval(gameLoop,250);setInterval(save,5000);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});addEventListener('pagehide',save);addEventListener('beforeunload',save);
+  document.addEventListener('pointerdown',()=>SFX.ensure(),{once:true});}
+
+boot();
+</script>
+</body>
+</html>
