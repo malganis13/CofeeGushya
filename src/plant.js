@@ -3,7 +3,7 @@
    ===================================================================== */
 const Views={},Actions={};
 const Plant={
-  rate(id){const p=S.plants[id],d=PLANTS[id];if(!p||!p.owned)return 0;return d.base*(1+.35*p.irr)*Math.pow(1.3,p.fert)*(1+.25*p.bar)*(1+.03*(S.level-1));},
+  rate(id){const p=S.plants[id],d=PLANTS[id];if(!p||!p.owned)return 0;return d.base*(1+.35*p.irr)*Math.pow(1.3,p.fert)*(1+.25*p.bar)*(1+.03*(S.level-1))*(1+.1*tal('green'));},
   total(){return Object.keys(PLANTS).reduce((s,id)=>s+this.rate(id),0);},
   capH(id){return 4+2*S.plants[id].bar;},
   upCost(id,u){return Math.ceil(PLANTS[id].up*UPG[u].k*Math.pow(UPG[u].g,S.plants[id][u]));},
@@ -22,11 +22,11 @@ Views.plant=()=>{const rate=Plant.total();
   let h=`<div class="page-head fade-in"><div><h1 class="section-title">Плантации</h1><p class="subtitle">Ваши земли растят зёрна даже когда вы спите. Продавайте урожай в Лавке или обжаривайте его для ритуалов.</p></div>
   <div class="glass stat-box glow"><div class="row"><div><div class="dim" style="font-size:12px">Урожай в секунду</div><div class="big" id="pl-rate">${fmt1(rate)}</div></div><div class="sp"></div>
   <div style="text-align:right"><div class="dim" style="font-size:12px">На складе</div><div class="big"><span class="bean raw"></span> <span class="hud-raw">${fmt(S.raw)}</span></div></div></div>
-  <div class="row"><button class="btn btn-gold btn-sm sp" data-act="sellRaw" data-f="1">Продать всё · <span id="sell-val">${fmt(S.raw*RAW_PRICE)}</span> 🪙</button><button class="btn btn-wine btn-sm" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button></div></div></div>
+  <div class="row"><button class="btn btn-gold btn-sm sp" data-act="sellRaw" data-f="1">Продать всё · <span id="sell-val">${fmt(S.raw*rawPrice())}</span> 🪙</button><button class="btn btn-wine btn-sm" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button></div></div></div>
   <div class="grid g-auto">`;
   for(const id in PLANTS){const d=PLANTS[id],p=S.plants[id],bean=BEANS[d.bean];
     h+=`<div class="glass plant-card fade-in ${p.owned?'':'locked'}" data-plant="${id}">
-      <div class="plant-banner" style="background:${d.grad}"><div class="hills"></div><div class="hills h2"></div><span class="pic">${d.icon}</span>
+      <div class="plant-banner" style="background:${d.grad}" ${p.owned?`data-act="harvest" data-id="${id}"`:''}>${p.owned?`<span class="harvest-chip ${harvestReady(id)?'on':''}" data-hv="${id}">✋ Собрать</span>`:''}<div class="hills"></div><div class="hills h2"></div><span class="pic">${d.icon}</span>
         <span class="tag">${tierBadge(bean.tier)} <span class="chip" style="font-size:11px;padding:1px 8px">${esc(bean.name)}</span></span>
         <div class="bushes">${(d.bush+' ').repeat(p.owned?Math.min(5,1+Math.floor((p.irr+p.fert+p.bar)/4)):1).trim().split(' ').map(b=>`<span class="bush">${b}</span>`).join('')}</div></div>
       <div class="plant-body"><div><h3 class="h3">${esc(d.name)}</h3><p class="dim" style="font-size:12.5px">${esc(d.sub)}</p></div>`;
@@ -44,9 +44,9 @@ Actions.buyPlant=el=>{const id=el.dataset.id,d=PLANTS[id];if(d.minLevel&&S.level
   S.plants[id].owned=true;addXP(40);SFX.magic();Confetti.burst(80);toast(`🌱 Вы приобрели земли «${d.name}»!`,'gold');App.render();};
 Actions.upgrade=el=>{const {id,u}=el.dataset,p=S.plants[id];if(p[u]>=UPG[u].max)return;const c=Plant.upCost(id,u);if(!pay({coins:c})){SFX.error();return;}
   p[u]++;addXP(3+p[u]);SFX.coin();toast(`${UPG[u].icon} ${UPG[u].name}: уровень ${p[u]}`,'good');App.render();};
-Actions.sellRaw=el=>{const f=+el.dataset.f||1,q=Math.floor(S.raw*f),c=Math.floor(q*RAW_PRICE);if(c<1){SFX.error();return toast('На складе пока пусто','bad');}
-  S.raw-=q;addItem('coins',0,c);SFX.coin();toast(`Продано ${fmt(q)} зёрен за ${fmt(c)} 🪙`,'good');App.render();};
+Actions.sellRaw=el=>{const f=+el.dataset.f||1,q=Math.floor(S.raw*f),c=Math.floor(q*rawPrice());if(c<1){SFX.error();return toast('На складе пока пусто','bad');}
+  S.raw-=q;addItem('coins',0,c);SFX.coin();SFX.rustle();const sb=$('.stat-box');if(sb){sb.classList.remove('harvest-glow');void sb.offsetWidth;sb.classList.add('harvest-glow');}toast(`Продано ${fmt(q)} зёрен за ${fmt(c)} 🪙`,'good');App.render();};
 // Живое обновление цифр на вкладке плантаций
-Plant.liveUpdate=(fl)=>{const r=$('#pl-rate');if(r)r.textContent=fmt1(Plant.total());const sv=$('#sell-val');if(sv)sv.textContent=fmt(S.raw*RAW_PRICE);
-  $$('[data-act=upgrade]').forEach(b=>{if(b.textContent!=='Макс.')b.disabled=S.coins<+b.dataset.cost;});
+Plant.liveUpdate=(fl)=>{const r=$('#pl-rate');if(r)r.textContent=fmt1(Plant.total());const sv=$('#sell-val');if(sv)sv.textContent=fmt(S.raw*rawPrice());
+  $$('[data-act=upgrade]').forEach(b=>{if(b.textContent!=='Макс.')b.disabled=S.coins<+b.dataset.cost;});$$('[data-hv]').forEach(c=>c.classList.toggle('on',harvestReady(c.dataset.hv)));
   if(fl)$$('.plant-card[data-plant]').forEach(c=>{const id=c.dataset.plant,rt=Plant.rate(id);if(rt>0){const bn=c.querySelector('.plant-banner');floatNum(bn,'+'+fmt1(rt),30+Math.random()*120,50);}});};

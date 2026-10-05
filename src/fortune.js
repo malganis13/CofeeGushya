@@ -91,7 +91,8 @@ const Fortune={
       const sl=r.spice&&SPICE_LINES[r.spice];if(sl&&sl.sec===sec.id)parts.push(sl.t);
       if(sec.id==='wealth')parts.push(LUCK_LINES.find(l=>r.luck>=l[0])[1]);
       if(sec.id==='secrets'&&bean&&bean.tier==='S')parts.push(R.pick(ORACLE_LINES,rng));
-      if(sec.id==='advice'){if(z)parts.push(ELEMENT_LINES[z.el].replace('{z}',z.name));
+      if(sec.id==='secrets'&&z){const zid=syms[1%n],zs=ZSYM[zid];if(zs)parts.push(`${z.dat} знак «${SYMBOLS[zid].name}» ${zs[EL_IDX[z.el]]}`);}
+      if(sec.id==='advice'){if(z){parts.push(ELEMENT_LINES[z.el].replace('{z}',z.name));parts.push(SIGN_LINES[z.id]);const zs=ZSYM[syms[0]];if(zs)parts.push(`${z.dat} знак «${SYMBOLS[syms[0]].name}» ${zs[EL_IDX[z.el]]}`);}
         parts.push(`Счастливое число — ${R.int(1,33,rng)}, цвет дня — ${R.pick(LUCKY_COLORS,rng)}, час силы — ${String(R.int(6,23,rng)).padStart(2,'0')}:00.`);}
       out[sec.id]=parts.join(' ');
     });

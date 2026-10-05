@@ -59,7 +59,7 @@ function itemIcon(t,id,size=''){
   if(t==='coins')return `<span class="ii ${size} t-C">🪙</span>`;
   if(t==='crystals')return `<span class="ii ${size} t-A">💎</span>`;
   const d=itemDef(t,id);if(!d)return '';
-  const inner=t==='bean'?`<span class="bean t-${d.tier}"></span>`:d.icon;
+  const inner=t==='bean'?`<span class="bean t-${d.tier}${d.blend?' blend':''}"></span>`:d.icon;
   return `<span class="ii ${size} t-${d.tier}">${inner}</span>`;
 }
 const tierBadge=t=>`<span class="tier tier-${t}">${t}</span>`;
@@ -131,7 +131,8 @@ function newState(){return{v:1,created:Date.now(),onboarded:false,name:'',zodiac
   plants:{eth:{owned:true,irr:0,fert:0,bar:0},col:{owned:false,irr:0,fert:0,bar:0},jam:{owned:false,irr:0,fert:0,bar:0},astral:{owned:false,irr:0,fert:0,bar:0}},
   inv:{beans:{arabica:3,robusta:0,supremo:1,moka:0,bluemount:0,kopi:0,astral:0,aphro:0},cups:{clay:1,porcelain:0,moon:0,ceremonial:0,aphroditeCup:0},
        spices:{cinnamon:1,cardamom:0,rose:1,star:0,gold:0},charms:{mult2:0,mult3:0}},
-  history:[],stats:{readings:0,cases:0,rawTotal:0,coinsEarned:0,symbols:{},bestLuck:0},settings:{sound:true}};}
+  history:[],stats:{readings:0,cases:0,rawTotal:0,coinsEarned:0,symbols:{},bestLuck:0,roasts:0,tarot:0},settings:{sound:true},
+  /* v2.0 */ rep:0,guests:{queue:[],nextAt:0,done:{},stories:{},active:null,served:0},talents:{},profile:{avatar:'zodiac',frame:'gold',title:'apprentice'},roastQ:{},blendsKnown:[],harvestAt:{}};}
 function deepMerge(base,src){for(const k in src){const v=src[k];if(v&&typeof v==='object'&&!Array.isArray(v)&&base[k]&&typeof base[k]==='object'&&!Array.isArray(base[k]))deepMerge(base[k],v);else base[k]=v;}return base;}
 function loadState(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return newState();return deepMerge(newState(),JSON.parse(raw));}catch(e){console.warn('save broken',e);return newState();}}
 let S=loadState();

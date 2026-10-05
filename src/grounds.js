@@ -47,8 +47,8 @@ const Grounds={
     // знаки
     const placed=[];
     for(const id of symIds){let tries=0,px,py;do{const a=rng()*6.283,d=40+rng()*170;px=cx+Math.cos(a)*d;py=cy+Math.sin(a)*d;tries++;}
-      while(tries<120&&placed.some(p=>Math.hypot(p.x-px,p.y-py)<145));
-      const s=80+rng()*22,rot=(rng()-.5)*.7;placed.push({id,x:px,y:py,s,rot});this.drawSymbol(x,id,px,py,s,rot,rng);}
+      while(tries<150&&placed.some(p=>Math.hypot(p.x-px,p.y-py)<(symIds.length>4?122:145)));
+      const s=(symIds.length>4?72:80)+rng()*22,rot=(rng()-.5)*.7;placed.push({id,x:px,y:py,s,rot});this.drawSymbol(x,id,px,py,s,rot,rng);}
     // виньетка
     g=x.createRadialGradient(cx,cy,180,cx,cy,280);g.addColorStop(0,'rgba(60,30,15,0)');g.addColorStop(1,'rgba(60,30,15,.28)');x.fillStyle=g;x.fillRect(0,0,W,W);
     x.restore();
@@ -67,6 +67,9 @@ const Grounds={
     for(let i=0;i<N;i++){const qx=rng()*M|0,qy=rng()*M|0;if(data[(qy*M+qx)*4+3]<120)continue;const sz=.8+rng()*2.3;
       ctx.fillStyle=`rgba(${28+rng()*30|0},${14+rng()*16|0},${6+rng()*8|0},${.45+rng()*.55})`;ctx.fillRect(ox+qx+(rng()-.5)*3,oy+qy+(rng()-.5)*3,sz,sz);}
   },
-  chooseSymbols(rng,n,spice){const pool=Object.keys(SYMBOLS).map(id=>({id,w:spice&&SPICE_BIAS[spice]&&SPICE_BIAS[spice].includes(id)?3.2:1}));const out=[];
+  chooseSymbols(rng,n,spice,o={}){const a=tal('astral'),rm=(o.rare?3:1)*(1+.3*a),lm=(o.rare?2:1)*(1+.6*a);
+    const pool=Object.keys(SYMBOLS).map(id=>{const r=SYMBOLS[id].r;let w=RARITY[r].w*(r==='rare'?rm:r==='legendary'?lm:1);if(spice&&SPICE_BIAS[spice]&&SPICE_BIAS[spice].includes(id))w*=3;return{id,w};});const out=[];
+    const force=id=>{const p=pool.find(q=>q.id===id);if(p){out.push(id);pool.splice(pool.indexOf(p),1);}};
+    if(o.legend)force(R.pick(Object.keys(SYMBOLS).filter(id=>SYMBOLS[id].r==='legendary'),rng));if(o.love)force(R.pick(['heart','ring'],rng));
     while(out.length<n&&pool.length){const p=R.weighted(pool,rng);out.push(p.id);pool.splice(pool.indexOf(p),1);}return out;}
 };

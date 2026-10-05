@@ -21,7 +21,7 @@ const CUP_SVG=`<svg class="flip-cup" id="flipCup" viewBox="0 0 170 150" aria-hid
 const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,cur:null,raf:0,typeTok:0,hint:null,
   stepsHTML(){const names=['Зерно','Чаша','Варка','Переворот','Гадание'],idx={1:0,2:1,3:2,4:3,reading:4,fortune:4}[this.step];
     return `<div class="steps">${names.map((n,i)=>`${i?'<span class="stp-line"></span>':''}<div class="stp ${i===idx?'on':i<idx?'done':''}"><span class="n">${i<idx?'✓':i+1}</span><span class="l">${n}</span></div>`).join('')}</div>`;},
-  luckBase(){const b=BEANS[this.sel.bean],c=CUPS[this.sel.cup],sp=SPICES[this.sel.spice];return 10+(b?b.luck:0)+(c?c.luck:0)+(sp?sp.luck:0)+Math.min(S.streak,7);},
+  luckBase(){const b=BEANS[this.sel.bean],c=CUPS[this.sel.cup],sp=SPICES[this.sel.spice];return 10+(b?b.luck:0)+(c?c.luck:0)+(sp?sp.luck:0)+Math.min(S.streak,7)+(b?Math.round(S.roastQ[this.sel.bean]||0):0)+3*tal('starluck');},
   greet(){const h=new Date().getHours(),n=esc(S.name||'Странница');return (h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер')+', '+n+'.';},
   view(){cancelAnimationFrame(this.raf);const f={1:'v1',2:'v2',3:'v3',4:'v4',reading:'vReading',fortune:'vFortune'}[this.step];return this.stepsHTML()+this[f]();},
   mount(){if(this.step===3)this.mountBrew();if(this.step==='reading')this.mountReading();if(this.step==='fortune')this.mountFortune();},
@@ -29,15 +29,15 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
     return `<div class="glass ritual-panel" style="margin-top:14px"><div class="row"><div class="sp" style="min-width:200px"><div class="dim" style="font-size:12px">Сила будущего видения ≈ ${est}%</div><div class="luck-meter"><i style="width:${est}%"></i></div></div>
       ${back?`<button class="btn" data-act="rStep" data-s="${back}">‹ Назад</button>`:''}${extra}<button class="btn btn-gold" data-act="rStep" data-s="${next}" ${enabled?'':'disabled'}>${nextLabel} ›</button></div></div>`;},
   v1(){const ids=Object.keys(BEANS).filter(id=>S.inv.beans[id]>0);if(this.sel.bean&&!ids.includes(this.sel.bean))this.sel.bean=null;
-    let h=`<div class="glass ritual-hero glow fade-in"><div style="font-size:46px">☕</div><h1 class="section-title">Ритуал Варки</h1><p class="subtitle" style="margin:8px auto 0">${this.greet()} Выберите зерно для гадания — чем оно реже, тем глубже видение и больше знаков проступит на дне чашки.</p></div>`;
-    if(!ids.length)return h+`<div class="glass empty" style="margin-top:14px"><span class="big">🫙</span>Зёрна закончились. Обжарьте урожай плантаций или откройте кейс.<div class="row" style="justify-content:center;margin-top:12px"><button class="btn btn-gold" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button><button class="btn btn-wine" data-act="tab" data-tab="cases">🎁 Кейсы</button></div></div>`;
+    let h=Guests.bannerHTML()+`<div class="glass ritual-hero glow fade-in"><div style="font-size:46px">☕</div><h1 class="section-title">Ритуал Варки</h1><p class="subtitle" style="margin:8px auto 0">${this.greet()} Выберите зерно для гадания — чем оно реже, тем глубже видение и больше знаков проступит на дне чашки.</p></div>`;
+    if(!ids.length)return h+`<div class="glass empty" style="margin-top:14px"><span class="big">🫙</span>Зёрна закончились. Обжарьте урожай плантаций или откройте сундучок.<div class="row" style="justify-content:center;margin-top:12px"><button class="btn btn-gold" data-act="tab" data-tab="shop" data-sub="roast">🔥 Обжарка</button><button class="btn btn-wine" data-act="tab" data-tab="cases">🎁 Сундучки</button></div></div>`;
     h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Ваши зёрна</h3><div class="grid g-items">`+ids.map(id=>{const b=BEANS[id];
-      return `<div class="item click ${this.sel.bean===id?'sel':''}" data-act="rSel" data-k="bean" data-id="${id}"><span class="cnt">×${S.inv.beans[id]}</span>${itemIcon('bean',id,'lg')}${tierBadge(b.tier)}<div class="nm">${esc(b.name)}</div><div class="ds">${esc(b.desc)}</div><div class="gold" style="font-size:12px;font-weight:700">+${b.luck} удачи · ${b.tier==='S'?5:b.tier==='A'?4:3} знака</div></div>`;}).join('')+'</div>';
+      return `<div class="item click ${this.sel.bean===id?'sel':''}" data-act="rSel" data-k="bean" data-id="${id}"><span class="cnt">×${S.inv.beans[id]}</span>${itemIcon('bean',id,'lg')}${tierBadge(b.tier)}<div class="nm">${esc(b.name)}</div><div class="ds">${esc(b.desc)}</div><div class="gold" style="font-size:12px;font-weight:700">+${b.luck+Math.round(S.roastQ[id]||0)} удачи · ${b.eff==='chaos'?'3–6':symCount(id)} ${plural(symCount(id),['знак','знака','знаков'])}</div>${b.effName?`<div class="chip" style="font-size:11px;padding:2px 8px">✦ ${esc(b.effName)}</div>`:''}${S.roastQ[id]>=1?`<div class="dim" style="font-size:11px">🔥 обжарка +${Math.round(S.roastQ[id])}</div>`:''}</div>`;}).join('')+'</div>';
     return h+this.footer(0,2,'Далее',!!this.sel.bean);},
   v2(){if(!this.sel.bean){this.step=1;return this.v1();}if(!hasItem('cup',this.sel.cup))this.sel.cup='clay';if(this.sel.spice&&!hasItem('spice',this.sel.spice))this.sel.spice=null;if(this.sel.charm&&!hasItem('charm',this.sel.charm))this.sel.charm=null;
     const cups=Object.keys(CUPS).filter(id=>S.inv.cups[id]>0),sp=Object.keys(SPICES).filter(id=>S.inv.spices[id]>0),ch=Object.keys(CHARMS).filter(id=>S.inv.charms[id]>0);
     const none=(k,l,e)=>`<div class="item click ${!this.sel[k]?'sel':''}" data-act="rSel" data-k="${k}" data-id=""><span class="ii lg">${e}</span><div class="nm">${l}</div></div>`;
-    let h=`<div class="glass ritual-hero fade-in" style="padding:18px"><h2 class="h2">Чаша и Пряность</h2><p class="muted" style="font-size:14px">Чаша остаётся с вами навсегда. Пряности и амулеты расходуются в ритуале и направляют предсказание.</p></div>`;
+    let h=Guests.bannerHTML()+`<div class="glass ritual-hero fade-in" style="padding:18px"><h2 class="h2">Чаша и Пряность</h2><p class="muted" style="font-size:14px">Чаша остаётся с вами навсегда. Пряности и амулеты расходуются в ритуале и направляют предсказание.</p></div>`;
     h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Чаша</h3><div class="grid g-items">`+cups.map(id=>{const c=CUPS[id];return `<div class="item click ${this.sel.cup===id?'sel':''}" data-act="rSel" data-k="cup" data-id="${id}">${itemIcon('cup',id,'lg')}${tierBadge(c.tier)}<div class="nm">${esc(c.name)}</div><div class="ds">${esc(c.desc)}</div><div class="gold" style="font-size:12px;font-weight:700">+${c.luck} удачи</div></div>`;}).join('')+'</div>';
     h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Пряность</h3><div class="grid g-items">${none('spice','Без пряности','🚫')}`+sp.map(id=>{const s=SPICES[id];return `<div class="item click ${this.sel.spice===id?'sel':''}" data-act="rSel" data-k="spice" data-id="${id}"><span class="cnt">×${S.inv.spices[id]}</span>${itemIcon('spice',id,'lg')}${tierBadge(s.tier)}<div class="nm">${esc(s.name)}</div><div class="ds">${esc(s.desc)}</div></div>`;}).join('')+'</div>';
     h+=`<h3 class="h3 gold" style="margin:16px 2px 10px">Амулет</h3><div class="grid g-items">${none('charm','Без амулета','🚫')}`+ch.map(id=>{const s=CHARMS[id];return `<div class="item click ${this.sel.charm===id?'sel':''}" data-act="rSel" data-k="charm" data-id="${id}"><span class="cnt">×${S.inv.charms[id]}</span>${itemIcon('charm',id,'lg')}${tierBadge(s.tier)}<div class="nm">${esc(s.name)}</div><div class="ds">${esc(s.desc)}</div></div>`;}).join('')+'</div>';
@@ -45,10 +45,10 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
   v3(){return `<div class="brew-wrap fade-in"><div class="glass stir-box glow"><h2 class="h2">1. Размешайте</h2><p class="muted" style="font-size:13px">Ведите пальцем или мышью по кругу внутри чашки — три полных оборота, загадывая желание.</p>
       <canvas id="stirCanvas" width="300" height="300"></canvas><div class="prog"><i id="stirProg"></i></div></div>
     <div class="glass heat-box locked" id="heatBox"><h2 class="h2">2. Нагрейте</h2><p class="muted" style="font-size:13px">Удерживайте кнопку. Отпустите, когда пенка поднимется к золотой черте — но не дайте кофе убежать!</p>
-      <div class="cezve-area" id="cezveArea"><div class="steam" id="steam"><span></span><span></span><span></span></div>${CEZVE_SVG}<div class="gauge"><div class="zone"></div><div class="fill" id="gaugeFill"></div></div></div>
+      <div class="cezve-area" id="cezveArea"><div class="cz-wrap"><canvas id="steamCv" width="200" height="200"></canvas>${CEZVE_SVG}</div><div class="gauge"><div class="zone"></div><div class="fill" id="gaugeFill"></div></div></div>
       <button class="btn btn-wine btn-lg hold-btn" id="heatBtn" style="min-width:250px">🔥 Удерживать огонь</button><div id="heatRes" class="gold serif" style="font-size:19px;min-height:26px"></div></div></div>
     <div class="glass ritual-panel" style="margin-top:14px"><div class="row"><div class="sp muted" style="font-size:13px">Варка кофе по-турецки — первая часть таинства.</div><button class="btn btn-gold" id="brewNext" data-act="rStep" data-s="4" disabled>К перевороту ›</button></div></div>`;},
-  mountBrew(){const b=this.brew={stir:0,heat:0,heating:false,heatDone:false,bonus:0,msg:''};const c=$('#stirCanvas');if(!c)return;const x=c.getContext('2d'),C=150;
+  mountBrew(){Steam.parts=[];const b=this.brew={stir:0,heat:0,heating:false,heatDone:false,bonus:0,msg:''};const c=$('#stirCanvas');if(!c)return;const x=c.getContext('2d'),C=150;
     let ang=0,acc=0,last=0,down=false,drift=0,spoonA=-.8,lt=performance.now(),spark=[];
     const pos=e=>{const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*300/r.width,y:(e.clientY-r.top)*300/r.height};};
     c.addEventListener('pointerdown',e=>{down=true;try{c.setPointerCapture(e.pointerId);}catch(_){}const p=pos(e);last=Math.atan2(p.y-C,p.x-C);SFX.ensure();});
@@ -62,9 +62,9 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
     hb.addEventListener('pointerdown',startH);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>hb.addEventListener(ev,stopH));
     hb.addEventListener('contextmenu',e=>e.preventDefault());
     const loop=t=>{if(!c.isConnected)return;const dt=Math.min(.05,(t-lt)/1000);lt=t;drift+=dt*.35;
-      if(b.heating){b.heat+=dt*(26+b.heat*.32);if(Math.random()<.15)SFX.bubble();if(b.heat>=100){b.heat=100;b.heating=false;area.classList.remove('heating');this.evalHeat(true);}}
+      if(b.heating){b.heat+=dt*(26+b.heat*.32);if(Math.random()<.09)SFX.boil();if(b.heat>=100){b.heat=100;b.heating=false;area.classList.remove('heating');this.evalHeat(true);}}
       const fy=150-b.heat*.92;const fr=$('#foamRect'),cr=$('#coffeeRect');if(fr){fr.setAttribute('y',fy);cr.setAttribute('y',fy+14);}
-      $('#gaugeFill').style.height=b.heat+'%';$('#steam').style.setProperty('--so',(.15+b.heat/120).toFixed(2));
+      $('#gaugeFill').style.height=b.heat+'%';Steam.step($('#steamCv'),dt,b.heat,b.heating);
       x.clearRect(0,0,300,300);let g=x.createRadialGradient(C,C,100,C,C,148);g.addColorStop(0,'#e8dac6');g.addColorStop(1,'#a88c6c');x.fillStyle=g;x.beginPath();x.arc(C,C,146,0,7);x.fill();
       x.strokeStyle='#D4AF37';x.lineWidth=4;x.beginPath();x.arc(C,C,143,0,7);x.stroke();
       g=x.createRadialGradient(C-10,C-15,10,C,C,125);g.addColorStop(0,'#7a4a26');g.addColorStop(.6,'#4a2812');g.addColorStop(1,'#2a1408');x.fillStyle=g;x.beginPath();x.arc(C,C,124,0,7);x.fill();
@@ -86,18 +86,19 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
   v4(){return `<div class="glass ritual-panel glow fade-in" style="text-align:center"><h2 class="h2">Переворот чашки</h2><p class="muted" style="font-size:14px;max-width:460px;margin:0 auto">Сделайте последний глоток, оставив немного гущи. Задайте мысленно вопрос, накройте чашку блюдцем и переверните её от себя.</p>
      <div class="flip-stage"><div class="saucer"></div>${CUP_SVG}</div><div id="flipMsg" style="min-height:64px"></div>
      <button class="btn btn-gold btn-lg" data-act="rFlip" id="flipBtn">🔄 Перевернуть чашку</button></div>`;},
-  startReading(){const sel=this.sel,bean=BEANS[sel.bean];if(!bean||!takeItem('bean',sel.bean)){toast('Зерно не найдено в сундуке','bad');this.step=1;return App.render();}
-    if(sel.spice&&!takeItem('spice',sel.spice))sel.spice=null;if(sel.charm&&!takeItem('charm',sel.charm))sel.charm=null;
-    const seed=(Math.random()*4294967296)>>>0,n=bean.tier==='S'?5:bean.tier==='A'?4:3,rng=mulberry32((seed^0xA5A5A5)>>>0);
-    const symbols=Grounds.chooseSymbols(rng,n,sel.spice),luck=clamp(Math.round(this.luckBase()+(this.brew?this.brew.bonus:0)+R.int(0,15)),1,99);
+  startReading(){const sel=this.sel,bean=BEANS[sel.bean];if(!bean||!takeItem('bean',sel.bean)){toast('Зерно не найдено в запасах','bad');this.step=1;return App.render();}
+    if(sel.spice){if(!takeItem('spice',sel.spice))sel.spice=null;else if(Math.random()<.12*tal('goldhands')){addItem('spice',sel.spice,1);setTimeout(()=>toast('✋ Золотые руки сберегли пряность!','gold'),400);}}
+    if(sel.charm&&!takeItem('charm',sel.charm))sel.charm=null;
+    const seed=(Math.random()*4294967296)>>>0,rng=mulberry32((seed^0xA5A5A5)>>>0),n=symCount(sel.bean,rng);
+    const symbols=Grounds.chooseSymbols(rng,n,sel.spice,{rare:bean.eff==='rare',legend:bean.eff==='legend',love:bean.eff==='love'}),luck=clamp(Math.round(this.luckBase()+(this.brew?this.brew.bonus:0)+R.int(0,15)),1,99);
     this.cur={id:Date.now().toString(36),seed,ts:Date.now(),bean:sel.bean,cup:sel.cup,spice:sel.spice,charm:sel.charm,luck,symbols,found:[],hints:0,brewMsg:this.brew?this.brew.msg:''};
     S.pending=this.cur;this.step='reading';this.hint=null;save();App.render();App.updateHUD();},
   foundHTML(){const r=this.cur;return r.symbols.map((_,i)=>{const id=r.found[i];if(!id)return `<div class="found"><span class="si">❔</span><div><b>Скрытый знак</b><div class="dim" style="font-size:12px">Ищите очертания в гуще</div></div></div>`;
       const s=SYMBOLS[id];return `<div class="found ok"><span class="si">${s.icon}</span><div><b class="gold">${s.name}</b><div class="dim" style="font-size:12px">${s.meaning}</div></div></div>`;}).join('');},
-  vReading(){const r=this.cur;return `<div class="reading-layout fade-in"><div class="glass cup-wrap glow"><canvas id="groundsCanvas" width="600" height="600"></canvas><div class="dim" style="font-size:12.5px">Коснитесь очертаний в гуще, чтобы раскрыть знак</div></div>
+  vReading(){const r=this.cur;return Guests.bannerHTML()+`<div class="reading-layout fade-in"><div class="glass cup-wrap glow"><canvas id="groundsCanvas" width="600" height="600"></canvas><div class="dim" style="font-size:12.5px">Коснитесь очертаний в гуще, чтобы раскрыть знак</div></div>
     <div class="glass reading-side"><div><h2 class="h2">Чтение гущи</h2><p class="muted" style="font-size:13px">${esc(r.brewMsg||'')} Сила видения: <b class="gold">${r.luck}%</b></p></div>
     <div>Найдено знаков: <b class="gold" id="foundCount">${r.found.length}</b> из ${r.symbols.length}</div><div class="found-list" id="foundList">${this.foundHTML()}</div>
-    <button class="btn btn-block" data-act="rHint">💫 Подсказка Оракула · ${r.hints?'2 💎':'бесплатно'}</button>
+    <button class="btn btn-block" data-act="rHint">💫 Подсказка Оракула · ${r.hints>=1+tal('eye')?'2 💎':'бесплатно · '+(1+tal('eye')-r.hints)}</button>
     <button class="btn btn-gold btn-lg btn-block" data-act="rInterpret" id="interpretBtn" ${r.found.length?'':'disabled'}>📜 Истолковать знаки</button>
     <p class="dim" style="font-size:11.5px;text-align:center">Найдите все знаки сами — получите бонус зоркости +30% к наградам.</p></div></div>`;},
   mountReading(){const r=this.cur,c=$('#groundsCanvas');if(!c)return;const base=document.createElement('canvas');base.width=base.height=600;const placed=Grounds.render(base,r.seed,r.symbols);
@@ -125,7 +126,7 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
       <div>Индекс удачи: <b class="gold">${r.luck}%</b> <span class="stars5">${'★'.repeat(st)}${'☆'.repeat(5-st)}</span></div><div class="luck-meter" style="max-width:320px;margin:6px auto"><i style="width:${r.luck}%"></i></div>
       <div class="vn-oracle"><div class="oracle-ava">🔮</div><div class="serif" style="font-style:italic;font-size:19px;color:var(--text-2)">«Слушай же, ${esc(S.name||'Странница')}, что поведала гуща…»</div></div></div>
     <div class="fortune-grid">${SECTIONS.map(s=>`<div class="glass fcard f-${s.id}" data-sec="${s.id}" data-act="skipType"><h4>${s.icon} ${s.title}</h4><p></p></div>`).join('')}</div>
-    <div class="glass reward-box"><b class="serif gold" style="font-size:20px">Дары Оракула:</b><span class="chip">🪙 +${fmt(rw.coins||0)}</span><span class="chip">⭐ +${rw.xp||0} опыта</span>${rw.crystals?`<span class="chip">💎 +${rw.crystals}</span>`:''}${rw.sharp?'<span class="chip">👁️ Зоркость +30%</span>':''}${rw.mult>1?`<span class="chip">${CHARMS[r.charm].icon} ×${rw.mult}</span>`:''}</div>
+    ${Tarot.panelHTML(r)}<div class="glass reward-box"><b class="serif gold" style="font-size:20px">Дары Оракула:</b>${rw.legend?`<span class="chip" style="border-color:var(--tS)">🐉 Легендарный знак ×${rw.legend}</span>`:''}<span class="chip">🪙 +${fmt(rw.coins||0)}</span><span class="chip">⭐ +${rw.xp||0} опыта</span>${rw.crystals?`<span class="chip">💎 +${rw.crystals}</span>`:''}${rw.sharp?'<span class="chip">👁️ Зоркость +30%</span>':''}${rw.mult>1?`<span class="chip">${CHARMS[r.charm].icon} ×${rw.mult}</span>`:''}</div>
     <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-gold btn-lg" data-act="share" data-id="${r.id}">🖼️ Карта для сторис</button><button class="btn btn-wine btn-lg" data-act="rNew">☕ Новое гадание</button><button class="btn btn-lg" data-act="tab" data-tab="grimoire">📜 Гримуар</button></div>`;},
   mountFortune(){const r=this.cur,tok=++this.typeTok;const cards=$$('.fcard');
     if(r._typed){cards.forEach(c=>c.querySelector('p').textContent=r.texts[c.dataset.sec]);return;}
@@ -134,20 +135,25 @@ const Ritual={step:1,sel:{bean:null,cup:'clay',spice:null,charm:null},brew:null,
     next();}
 };
 Views.ritual=()=>Ritual.view();
-Actions.rSel=el=>{const k=el.dataset.k;Ritual.sel[k]=el.dataset.id||null;SFX.click();App.render(true);};
+Actions.rSel=el=>{const k=el.dataset.k;Ritual.sel[k]=el.dataset.id||null;if(k==='bean')SFX.rustle();else if(k==='cup')SFX.porcelain();else SFX.click();App.render(true);};
 Actions.rStep=el=>{const s=+el.dataset.s;if(s===2&&!Ritual.sel.bean)return;if(s===4&&!(Ritual.brew&&Ritual.brew.heatDone))return;Ritual.step=s;SFX.click();App.render();scrollTo({top:0,behavior:'smooth'});};
 Actions.rFlip=el=>{el.disabled=true;$('#flipCup').classList.add('flipped');SFX.whoosh();let n=3;const m=$('#flipMsg');
-  setTimeout(()=>{const tick=()=>{if(!m.isConnected)return;if(n===0){Ritual.startReading();return;}m.innerHTML=`<div class="drip-count">${n}</div><div class="dim">Гуща стекает по стенкам…</div>`;SFX.bubble();n--;setTimeout(tick,900);};tick();},1300);};
-Actions.rHint=()=>{const r=Ritual.cur,left=(Ritual._placed||[]).filter(p=>!r.found.includes(p.id));if(!left.length)return;if(r.hints>0){if(!pay({crystals:2})){SFX.error();return toast('Нужно 2 💎','bad');}}
+  setTimeout(()=>{SFX.porcelain();const tick=()=>{if(!m.isConnected)return;if(n===0){Ritual.startReading();return;}m.innerHTML=`<div class="drip-count">${n}</div><div class="dim">Гуща стекает по стенкам…</div>`;SFX.bubble();n--;setTimeout(tick,900);};tick();},1300);};
+Actions.rHint=()=>{const r=Ritual.cur,left=(Ritual._placed||[]).filter(p=>!r.found.includes(p.id));if(!left.length)return;if(r.hints>=1+tal('eye')){if(!pay({crystals:2})){SFX.error();return toast('Нужно 2 💎','bad');}}
   r.hints++;const p=left[Math.floor(Math.random()*left.length)];Ritual.hint={x:p.x+(Math.random()-.5)*50,y:p.y+(Math.random()-.5)*50,t:performance.now()};SFX.magic();
-  const b=$('[data-act=rHint]');if(b)b.innerHTML='💫 Подсказка Оракула · 2 💎';App.updateHUD();};
-Actions.rInterpret=()=>{const r=Ritual.cur;if(!r||!r.found.length)return;const sharp=r.found.length===r.symbols.length;
-  r.texts=Fortune.generate(r);const mult=r.charm&&CHARMS[r.charm]?CHARMS[r.charm].mult:1;
-  const coins=Math.round((40+r.luck*3)*mult*(sharp?1.3:1)),xp=Math.round((25+r.luck*.6)*mult),crystals=(r.luck>=75?R.int(2,4):(Math.random()<.35?1:0))*mult;
-  r.rewards={coins,xp,crystals,mult,sharp};addItem('coins',0,coins);S.crystals+=crystals;addXP(xp);
+  const b=$('[data-act=rHint]');if(b)b.innerHTML='💫 Подсказка Оракула · '+(r.hints>=1+tal('eye')?'2 💎':'бесплатно · '+(1+tal('eye')-r.hints));App.updateHUD();};
+Actions.rInterpret=()=>{const r=Ritual.cur;if(!r||!r.found.length)return;const sharp=r.found.length===r.symbols.length,bean=BEANS[r.bean]||{};
+  r.texts=Fortune.generate(r);const mult=r.charm&&CHARMS[r.charm]?CHARMS[r.charm].mult:1,legend=r.symbols.filter(id=>SYMBOLS[id].r==='legendary').length;
+  const coins=Math.round((40+r.luck*3)*mult*(sharp?1.3:1)*(bean.eff==='coins'?1.5:1)*(1+.25*legend)),xp=Math.round((25+r.luck*.6)*mult*(bean.eff==='xp'?1.5:1)),crystals=((r.luck>=75?R.int(2,4):(Math.random()<.35?1:0))+legend)*mult;
+  r.rewards={coins,xp,crystals,mult,sharp,legend};addItem('coins',0,coins);S.crystals+=crystals;addXP(xp);
   S.stats.readings++;S.stats.bestLuck=Math.max(S.stats.bestLuck,r.luck);r.symbols.forEach(id=>S.stats.symbols[id]=(S.stats.symbols[id]||0)+1);
-  const entry={id:r.id,ts:r.ts,seed:r.seed,bean:r.bean,cup:r.cup,spice:r.spice,charm:r.charm,luck:r.luck,symbols:r.symbols,texts:r.texts,rewards:r.rewards};
+  const q=Guests.active(),entry={id:r.id,ts:r.ts,seed:r.seed,bean:r.bean,cup:r.cup,spice:r.spice,charm:r.charm,luck:r.luck,symbols:r.symbols,texts:r.texts,rewards:r.rewards};if(q)entry.guest=q.gid;
   S.history.unshift(entry);if(S.history.length>60)S.history.length=60;delete S.pending;Ritual.cur=Object.assign({},entry);Ritual.step='fortune';
-  save();SFX.magic();Confetti.burst(r.luck>=75?160:70);App.render();scrollTo({top:0,behavior:'smooth'});};
+  const gres=q?Guests.complete(entry):null;
+  save();SFX.magic();SFX.porcelain();Confetti.burst(r.luck>=75?160:70);App.render();scrollTo({top:0,behavior:'smooth'});
+  if(legend)setTimeout(()=>{screenFlash();toast('🐉 Легендарный знак! Награды увеличены','gold');},500);
+  if(gres)setTimeout(()=>Guests.showResult(gres),1600);};
 Actions.skipType=el=>{el._skip=true;};
 Actions.rNew=()=>{Ritual.step=1;Ritual.cur=null;Ritual.brew=null;Ritual.typeTok++;SFX.click();App.render();scrollTo({top:0});};
+
+function symCount(id,rng){const b=BEANS[id];if(!b)return 3;if(b.eff==='chaos')return rng?R.int(3,6,rng):4;return (b.tier==='S'?5:b.tier==='A'?4:3)+(b.eff==='extra'?1:0);}
