@@ -65,36 +65,36 @@ function itemIcon(t,id,size=''){
 const tierBadge=t=>`<span class="tier tier-${t}">${t}</span>`;
 
 const PLANTS={
-  eth:{name:'Эфиопия Иргачеффе',sub:'Колыбель кофе, где пастух Калди нашёл волшебные ягоды.',base:1,price:{coins:0},up:40,bean:'arabica',roast:60,icon:'⛰️',bush:'🌿',grad:'linear-gradient(135deg,#4a6b2a,#1f3214 60%,#12091a)'},
-  col:{name:'Колумбия Супремо',sub:'Склоны Анд в утреннем тумане и песнях сборщиц.',base:5,price:{coins:600},up:320,bean:'supremo',roast:240,icon:'🌄',bush:'🌱',grad:'linear-gradient(135deg,#a4572a,#4b2414 60%,#12091a)'},
-  jam:{name:'Ямайка Блю Маунтин',sub:'Синие горы, окутанные легендами и морским бризом.',base:22,price:{coins:6000},up:2800,bean:'bluemount',roast:900,icon:'🏝️',bush:'🌴',grad:'linear-gradient(135deg,#2a6a9a,#173556 60%,#12091a)'},
-  astral:{name:'Астральный Сад Оракула',sub:'Сад меж звёзд, где зёрна светятся во тьме.',base:90,price:{crystals:80},minLevel:6,up:15000,bean:'astral',roast:3200,icon:'🌌',bush:'💫',grad:'linear-gradient(135deg,#6b2ca8,#2b1450 60%,#0a050e)'}
+  eth:{name:'Эфиопия Иргачеффе',sub:'Колыбель кофе, где пастух Калди нашёл волшебные ягоды.',base:1,price:{coins:0},up:60,bean:'arabica',roast:90,icon:'⛰️',bush:'🌿',grad:'linear-gradient(135deg,#4a6b2a,#1f3214 60%,#12091a)'},
+  col:{name:'Колумбия Супремо',sub:'Склоны Анд в утреннем тумане и песнях сборщиц.',base:5,price:{coins:2800},minLevel:3,up:520,bean:'supremo',roast:360,icon:'🌄',bush:'🌱',grad:'linear-gradient(135deg,#a4572a,#4b2414 60%,#12091a)'},
+  jam:{name:'Ямайка Блю Маунтин',sub:'Синие горы, окутанные легендами и морским бризом.',base:22,price:{coins:42000},minLevel:6,up:4200,bean:'bluemount',roast:1300,icon:'🏝️',bush:'🌴',grad:'linear-gradient(135deg,#2a6a9a,#173556 60%,#12091a)'},
+  astral:{name:'Астральный Сад Оракула',sub:'Сад меж звёзд, где зёрна светятся во тьме.',base:90,price:{crystals:220},minLevel:10,up:24000,bean:'astral',roast:4600,icon:'🌌',bush:'💫',grad:'linear-gradient(135deg,#6b2ca8,#2b1450 60%,#0a050e)'}
 };
 const UPG={
-  irr:{name:'Полив',icon:'💧',k:1,g:1.55,max:30,desc:'+35% к урожаю за уровень'},
-  fert:{name:'Магические Удобрения',icon:'🧪',k:2.6,g:1.72,max:20,desc:'×1,3 к урожаю за уровень'},
-  bar:{name:'Мистические Бариста',icon:'🧙‍♀️',k:5,g:2.1,max:10,desc:'+25% урожая и +2 ч офлайн-сбора'}
+  irr:{name:'Полив',icon:'💧',k:1,g:1.8,max:25,desc:'+35% к урожаю за уровень'},
+  fert:{name:'Магические Удобрения',icon:'🧪',k:3,g:2,max:18,desc:'×1,3 к урожаю за уровень'},
+  bar:{name:'Мистические Бариста',icon:'🧙‍♀️',k:8,g:2.2,max:10,desc:'+25% урожая и +2 ч офлайн-сбора'}
 };
-const RAW_PRICE=0.5;
+const RAW_PRICE=0.35;
 
 const CASES={
-  isis:{name:'Ларчик Исиды',desc:'Шкатулка египетской богини: простые дары и редкие сюрпризы.',price:{coins:300},icon:'⚱️',oc:'#7a4a1e',og:'rgba(212,175,55,.45)',cc:'rgba(212,175,55,.18)',
+  isis:{name:'Ларчик Исиды',desc:'Шкатулка египетской богини: простые дары и редкие сюрпризы.',price:{coins:750},icon:'⚱️',oc:'#7a4a1e',og:'rgba(212,175,55,.45)',cc:'rgba(212,175,55,.18)',
     loot:[{t:'bean',id:'arabica',q:2,w:20},{t:'bean',id:'robusta',q:2,w:17},{t:'spice',id:'cinnamon',q:2,w:12},{t:'spice',id:'cardamom',q:2,w:10},{t:'coins',q:450,w:8,tier:'C'},
       {t:'bean',id:'supremo',q:1,w:11},{t:'bean',id:'moka',q:1,w:8},{t:'spice',id:'rose',q:1,w:7},{t:'cup',id:'porcelain',q:1,w:3},{t:'crystals',q:5,w:2,tier:'B'},
       {t:'bean',id:'bluemount',q:1,w:1.5},{t:'charm',id:'mult2',q:1,w:1.2},{t:'bean',id:'astral',q:1,w:.3}]},
-  tarot:{name:'Шёпот Таро',desc:'Колода, что знает ответы. Эпические зёрна и чаши.',price:{crystals:15},icon:'🃏',oc:'#3b1d78',og:'rgba(195,155,255,.5)',cc:'rgba(195,155,255,.2)',
+  tarot:{name:'Шёпот Таро',desc:'Колода, что знает ответы. Эпические зёрна и чаши.',price:{crystals:28},icon:'🃏',oc:'#3b1d78',og:'rgba(195,155,255,.5)',cc:'rgba(195,155,255,.2)',
     loot:[{t:'bean',id:'supremo',q:2,w:16},{t:'bean',id:'moka',q:2,w:14},{t:'spice',id:'rose',q:2,w:12},{t:'spice',id:'star',q:2,w:10},{t:'bean',id:'bluemount',q:1,w:11},
       {t:'bean',id:'kopi',q:1,w:8},{t:'spice',id:'gold',q:1,w:7},{t:'coins',q:1500,w:6,tier:'B'},{t:'cup',id:'moon',q:1,w:5},{t:'charm',id:'mult2',q:1,w:6},
       {t:'cup',id:'ceremonial',q:1,w:2.5},{t:'charm',id:'mult3',q:1,w:1.5},{t:'bean',id:'astral',q:1,w:2},{t:'bean',id:'aphro',q:1,w:1}]},
-  aphro:{name:'Эликсир Афродиты',desc:'Флакон богини любви. Легендарные дары для избранных.',price:{crystals:45},icon:'🧪',oc:'#8f2a55',og:'rgba(255,120,170,.5)',cc:'rgba(255,120,170,.2)',
+  aphro:{name:'Эликсир Афродиты',desc:'Флакон богини любви. Легендарные дары для избранных.',price:{crystals:80},icon:'🧪',oc:'#8f2a55',og:'rgba(255,120,170,.5)',cc:'rgba(255,120,170,.2)',
     loot:[{t:'bean',id:'bluemount',q:2,w:16},{t:'bean',id:'kopi',q:2,w:14},{t:'spice',id:'rose',q:4,w:12},{t:'spice',id:'gold',q:2,w:11},{t:'charm',id:'mult2',q:2,w:10},
       {t:'bean',id:'astral',q:1,w:10},{t:'bean',id:'aphro',q:1,w:8},{t:'cup',id:'ceremonial',q:1,w:6},{t:'charm',id:'mult3',q:1,w:6},{t:'cup',id:'aphroditeCup',q:1,w:4},{t:'crystals',q:50,w:3,tier:'S'}]}
 };
 const SHOP=[
-  {t:'bean',id:'arabica',price:{coins:45}},{t:'bean',id:'robusta',price:{coins:40}},{t:'bean',id:'supremo',price:{coins:180}},
-  {t:'spice',id:'cinnamon',price:{coins:70}},{t:'spice',id:'cardamom',price:{coins:90}},{t:'spice',id:'rose',price:{coins:140}},{t:'spice',id:'star',price:{coins:160}},{t:'spice',id:'gold',price:{crystals:6}},
-  {t:'cup',id:'porcelain',price:{coins:900}},{t:'cup',id:'moon',price:{crystals:30}},{t:'cup',id:'ceremonial',price:{crystals:70}},
-  {t:'charm',id:'mult2',price:{crystals:18}}
+  {t:'bean',id:'arabica',price:{coins:80}},{t:'bean',id:'robusta',price:{coins:70}},{t:'bean',id:'supremo',price:{coins:320}},
+  {t:'spice',id:'cinnamon',price:{coins:120}},{t:'spice',id:'cardamom',price:{coins:160}},{t:'spice',id:'rose',price:{coins:240}},{t:'spice',id:'star',price:{coins:280}},{t:'spice',id:'gold',price:{crystals:10}},
+  {t:'cup',id:'porcelain',price:{coins:2200}},{t:'cup',id:'moon',price:{crystals:60}},{t:'cup',id:'ceremonial',price:{crystals:140}},
+  {t:'charm',id:'mult2',price:{crystals:30}}
 ];
 
 const SYMBOLS={
@@ -131,7 +131,7 @@ function newState(){return{v:1,created:Date.now(),onboarded:false,name:'',zodiac
   plants:{eth:{owned:true,irr:0,fert:0,bar:0},col:{owned:false,irr:0,fert:0,bar:0},jam:{owned:false,irr:0,fert:0,bar:0},astral:{owned:false,irr:0,fert:0,bar:0}},
   inv:{beans:{arabica:3,robusta:0,supremo:1,moka:0,bluemount:0,kopi:0,astral:0,aphro:0},cups:{clay:1,porcelain:0,moon:0,ceremonial:0,aphroditeCup:0},
        spices:{cinnamon:1,cardamom:0,rose:1,star:0,gold:0},charms:{mult2:0,mult3:0}},
-  history:[],stats:{readings:0,cases:0,rawTotal:0,coinsEarned:0,symbols:{},bestLuck:0,roasts:0,tarot:0},settings:{sound:true},
+  history:[],stats:{readings:0,cases:0,rawTotal:0,coinsEarned:0,symbols:{},bestLuck:0,roasts:0,tarot:0},settings:{sound:true,pad:true},
   /* v2.0 */ rep:0,guests:{queue:[],nextAt:0,done:{},stories:{},active:null,served:0},talents:{},profile:{avatar:'zodiac',frame:'gold',title:'apprentice'},roastQ:{},blendsKnown:[],harvestAt:{}};}
 function deepMerge(base,src){for(const k in src){const v=src[k];if(v&&typeof v==='object'&&!Array.isArray(v)&&base[k]&&typeof base[k]==='object'&&!Array.isArray(base[k]))deepMerge(base[k],v);else base[k]=v;}return base;}
 function loadState(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return newState();return deepMerge(newState(),JSON.parse(raw));}catch(e){console.warn('save broken',e);return newState();}}
@@ -144,9 +144,9 @@ function priceHTML(p,mul=1){const a=[];if(p.coins)a.push(fmt(p.coins*mul)+' 🪙
 function addItem(t,id,q=1){if(t==='coins'){S.coins+=q;S.stats.coinsEarned+=q;return;}if(t==='crystals'){S.crystals+=q;return;}const g=ITEM_GROUPS[t];if(!g)return;S.inv[g.bag][id]=(S.inv[g.bag][id]||0)+q;}
 function hasItem(t,id){return (S.inv[ITEM_GROUPS[t].bag][id]||0)>0;}
 function takeItem(t,id,q=1){const b=S.inv[ITEM_GROUPS[t].bag];if((b[id]||0)<q)return false;b[id]-=q;return true;}
-const xpNeed=l=>Math.round(100*Math.pow(l,1.45));
-function addXP(n){S.xp+=Math.round(n);while(S.xp>=xpNeed(S.level)){S.xp-=xpNeed(S.level);S.level++;const c=100*S.level;S.coins+=c;S.crystals+=5;
-  setTimeout(()=>{toast(`✨ Новый уровень ${S.level}! +${fmt(c)} 🪙 и +5 💎`,'gold');SFX.magic();Confetti.burst(90);},300);}}
+const xpNeed=l=>Math.round(140*Math.pow(l,1.7));
+function addXP(n){S.xp+=Math.round(n);while(S.xp>=xpNeed(S.level)){S.xp-=xpNeed(S.level);S.level++;const c=60*S.level;S.coins+=c;S.crystals+=3;
+  setTimeout(()=>{toast(`✨ Новый уровень ${S.level}! +${fmt(c)} 🪙 и +3 💎`,'gold');SFX.magic();Confetti.burst(90);},300);}}
 
 /* ============================ ЗВУК ============================ */
 const SFX={ctx:null,

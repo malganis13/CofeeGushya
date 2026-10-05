@@ -144,7 +144,7 @@ Actions.rHint=()=>{const r=Ritual.cur,left=(Ritual._placed||[]).filter(p=>!r.fou
   const b=$('[data-act=rHint]');if(b)b.innerHTML='💫 Подсказка Оракула · '+(r.hints>=1+tal('eye')?'2 💎':'бесплатно · '+(1+tal('eye')-r.hints));App.updateHUD();};
 Actions.rInterpret=()=>{const r=Ritual.cur;if(!r||!r.found.length)return;const sharp=r.found.length===r.symbols.length,bean=BEANS[r.bean]||{};
   r.texts=Fortune.generate(r);const mult=r.charm&&CHARMS[r.charm]?CHARMS[r.charm].mult:1,legend=r.symbols.filter(id=>SYMBOLS[id].r==='legendary').length;
-  const coins=Math.round((40+r.luck*3)*mult*(sharp?1.3:1)*(bean.eff==='coins'?1.5:1)*(1+.25*legend)),xp=Math.round((25+r.luck*.6)*mult*(bean.eff==='xp'?1.5:1)),crystals=((r.luck>=75?R.int(2,4):(Math.random()<.35?1:0))+legend)*mult;
+  const coins=Math.round((18+r.luck*1.4)*mult*(sharp?1.3:1)*(bean.eff==='coins'?1.5:1)*(1+.25*legend)),xp=Math.round((14+r.luck*.35)*mult*(bean.eff==='xp'?1.5:1)),crystals=((r.luck>=80?R.int(1,2):(Math.random()<.2?1:0))+legend)*mult;
   r.rewards={coins,xp,crystals,mult,sharp,legend};addItem('coins',0,coins);S.crystals+=crystals;addXP(xp);
   S.stats.readings++;S.stats.bestLuck=Math.max(S.stats.bestLuck,r.luck);r.symbols.forEach(id=>S.stats.symbols[id]=(S.stats.symbols[id]||0)+1);
   const q=Guests.active(),entry={id:r.id,ts:r.ts,seed:r.seed,bean:r.bean,cup:r.cup,spice:r.spice,charm:r.charm,luck:r.luck,symbols:r.symbols,texts:r.texts,rewards:r.rewards};if(q)entry.guest=q.gid;

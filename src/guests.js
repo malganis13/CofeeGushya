@@ -54,7 +54,7 @@ const GUESTS={
 const TIERS_ARR=['C','B','A','S'];
 function repRank(){let i=0;REP_RANKS.forEach((r,k)=>{if(S.rep>=r[0])i=k;});return{i,name:REP_RANKS[i][1],next:REP_RANKS[i+1]?REP_RANKS[i+1][0]:null,cur:REP_RANKS[i][0]};}
 const Guests={
-  interval(){return 150000*(1-.15*tal('host'))/(1+.12*repRank().i);},
+  interval(){return 240000*(1-.15*tal('host'))/(1+.12*repRank().i);},
   orderOf(q){const g=GUESTS[q.gid];return g.orders[q.oi%g.orders.length];},
   spawn(force){const G=S.guests;if(G.queue.length>=3)return null;const busy=G.queue.map(q=>q.gid);
     const pool=Object.keys(GUESTS).filter(id=>!busy.includes(id)).map(id=>({id,w:(G.stories[id]||0)<5?3:1}));if(!pool.length)return null;
@@ -78,8 +78,8 @@ const Guests={
     if(r.luck>=60)score+=5;score=clamp(score,0,100);const stars=score>=85?3:score>=60?2:1;return{score,stars,ok:score>=60,notes};},
   complete(r){const q=this.active();if(!q)return null;const G=S.guests,g=GUESTS[q.gid],ev=this.evaluate(r,q),rk=repRank();
     const venus=BEANS[r.bean].eff==='love'?2:1;
-    const coins=Math.round(g.tip*(.4+ev.score/100)*(1+.15*tal('persuade'))*(1+.1*rk.i)*venus),crystals=(ev.stars===3?3:ev.stars===2?1:0)+(ev.ok&&rk.i>=2?1:0),rep=ev.stars*5+(ev.ok?5:0);
-    addItem('coins',0,coins);S.crystals+=crystals;S.rep+=rep;addXP(ev.stars*15);G.served++;
+    const coins=Math.round(g.tip*.45*(.4+ev.score/100)*(1+.15*tal('persuade'))*(1+.1*rk.i)*venus),crystals=(ev.stars===3?2:ev.stars===2?1:0)+(ev.ok&&rk.i>=3?1:0),rep=ev.stars*5+(ev.ok?5:0);
+    addItem('coins',0,coins);S.crystals+=crystals;S.rep+=rep;addXP(ev.stars*10);G.served++;
     let frag=null;if(ev.ok){G.done[q.gid]=(G.done[q.gid]||0)+1;const n=G.stories[q.gid]||0;if(n<g.story.length){G.stories[q.gid]=n+1;frag=n;}}
     G.queue=G.queue.filter(x=>x.id!==q.id);G.active=null;const nr=repRank();
     const res={gid:q.gid,ev,coins,crystals,rep,frag,rankUp:nr.i>rk.i?nr.name:null};save();return res;},
@@ -102,11 +102,12 @@ Views.guests=()=>{const G=S.guests,rk=repRank(),pct=rk.next?(S.rep-rk.cur)/(rk.n
   for(let i=0;i<3;i++){const q=G.queue[i];
     if(!q){h+=`<div class="glass guest-card empty-seat fade-in"><span class="g-ava" style="--gc:#2a1a36;filter:grayscale(1);opacity:.5">🪑</span><div class="sp"><b>Свободный столик</b><div class="dim" style="font-size:12.5px">Следующий гость через <span class="guest-timer">${fmtTimer(G.nextAt-Date.now())}</span></div></div></div>`;continue;}
     const g=GUESTS[q.gid],o=Guests.orderOf(q),act=G.active===q.id;
-    h+=`<div class="glass guest-card fade-in ${act?'glow':''}" style="--gc:${g.col}"><span class="g-ava">${g.icon}</span><div class="sp" style="min-width:0"><div class="dim" style="font-size:11.5px">${esc(g.role)}</div><b class="serif gold" style="font-size:20px">${esc(g.name)}</b>
+    h+=`<div class="glass guest-card fade-in ${act?'glow':''}" style="--gc:${g.col}"><span class="g-ava">${g.icon}</span><div class="sp" style="min-width:0"><div class="dim" style="font-size:11.5px">${esc(g.role)}</div><b class="serif gold" style="font-size:20px">${esc(g.name)}</b>${g.drink?`<div class="dim" style="font-size:11.5px">☕ ${esc(g.drink)}</div>`:''}
       <div style="font-size:13px;color:var(--text-2);margin:3px 0 8px">«${esc(o.q)}»</div><div class="row" style="gap:6px">${act?'<span class="chip" style="border-color:var(--gold)">☕ Заказ готовится</span>':''}
       <button class="btn btn-sm btn-gold" data-act="gTalk" data-id="${q.id}">${act?'К ритуалу':'Выслушать'}</button></div></div></div>`;}
   h+=`</div><h3 class="h3 gold" style="margin:20px 2px 10px">Книга историй</h3><div class="grid g-auto">`;
-  for(const gid in GUESTS){const g=GUESTS[gid],n=G.stories[gid]||0;
+  for(const gid of (typeof GUEST_ORDER!=='undefined'?GUEST_ORDER:Object.keys(GUESTS))){const g=GUESTS[gid],n=G.stories[gid]||0;
+    if(Guests.unlocked&&!Guests.unlocked(gid)){h+=`<div class="glass guest-card fade-in locked-guest"><span class="g-ava sm" style="--gc:#2a1a36;filter:grayscale(1);opacity:.55">🔒</span><div class="sp"><b>Гость за туманом</b><div class="dim" style="font-size:12px">Заглянет, когда репутация достигнет 🏅 ${g.unlock}</div></div><span class="dim" style="font-size:12px">${fmt(Math.max(0,g.unlock-S.rep))}</span></div>`;continue;}
     h+=`<div class="glass guest-card click fade-in" data-act="gStory" data-gid="${gid}" style="--gc:${g.col}"><span class="g-ava sm">${n?g.icon:'❔'}</span><div class="sp"><b>${n?esc(g.name):'Незнакомец'}</b> <span class="dim" style="font-size:12px">${n?esc(g.role):'ещё не открыл свою историю'}</span>
       <div class="frag-dots">${g.story.map((_,k)=>`<i class="${k<n?'on':''}"></i>`).join('')}</div></div><span class="dim" style="font-size:12px">${n}/${g.story.length}</span></div>`;}
   return h+'</div>';};

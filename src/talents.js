@@ -19,6 +19,7 @@ const Profile={tab:'main',
     <div class="divider"></div><label class="dim" style="font-size:12px">Имя</label><input class="field" id="pfName" maxlength="24" value="${esc(S.name)}" style="margin:6px 0 12px">
     <label class="dim" style="font-size:12px">Знак зодиака</label><div style="margin:6px 0 14px">${zodiacGrid(S.zodiac)}</div>
     <div class="row" style="margin-bottom:14px"><span class="sp">🔊 Звуки</span><button class="switch ${S.settings.sound?'on':''}" data-act="toggleSound" aria-label="Звук"></button></div>
+    <div class="row" style="margin-bottom:14px"><span class="sp">🎶 Музыка гадания <span class="dim" style="font-size:12px">(мягкие эзотерические аккорды)</span></span><button class="switch ${S.settings.pad!==false?'on':''}" data-act="togglePad" aria-label="Музыка гадания"></button></div>
     <div class="row"><button class="btn btn-gold sp" data-act="pfSave">Сохранить</button><button class="btn" data-act="daily">🎁 Ежедневные дары</button></div>
     <div class="row" style="margin-top:10px"><button class="btn btn-sm sp" data-act="exportSave">⬇️ Экспорт</button><button class="btn btn-sm sp" data-act="importSave">⬆️ Импорт</button><button class="btn btn-sm sp" data-act="resetSave" style="color:#ff8fb0">Сбросить прогресс</button></div>
     <p class="dim" style="font-size:11px;text-align:center;margin-top:12px">Кофейный Оракул v${VERSION}</p>`;},

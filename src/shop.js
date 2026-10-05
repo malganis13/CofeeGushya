@@ -19,7 +19,7 @@ Views.shop=()=>{const sub=Shop.sub;
       <div style="font-size:22px;font-weight:800;margin-bottom:10px"><span class="bean raw"></span> <span class="hud-raw">${fmt(S.raw)}</span></div>
       <div class="row"><button class="btn btn-gold sp" data-act="sellRaw" data-f="1">Продать всё</button><button class="btn sp" data-act="sellRaw" data-f="0.5">Половину</button></div></div>
       <div class="glass ritual-panel"><h3 class="h3 gold">💎 Обмен у звездочёта</h3><p class="muted" style="font-size:13px;margin:6px 0 12px">Превратите золото в астральные кристаллы.</p>
-      <div class="row"><button class="btn btn-gold sp" data-act="exchange" data-n="1" ${S.coins>=1500?'':'disabled'}>1 500 🪙 → 5 💎</button><button class="btn btn-wine sp" data-act="exchange" data-n="5" ${S.coins>=7000?'':'disabled'}>7 000 🪙 → 25 💎</button></div></div></div>`;}
+      <div class="row"><button class="btn btn-gold sp" data-act="exchange" data-n="1" ${S.coins>=2500?'':'disabled'}>2 500 🪙 → 5 💎</button><button class="btn btn-wine sp" data-act="exchange" data-n="5" ${S.coins>=11500?'':'disabled'}>11 500 🪙 → 25 💎</button></div></div></div>`;}
   if(sub==='inv'){const groups=[['bean','Зёрна и купажи'],['cup','Чаши'],['spice','Пряности'],['charm','Амулеты']];
     for(const[t,l]of groups){const bag=S.inv[ITEM_GROUPS[t].bag],ids=Object.keys(ITEM_GROUPS[t].db).filter(id=>bag[id]>0);
       h+=`<h3 class="h3 gold fade-in" style="margin:14px 2px 10px">${l}</h3>`;
@@ -32,4 +32,4 @@ Actions.buy=el=>{const it=SHOP[+el.dataset.i],d=itemDef(it.t,it.id);if(it.t==='c
   addItem(it.t,it.id,1);addXP(2);SFX.coin();toast(`Куплено: ${d.name}`,'good');App.render();};
 Actions.roast=el=>{const id=el.dataset.id,d=PLANTS[id];let n=el.dataset.n==='max'?Math.floor(S.raw/d.roast):+el.dataset.n;n=Math.min(n,Math.floor(S.raw/d.roast));if(n<1)return;
   S.raw-=n*d.roast;{const had=S.inv.beans[d.bean]||0;S.roastQ[d.bean]=(S.roastQ[d.bean]||0)*had/(had+n);}addItem('bean',d.bean,n);addXP(2*n);SFX.chime();toast(`🔥 Обжарено: ${BEANS[d.bean].name} ×${n}`,'gold');App.render();};
-Actions.exchange=el=>{const n=+el.dataset.n,c=n===5?7000:1500,g=n===5?25:5;if(!pay({coins:c})){SFX.error();return;}S.crystals+=g;SFX.magic();toast(`+${g} 💎 астральных кристаллов`,'gold');App.render();};
+Actions.exchange=el=>{const n=+el.dataset.n,c=n===5?11500:2500,g=n===5?25:5;if(!pay({coins:c})){SFX.error();return;}S.crystals+=g;SFX.magic();toast(`+${g} 💎 астральных кристаллов`,'gold');App.render();};

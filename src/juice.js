@@ -25,16 +25,16 @@ const Steam={parts:[],
     x.clearRect(0,0,W,H);x.globalCompositeOperation='lighter';
     for(const p of this.parts){p.ph+=dt*3;p.x+=p.vx+Math.sin(p.ph)*(p.k?.3:.45);p.y+=p.vy;p.l-=dt*(p.k?.7:.42);if(!p.k)p.r+=dt*14;
       if(p.k){const a=Math.max(0,p.l)*(.6+.4*Math.sin(p.ph*4));x.fillStyle=`rgba(243,217,139,${a})`;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();if(a>.5){x.fillStyle=`rgba(255,255,255,${a*.6})`;x.fillRect(p.x-.5,p.y-p.r*2.5,1,p.r*5);x.fillRect(p.x-p.r*2.5,p.y-.5,p.r*5,1);}}
-      else{const g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,`rgba(255,240,225,${Math.max(0,p.l)*.16})`);g.addColorStop(1,'rgba(255,240,225,0)');x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();}}
-    x.globalCompositeOperation='source-over';this.parts=this.parts.filter(p=>p.l>0&&p.y>-30);if(this.parts.length>420)this.parts.splice(0,this.parts.length-420);}
+      else{const g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,`rgba(255,240,225,${Math.max(0,p.l)*.085})`);g.addColorStop(1,'rgba(255,240,225,0)');x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();}}
+    x.globalCompositeOperation='source-over';this.parts=this.parts.filter(p=>p.l>0&&p.y>-30);if(this.parts.length>260)this.parts.splice(0,this.parts.length-260);}
 };
 /* ---------- Вспышка экрана ---------- */
 function screenFlash(col='rgba(255,246,220,.9)'){const f=document.createElement('div');f.className='flash';f.style.background=`radial-gradient(circle,${col},rgba(212,175,55,.25) 60%,transparent)`;document.body.appendChild(f);setTimeout(()=>f.remove(),700);}
 function shakeEl(el,cls='jolt'){if(!el)return;el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),600);}
 /* ---------- Ручной сбор урожая (мягкое свечение) ---------- */
-const HARVEST_CD=20000;
+const HARVEST_CD=45000;
 function harvestReady(id){return Date.now()-((S.harvestAt||{})[id]||0)>=HARVEST_CD;}
 Actions.harvest=el=>{const id=el.dataset.id;if(!S.plants[id].owned)return;const card=el.closest('.plant-card');
-  if(!harvestReady(id)){shakeEl(el,'nudge');return;}const g=Plant.rate(id)*20;S.raw+=g;S.stats.rawTotal+=g;S.harvestAt[id]=Date.now();
+  if(!harvestReady(id)){shakeEl(el,'nudge');return;}const g=Plant.rate(id)*12;S.raw+=g;S.stats.rawTotal+=g;S.harvestAt[id]=Date.now();
   card.classList.remove('harvest-glow');void card.offsetWidth;card.classList.add('harvest-glow');SFX.harvest();
   const r=el.getBoundingClientRect();for(let i=0;i<6;i++)setTimeout(()=>floatNum(el,i?'✦':'+'+fmt(g),20+Math.random()*(r.width-60),40+Math.random()*40),i*70);App.updateHUD();Plant.liveUpdate(false);};

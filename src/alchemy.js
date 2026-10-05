@@ -44,7 +44,7 @@ const Blend={slots:[],
     let h=`<div class="blend-wrap fade-in"><div class="glass ritual-panel glow" style="text-align:center"><h3 class="h3 gold">⚗️ Алхимический тигель</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Положите 2–3 разных сорта зерна. Верный рецепт рождает редкий купаж с особой силой.</p>
       <div class="cauldron ${this.slots.length>=2?'ready':''}"><div class="cauldron-glow"></div><span class="cauldron-ic">⚗️</span><div class="bubbles"><i></i><i></i><i></i><i></i></div></div>
       <div class="row" style="justify-content:center;gap:10px;margin:12px 0">${[0,1,2].map(i=>{const id=this.slots[i];return id?`<button class="slot full" data-act="blendRm" data-i="${i}">${itemIcon('bean',id)}<span>${esc(BEANS[id].name)}</span></button>`:`<div class="slot">＋</div>`;}).join('')}</div>
-      <button class="btn btn-gold btn-lg" data-act="blendGo" ${this.slots.length>=2?'':'disabled'}>🔥 Сплавить в тигле · 50 🪙</button></div>
+      <button class="btn btn-gold btn-lg" data-act="blendGo" ${this.slots.length>=2?'':'disabled'}>🔥 Сплавить в тигле · ${fmt(blendCost())} 🪙</button></div>
       <div class="glass ritual-panel"><h3 class="h3 gold" style="margin-bottom:8px">Ваши зёрна</h3>${ids.length?`<div class="grid g-items">${ids.map(id=>{const b=BEANS[id],inS=this.slots.includes(id);
         return `<div class="item click ${inS?'sel':''}" data-act="blendAdd" data-id="${id}"><span class="cnt">×${S.inv.beans[id]}</span>${itemIcon('bean',id,'lg')}${tierBadge(b.tier)}<div class="nm">${esc(b.name)}</div></div>`;}).join('')}</div>`:'<div class="empty">Нет зёрен для купажа.</div>'}</div></div>`;
     h+=`<div class="glass ritual-panel fade-in" style="margin-top:14px"><h3 class="h3 gold" style="margin-bottom:8px">📖 Книга рецептов · ${S.blendsKnown.length}/${BLENDS.length}</h3><div class="grid g-auto">${BLENDS.map(r=>{const k=S.blendsKnown.includes(r.out),b=BEANS[r.out];
@@ -53,7 +53,7 @@ const Blend={slots:[],
 };
 Actions.blendAdd=el=>{const id=el.dataset.id,s=Blend.slots;if(s.includes(id))s.splice(s.indexOf(id),1);else if(s.length<3)s.push(id);else{SFX.error();return toast('В тигле только три места','bad');}SFX.rustle();App.render();};
 Actions.blendRm=el=>{Blend.slots.splice(+el.dataset.i,1);SFX.click();App.render();};
-Actions.blendGo=()=>{const s=Blend.slots;if(s.length<2)return;if(!s.every(id=>(S.inv.beans[id]||0)>0))return App.render();if(!pay({coins:50})){SFX.error();return toast('Нужно 50 🪙','bad');}
+Actions.blendGo=()=>{const s=Blend.slots;if(s.length<2)return;if(!s.every(id=>(S.inv.beans[id]||0)>0))return App.render();const bc=blendCost();if(!pay({coins:bc})){SFX.error();return toast(`Нужно ${fmt(bc)} 🪙`,'bad');}
   s.forEach(id=>takeItem('bean',id));const rec=BLENDS.find(r=>blendKey(r.in)===blendKey(s)),out=rec?rec.out:'b_chaos',q=rec?rec.q:1,isNew=rec&&!S.blendsKnown.includes(out);
   if(isNew)S.blendsKnown.push(out);addItem('bean',out,q);addXP(rec?25:8);Blend.slots=[];save();
   const cd=$('.cauldron');if(cd)cd.classList.add('boom');SFX.boil();SFX.whoosh();
@@ -61,3 +61,6 @@ Actions.blendGo=()=>{const s=Blend.slots;if(s.length<2)return;if(!s.every(id=>(S
     <div style="margin:14px auto">${itemIcon('bean',out,'lg')}</div><h2 class="h2">${esc(b.name)} ×${q}</h2>${tierBadge(b.tier)}<p class="muted" style="margin:8px 0">${esc(b.desc)}</p><div class="chip" style="border-color:var(--gold)">✦ ${esc(b.effName)} · +${b.luck} удачи</div>
     <button class="btn btn-gold btn-block" data-act="closeModal" style="margin-top:16px">Чудесно</button></div>`);
     if(rec){Confetti.burst(isNew?150:70);SFX.magic();}else SFX.chime();App.render();},700);};
+
+/* v2.1: стоимость сплава растёт с каждым открытым рецептом: 120 × 1,8^n */
+function blendCost(){return Math.round(120*Math.pow(1.8,Math.min(6,(S.blendsKnown||[]).length)));}

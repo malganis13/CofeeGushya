@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0A050E">
-<title>Кофейный Оракул — Гадание и Тайны Судьбы</title>
+<title>Кофейный Оракул v2.1 — Гадание и Тайны Судьбы</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -354,12 +354,42 @@ h3.h3{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1.15}
 .nudge{animation:shake .1s linear 3}
 .atlas .sym.r-rare:not(.lock){border-color:rgba(195,155,255,.55)}.atlas .sym.r-legendary:not(.lock){border-color:var(--tS);box-shadow:0 0 14px rgba(241,199,91,.35)}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* ===================== v2.1 — уютная медитативная варка ===================== */
+.ver-badge{font-family:var(--sans,system-ui);font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--violet);background:linear-gradient(135deg,var(--gold-2),var(--gold));border-radius:999px;padding:2px 8px;text-shadow:none;box-shadow:0 0 12px rgba(212,175,55,.35)}
+.flame{animation:flick21 1.8s ease-in-out infinite alternate}
+@keyframes flick21{from{transform:scaleY(.94) scaleX(1.03)}to{transform:scaleY(1.06) scaleX(.97)}}
+.cz21 #flameG{transition:opacity .6s ease}
+.brew-msg{min-height:24px;font-size:13.5px;color:var(--text-2);transition:color .4s}
+.brew21 #stirCanvas{transition:box-shadow 1.2s ease;box-shadow:0 0 40px rgba(195,155,255,.12)}
+.thermo{width:26px;height:200px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line);position:relative;overflow:visible}
+.thermo .zone{position:absolute;left:0;right:0;bottom:73.3%;height:11.1%;background:rgba(212,175,55,.28);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);border-radius:4px}
+.thermo .fill{position:absolute;left:3px;right:3px;bottom:3px;height:0;max-height:calc(100% - 6px);border-radius:10px;background:linear-gradient(0deg,#5a1430,#c26a3a 55%,#f3d98b);transition:height .25s linear;box-shadow:0 0 12px rgba(243,217,139,.35)}
+.thermo .tv{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--gold-2);font-weight:700;white-space:nowrap}
+.rises{display:flex;gap:10px;justify-content:center}.rises i{font-style:normal;font-size:20px;opacity:.28;filter:grayscale(1);transition:all .8s ease}.rises i.on{opacity:1;filter:none;transform:scale(1.15);text-shadow:0 0 14px rgba(243,217,139,.8)}
+.flame-ctl{display:flex;align-items:center;gap:10px;width:100%;max-width:320px;font-size:20px}
+.flame-ctl input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:10px;border-radius:999px;background:linear-gradient(90deg,#2b1b2f,#5a1430 40%,#e2763a 75%,#f3d98b);outline:none;border:1px solid var(--line-2);touch-action:none}
+.flame-ctl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff6d8,#f3d98b 45%,#b8860b);border:2px solid #fff3c4;box-shadow:0 0 16px rgba(243,217,139,.7);cursor:grab}
+.flame-ctl input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff6d8,#f3d98b 45%,#b8860b);border:2px solid #fff3c4;box-shadow:0 0 16px rgba(243,217,139,.7)}
+.flame-ctl input:disabled{opacity:.4}
+.vn-stage{position:relative;cursor:pointer}
+.vn-you{font-size:13px;color:var(--gold-2);font-style:italic;min-height:0;margin:6px 4px}
+.vn-you:empty{display:none}
+.vn-text.in{animation:vnIn .6s ease}
+@keyframes vnIn{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+.vn-next{position:absolute;right:14px;bottom:6px;color:var(--gold);animation:vnBob 1.6s ease-in-out infinite;visibility:hidden}
+@keyframes vnBob{50%{transform:translateY(4px);opacity:.6}}
+.vn-choices{display:flex;flex-direction:column;gap:8px;margin-top:12px}.vn-choices .btn{justify-content:flex-start;text-align:left;white-space:normal;line-height:1.35;animation:vnIn .5s ease both}
+.vn-reflect{margin-top:10px;padding:10px 14px;border-left:2px solid var(--gold-dim);font-style:italic;font-size:16.5px;color:var(--text-2)}
+.locked-guest{opacity:.6}
+@media(max-width:640px){.logo{position:relative}.ver-badge{position:absolute;left:14px;bottom:-6px;font-size:8.5px;padding:1px 5px}.thermo{height:170px}}
+@media (prefers-reduced-motion:reduce){.flame,.vn-next{animation:none}}
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
 <header class="topbar"><div class="topbar-inner">
-  <div class="logo"><span class="cup">☕</span><span class="txt">Кофейный Оракул</span></div>
+  <div class="logo"><span class="cup">☕</span><span class="txt">Кофейный Оракул</span><span class="ver-badge" title="Версия игры">v2.1</span></div>
   <div class="wallet">
     <div class="pill" title="Золотые монеты">🪙 <span id="hud-coins">0</span></div>
     <div class="pill" title="Астральные кристаллы">💎 <span id="hud-crystals">0</span></div>
